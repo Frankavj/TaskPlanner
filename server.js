@@ -13,7 +13,7 @@ app.use(express.json()); //for extracting json in the request-body
 app.use('/', express.static('client')); //for serving client files
 
 // endpoint - users POST ---------------------------------
-app.post("/users/create", async function(req, res, next) {
+app.post("/users", async function(req, res, next) {
     let updata = req.body;
 
     // hash the pwd before it is stored in the db
