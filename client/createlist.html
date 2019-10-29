@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My document</title>
+    <title>Createlist</title>
 </head>
 
 <body>
 
 <input type="text" id="inpListname" placeholder="Listname">
 <input type="text" id="inpTask" placeholder="Task">
-<input type="text" id="inpAccess" placeholder="Access"> 
+<br><br>
 
 <form action="/action_page.php">
     <select name="Shared">
@@ -19,6 +19,8 @@
       <option value="Privat">Privat</option>
       <option value="Individual">Individual</option>
     </select>
+<br><br>
+<input type="text" id="inpAccess" placeholder="Access"> 
 <br><br>
 <button id="btnCreate">Create list</button>
 <h3 id="txtResult">Result...</h3>
@@ -40,7 +42,7 @@
 
     btnCreate.addEventListener('click', async function(evt) {
 
-        let url = "http://localhost:3000/users";
+        let url = "http://localhost:3000/Createlist";
 
         let updata = {
             listname: inplistname.value,
