@@ -10,7 +10,7 @@
 <body>
 
 <input type="text" id="inpEmail" placeholder="E-mail">
-<input type="pwhash" id="inpPwhash" placeholder="Pwhash">
+<input type="password" id="inpPassword" placeholder="Password">
 <br><br>
 <button id="btnCreate">Create user</button>
 <h3 id="txtResult">Result...</h3>
@@ -23,7 +23,7 @@
     
     let inpUsername = document.getElementById('inpUsername')
     let inpEmail = document.getElementById('inpEmail');
-    let inpPwhash = document.getElementById('inpPwhash');
+    let inpPassword = document.getElementById('inpPassword');
     let btnCreate = document.getElementById('inpKm');
     let txtResult = document.getElementById('txtResult');
 
@@ -36,7 +36,7 @@
         let updata = {
             username: inpUsername.value,
             email: inpEmail.value,
-            pwhash: inpPwhash.value
+            password: inpPassword.value
         }
 
         let cfg = {
