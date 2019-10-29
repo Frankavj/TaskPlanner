@@ -14,11 +14,13 @@
 <br><br>
 
 <form action="/action_page.php">
-    <select name="Shared">
+    <select id="Share" onchange="Shared()">
       <option value="Public">Public</option>
       <option value="Privat">Privat</option>
       <option value="Individual">Individual</option>
     </select>
+
+    <p id="demo"></p>
 <br><br>
 <input type="text" id="inpAccess" placeholder="Access"> 
 <br><br>
@@ -65,7 +67,12 @@
             console.log(err);
         }
     });
-    
+
+// Dropdown Function
+function Shared() {
+  var x = document.getElementById("Share").value;
+  document.getElementById("demo").innerHTML = "You selected: " + x;
+}
 
 </script>
 
