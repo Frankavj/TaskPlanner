@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My document</title>
+</head>
+
+<body>
+
+<input type="text" id="inpEmail" placeholder="E-mail">
+<input type="password" id="inpPassword" placeholder="Password">
+<br><br>
+<button id="btnCreate">Create user</button>
+<h3 id="txtResult">Result...</h3>
+
+</body>
+
+<script>
+
+    // ---------------------------------------  
+    
+    let inpUsername = document.getElementById('inpUsername')
+    let inpEmail = document.getElementById('inpEmail');
+    let inpPassword = document.getElementById('inpPassword');
+    let btnCreate = document.getElementById('inpKm');
+    let txtResult = document.getElementById('txtResult');
+
+
+
+    btnCreate.addEventListener('click', async function(evt) {
+
+        let url = "http://localhost:3000/users";
+
+        let updata = {
+            user: inpUsername.value,
+            email: inpEmail.value,
+            passwrd: inpPassword.value
+        }
+
+        let cfg = {
+            method: "POST",
+            headers: {"Content-type":"application/json"},
+            body: JSON.stringify(updata)
+        }
+
+        try {
+            var resp = await fetch(url, cfg);
+            var data = await resp.json();
+            txtResult.innerHTML = data.msg;
+        }
+        catch (err){
+            console.log(err);
+        }
+    });
+    
+
+</script>
+
+</html>
