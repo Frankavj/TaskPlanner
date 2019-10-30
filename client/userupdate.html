@@ -14,8 +14,10 @@
     <h4>Update Email</h4>
     <input type="text" id="inpemail" placeholder="email">
     <br><br>
+    <h4>Old Password</h4>
+    <input type="text" id="inpold" placeholder="Old Password">
     <h4>Update Password</h4>
-    <input type="text" id="inppassword" placeholder="password">
+    <input type="text" id="inpnew" placeholder="New Password">
     <br><br>
     
 
@@ -26,6 +28,47 @@
 </body>
 
 <script>
+
+let inpusername = document.getElementById("inpusername");
+let inpemail = document.getElementById("inpemail");
+let oldpass = document.getElementById("inpold");
+let newpass = document.getElementById("inpnew");
+
+let btnCreate = document.getElementById("btnCreate");
+let txtResult = document.getElementById("txtResult");
+
+//---------------------------------------------------
+btnCreate.addEventListener("click", async function() {
+
+    let url = "http:/localhost:3000/users";
+
+    let updata = {
+        username: inpusername.value,
+        email: inpemail.value,
+        oldpass: oldpass.value,
+        newpass: newpass.value
+    }
+
+    let cfg = {
+        method: "UPDATE",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(updata)
+    }
+
+    try {
+        var resp = await fetch(url, cfg);
+        var data = await resp.json();
+        if(resp.status > 202) {
+            throw(data);
+        }
+        txtResult.innerHTML = "update successful";
+        
+    }catch (err){
+        console.log(err);
+    }
+
+});
+
 
 
 </script>
