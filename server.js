@@ -42,7 +42,32 @@ app.post("/users", async function(req, res, next) {
 
 // endpoint - users PUT --------------------------------- (Thomas)
 
-// endpoint - users DELETE --------------------------------- (Celilie)
+// endpoint - users DELETE --------------------------------- (Cecilie)
+app.delete('/users', async function (req, res) {
+
+    let updata = req.body; 
+
+    let sql = 'DELETE FROM users WHERE id = $1 RETURNING *'
+    let values = [updata.userid];
+
+    try {
+        let result = await pool.query(sql, values);
+
+        if (result.rows.length > 0)  {
+            res.status(200).json({msg: "Delete OK"}); //send response 
+        }
+        else {
+            throw "Delete failed"
+        }
+    }
+
+
+    catch(err) {
+        res.status(500).json({error: err}); //send error response 
+    }
+
+});
+
 
 // endpoint - users GET --------------------------------- (Franka)
 app.get('/users', async function (req, res) {
