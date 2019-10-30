@@ -41,6 +41,34 @@ app.post("/users", async function(req, res, next) {
 });
 
 // endpoint - users PUT --------------------------------- (Thomas)
+app.put('/users', async function (req, res) {
+
+    let updata = req.body; 
+
+    let sql = 'SELECT * FROM users WHERE id = $1 RETURNING *'
+    let values = [logindata.userid];
+
+    try {
+        let result = await pool.query(sql, values);
+
+        if (result.rows.length == 0)  {
+            res.status(400).json({msg: "User doesn't exist"}); //send response 
+        }
+        else {
+            let check = bcrypt.compareSync(updata.oldpass, result.rows[0].pwdhash);
+            if (check) {
+                
+                sql = 'UPDATE users SET '
+            }
+        }
+    }
+
+
+    catch(err) {
+        res.status(500).json({error: err}); //send error response 
+    }
+
+});
 
 // endpoint - users DELETE --------------------------------- (Cecilie)
 app.delete('/users', async function (req, res) {
