@@ -5,10 +5,28 @@ const dbURI = "postgres://kqtgokmgwwiwlv:6eadab2bf3f619a6cbffdf551abd6d0469b1134
 const connString = process.env.DATABASE_URL || dbURI;
 const pool = new pg.Pool({connectionString: connString });
 const crypto = require('crypto');
+const secret = "frenchfriestastegood!"; // for tokens = should be store as an environment variable;
+const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
 let logindata;
+
+// middleware ------------------------------------
+router.use('/', function(req, res, next) {
+    let token = req.headers['authorisation'];
+
+    if(token) {
+        try {
+            logindata = jwt.verify(token, secret);
+            next();
+        } catch(err) {
+            res.status(403).json({msg: "Not a valid token"});
+        }
+    } else {
+        res.status(403).json({msg: "No token"});
+    }
+});
 
 // endpoint - users POST ---------------------------------
 router.post("/", async function(req, res, next) {
@@ -36,14 +54,12 @@ router.post("/", async function(req, res, next) {
 // endpoint - users GET --------------------------------- 
 router.get('/', async function (req, res) {
 
-    let sql = "SELECT * FROM users";
-
     // uncomment once we have authentication
-    // let sql = "SELECT * FROM users WHERE userid=$1";
-    // let values = [logindata.userid];
+    let sql = "SELECT * FROM users WHERE id=$1";
+    let values = [logindata.userid];
 
     try {
-        let result = await pool.query(sql);
+        let result = await pool.query(sql, values);
         res.status(200).json(result.rows); //send response    
     } catch (err) {
         res.status(500).json(err); //send response    
