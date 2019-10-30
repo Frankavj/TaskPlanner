@@ -8,6 +8,7 @@
 <body>
 
     <div id = "container"></div>
+
     
 </body>
 
@@ -15,6 +16,60 @@
 
     let container = document.getElementById('container');
     let url = "http://localhost:3000/users";
+
+    // ---------------------------------------
+    async function showUser() {
+        // now shows all users - will be just the one that's logged in once we have authentication
+        try {
+            // let logindata = JSON.parse(sessionStorage.getItem("logindata"));
+            // let token = logindata.token;
+
+            // let cfg = {
+            //     method: "GET",
+            //     headers: { "authorisation": token }
+            // };
+
+            let cfg = {method: "GET" };
+
+            var resp = await fetch(url, cfg);
+            var data = await resp.json();
+
+            if (resp.status > 202) {
+                throw (data);
+            }
+
+            container.innerHTML = ""; // delete previous content
+
+            for (let user of data) {
+
+                let div = document.createElement('div');
+                let html = `<h3>${user.username}</h3>
+                            <p>${user.email}</p>
+                            <hr>`;
+                div.innerHTML = html;
+
+                let btnUpdate = document.createElement('button');
+                btnUpdate.innerHTML = "Update";
+                btnUpdate.addEventListener('click', function (evt) {
+                    window.location.href = "./userupdate.html";
+                });
+
+                div.insertBefore(btnUpdate, div.lastElementChild);
+
+                let btnDelete = document.createElement('button');
+                btnDelete.innerHTML = "Delete";
+                btnDelete.addEventListener('click', function (evt) {
+                    deleteTravel(value.id);
+                });
+
+                div.insertBefore(btnDelete, div.lastElementChild);
+                container.appendChild(div);
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    } 
 
     // --------------------------------------- (cecilie)
     
@@ -34,14 +89,10 @@
         catch(err) {
             console.log(err);
         }
-    }
-
-    sendRequest();  
-
-    // --------------------------------------- (thomas)
-    async function updateUser(id) {
 
     }
+
+    sendRequest(); 
 
 </script>
 
