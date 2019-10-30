@@ -59,7 +59,7 @@
                 let btnDelete = document.createElement('button');
                 btnDelete.innerHTML = "Delete";
                 btnDelete.addEventListener('click', function (evt) {
-                    deleteTravel(value.id);
+                    deleteUser(user.id);
                 });
 
                 div.insertBefore(btnDelete, div.lastElementChild);
@@ -84,7 +84,7 @@
 
         try {
             await fetch(url, cfg);
-            sendRequest();  
+            showUser();  
         }
         catch(err) {
             console.log(err);
@@ -92,7 +92,7 @@
 
     }
 
-    sendRequest(); 
+    showUser(); 
 
 </script>
 
