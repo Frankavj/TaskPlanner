@@ -120,34 +120,36 @@ app.get('/users', async function (req, res) {
 
 
 // endpoint - auth (login) POST ---------------------------------
-router.post('/auth', async function (req, res) {
+let auth = require('./auth.js');
+app.use('/auth', auth);
+// app.post('/auth', async function (req, res) {
 
-    let updata = req.body // the data sent from the client
+//     let updata = req.body // the data sent from the client
 
-    // get the user from the db
-    let sql = "SELECT * FROM users WHERE username = $1";
-    let values = [updata.uname];
+//     // get the user from the db
+//     let sql = "SELECT * FROM users WHERE username = $1";
+//     let values = [updata.uname];
 
-    try {
-        let result = await pool.query(sql, values);
+//     try {
+//         let result = await pool.query(sql, values);
 
-        if (result.rows.length == 0) {
-            res.status(400).json({ msg: "User doesn't exist" }); //send response 
-        } else {
-            let check = crypto.compareSync(updata.password, result.rows[0].pwdhash);
-            if (check) {
-                let payload = { userid: result.rows[0].id };
-                let tok = jwt.sign(payload, secret, { expiresIn: "12h" }); // create token
-                res.status(200).json({ email: result.rows[0].email, userid: result.rows[0].id, token: tok });
-            } else {
-                res.status(400).json({ msg: "Wrong password" });
-            }
-        }
-    } catch (err) {
-        res.status(500).json(err); //send error response    
-    }
+//         if (result.rows.length == 0) {
+//             res.status(400).json({ msg: "User doesn't exist" }); //send response 
+//         } else {
+//             let check = crypto.compareSync(updata.password, result.rows[0].pwdhash);
+//             if (check) {
+//                 let payload = { userid: result.rows[0].id };
+//                 let tok = jwt.sign(payload, secret, { expiresIn: "12h" }); // create token
+//                 res.status(200).json({ email: result.rows[0].email, userid: result.rows[0].id, token: tok });
+//             } else {
+//                 res.status(400).json({ msg: "Wrong password" });
+//             }
+//         }
+//     } catch (err) {
+//         res.status(500).json(err); //send error response    
+//     }
 
-});
+// });
 
 
 // endpoint - lists POST ---------------------------------
