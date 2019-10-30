@@ -1,0 +1,54 @@
+
+body {
+    background-color: rgb(198, 177, 199);
+  }
+
+
+  #inpUsername {
+    border: 3px;
+    border-radius: 10px;
+    background-color: rgb(143, 206, 174);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    margin-left: 70px;
+    margin-top: 20px;
+  }
+ 
+  #inpEmail {
+    border: 3px;
+    border-radius: 10px;
+    background-color: rgb(143, 206, 174);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    margin-left: 70px;
+    margin-top: 20px;
+  }
+
+  #inpPassword {
+    border: 3px;
+    border-radius: 20px;
+    background-color: rgb(143, 206, 174);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    margin-left: 70px;
+    margin-top: 20px;
+  }
+ 
+
+  #btnCreate {
+    border: 3px;
+    border-radius: 20px;
+    background-color: rgb(143, 206, 174);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    margin-left: 70px;
+    margin-top: 20px;
+    }
+
+    h3 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 10px;
+        text-align: center;
+        margin-top: 70px;
+        
+    }
