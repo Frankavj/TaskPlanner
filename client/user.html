@@ -7,7 +7,7 @@
 </head>
 <body>
 
-    
+    <div id = "container"></div>
     
 </body>
 
@@ -17,9 +17,26 @@
     let url = "http://localhost:3000/users";
 
     // --------------------------------------- (cecilie)
+    
     async function deleteUser(id) {
 
+        let updata = {userid: id};
+        let cfg = {
+            method: "DELETE",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(updata)
+        }
+
+        try {
+            await fetch(url, cfg);
+            sendRequest();  
+        }
+        catch(err) {
+            console.log(err);
+        }
     }
+
+    sendRequest();  
 
     // --------------------------------------- (thomas)
     async function updateUser(id) {
