@@ -7,13 +7,50 @@
 </head>
 <body>
 
-    <!-- HTML elements here... -->
+    <input type="text" id="inpUsername" placeholder="Username">
+    <input type="password" id="inpPassword" placeholder="Password">
+
+    <button id="btn">Login</button>
+    <h3 id="txtResult">Result...</h3>
     
 </body>
 
 <script>
 
-    /* JavaScript here... */
+    let uname = document.getElementById('inpUsername');
+    let pwd = document.getElementById('inpPassword');
+
+    let btn = document.getElementById('btn');
+    let txtResult = document.getElementById('txtResult');
+
+    // ---------------------------------------    
+    btn.addEventListener('click', async function() {
+
+        let url = "http://localhost:3000/auth";
+
+        let updata =  {
+            email: uname.value,
+            password: pwd.value
+        }
+        
+        let cfg = {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(updata) 
+        }
+
+        try {
+            var resp = await fetch(url, cfg);
+            var data = await resp.json();
+            if(resp.status > 202) {
+                throw(data);
+            }
+            txtResult.innerHTML = data.email + " is logged in!";
+            sessionStorage.setItem("logindata", JSON.stringify(data));
+        } catch (err) {
+            console.log(err);
+        }
+    });
 
 </script>
 

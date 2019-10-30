@@ -9,19 +9,14 @@
 
 <body>
     <h4>Update Username</h4>
-    <input type="text" id="inpusername" placeholder="username">
-    <br><br>
+    <input type="text" id="inpUsername" placeholder="Username">
     <h4>Update Email</h4>
-    <input type="text" id="inpemail" placeholder="email">
-    <br><br>
+    <input type="text" id="inpEmail" placeholder="Email">
     <h4>Old Password</h4>
-    <input type="text" id="inpold" placeholder="Old Password">
-    <h4>Update Password</h4>
-    <input type="text" id="inpnew" placeholder="New Password">
-    <br><br>
+    <input type="text" id="inpOldPass" placeholder="Old Password">
+    <h4>New Password</h4>
+    <input type="text" id="inpNewPass" placeholder="New Password">
     
-
-    <br><br>
     <button id="btnCreate">Change</button>
     <h3 id="txtResult">Result...</h3>
 
@@ -29,24 +24,24 @@
 
 <script>
 
-let inpusername = document.getElementById("inpusername");
-let inpemail = document.getElementById("inpemail");
-let oldpass = document.getElementById("inpold");
-let newpass = document.getElementById("inpnew");
+let uname = document.getElementById("inpUsername");
+let email = document.getElementById("inpEmail");
+let oldPass = document.getElementById("inpOldPass");
+let newPass = document.getElementById("inpNewPass");
 
 let btnCreate = document.getElementById("btnCreate");
 let txtResult = document.getElementById("txtResult");
 
-//---------------------------------------------------
+//DOESN'T WORK!!---------------------------------------------------
 btnCreate.addEventListener("click", async function() {
 
     let url = "http:/localhost:3000/users";
 
     let updata = {
-        username: inpusername.value,
-        email: inpemail.value,
-        oldpass: oldpass.value,
-        newpass: newpass.value
+        username: uname.value,
+        email: email.value,
+        oldpass: oldPass.value,
+        newpass: newPass.value
     }
 
     let cfg = {

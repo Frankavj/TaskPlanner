@@ -22,9 +22,7 @@ app.post("/users", async function(req, res, next) {
     let updata = req.body;
 
     // hash the pwd before it is stored in the db
-    let hash = crypto.createHash('sha256')
-   .update(updata.password)
-   .digest('hex');
+    let hash = crypto.createHash('sha256').update(updata.password).digest('hex');
 
     let sql = "INSERT INTO users (id, username, email, pwdhash) VALUES(DEFAULT, $1, $2, $3) RETURNING *";
     let values = [updata.username, updata.email, hash];
@@ -60,7 +58,10 @@ app.put('/users', async function (req, res) {
             let check = bcrypt.compareSync(updata.oldpass, result.rows[0].pwdhash);
             if (check) {
                 
-                sql = 'UPDATE users SET '
+                sql = "UPDATE users SET ";
+                for(key of JSON.parse(updata)) {
+                    console.log(key);
+                }
             }
         }
     }
@@ -113,6 +114,37 @@ app.get('/users', async function (req, res) {
         res.status(200).json(result.rows); //send response    
     } catch (err) {
         res.status(500).json(err); //send response    
+    }
+
+});
+
+
+// endpoint - auth (login) POST ---------------------------------
+router.post('/auth', async function (req, res) {
+
+    let updata = req.body // the data sent from the client
+
+    // get the user from the db
+    let sql = "SELECT * FROM users WHERE username = $1";
+    let values = [updata.uname];
+
+    try {
+        let result = await pool.query(sql, values);
+
+        if (result.rows.length == 0) {
+            res.status(400).json({ msg: "User doesn't exist" }); //send response 
+        } else {
+            let check = crypto.compareSync(updata.password, result.rows[0].pwdhash);
+            if (check) {
+                let payload = { userid: result.rows[0].id };
+                let tok = jwt.sign(payload, secret, { expiresIn: "12h" }); // create token
+                res.status(200).json({ email: result.rows[0].email, userid: result.rows[0].id, token: tok });
+            } else {
+                res.status(400).json({ msg: "Wrong password" });
+            }
+        }
+    } catch (err) {
+        res.status(500).json(err); //send error response    
     }
 
 });
