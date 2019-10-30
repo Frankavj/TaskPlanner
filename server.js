@@ -38,6 +38,12 @@ app.post("/users", async function(req, res, next) {
     }
 });
 
+// endpoint - users PUT --------------------------------- (Thomas)
+
+// endpoint - users DELETE --------------------------------- (Celilie)
+
+// endpoint - users DELETE --------------------------------- (Franka)
+
 // start server -----------------------------------
 var port = process.env.PORT || 3000;
 app.listen(port, function () {
