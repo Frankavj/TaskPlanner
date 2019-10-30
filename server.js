@@ -10,6 +10,8 @@ const bcrypt = require('bcrypt');
 const secret = "frenchfriestastegood!"; // for tokens = should be store as an environment variable;
 const jwt = require('jsonwebtoken');
 
+let logindata;
+
 // middleware ------------------------------------
 app.use(cors()); //allow all CORS requests
 app.use(express.json()); //for extracting json in the request-body
@@ -67,7 +69,23 @@ app.delete('/users', async function (req, res) {
 });
 
 
-// endpoint - users DELETE --------------------------------- (Franka)
+// endpoint - users GET --------------------------------- (Franka)
+app.get('/users', async function (req, res) {
+
+    let sql = "SELECT * FROM users";
+
+    // uncomment once we have authentication
+    // let sql = "SELECT * FROM users WHERE userid=$1";
+    // let values = [logindata.userid];
+
+    try {
+        let result = await pool.query(sql);
+        res.status(200).json(result.rows); //send response    
+    } catch (err) {
+        res.status(500).json(err); //send response    
+    }
+
+});
 
 // start server -----------------------------------
 var port = process.env.PORT || 3000;
