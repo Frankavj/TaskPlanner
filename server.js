@@ -122,16 +122,16 @@ app.get('/users', async function (req, res) {
 app.post("/lists", async function(req, res, next) {
     let updata = req.body;
 
-    let sql = "INSERT INTO users (id, name, shared, tasks, hasAccess) VALUES(DEFAULT, $1, $2, $3, $4) RETURNING *";
+    let sql = "INSERT INTO lists (id, name, shared, tasks, hasAccess) VALUES(DEFAULT, $1, $2, $3, $4) RETURNING *";
     let values = [updata.name, updata.shared, updata.tasks, updata.hasAccess];
 
     try {
         let result = await pool.query(sql, values);
 
         if(result.rows.length > 0) {
-            res.status(200).json({msg: `User created: ${updata.name}`})
+            res.status(200).json({msg: `List created: ${updata.name}`})
         } else {
-            throw "User creation failed.";
+            throw "List creation failed.";
         }
     } catch (err) {
         res.status(500).json({error: err});
