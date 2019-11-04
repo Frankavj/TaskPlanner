@@ -21,15 +21,13 @@
     async function showUser() {
         // now shows all users - will be just the one that's logged in once we have authentication
         try {
-            // let logindata = JSON.parse(sessionStorage.getItem("logindata"));
-            // let token = logindata.token;
+            let logindata = JSON.parse(sessionStorage.getItem("logindata"));
+            let token = logindata.token;
 
-            // let cfg = {
-            //     method: "GET",
-            //     headers: { "authorisation": token }
-            // };
-
-            let cfg = {method: "GET" };
+            let cfg = {
+                method: "GET",
+                headers: { "authorisation": token }
+            };
 
             var resp = await fetch(url, cfg);
             var data = await resp.json();
@@ -65,8 +63,7 @@
                 div.insertBefore(btnDelete, div.lastElementChild);
                 container.appendChild(div);
             }
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
         }
     } 

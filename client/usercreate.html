@@ -5,23 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My document</title>
+    <link rel="stylesheet" href="../taskplanner.css">
 </head>
 
 <body>
+    <div>
+        <input type="username" id="inpUsername" placeholder="Username">
+        <input type="email" id="inpEmail" placeholder="E-mail">
+        <input type="password" id="inpPassword" placeholder="Password">
 
-<input type="username" id="inpUsername" placeholder="Username">
-<input type="email" id="inpEmail" placeholder="E-mail">
-<input type="password" id="inpPassword" placeholder="Password">
-<br><br>
-<button id="btnCreate">Create user</button>
-<h3 id="txtResult">Result...</h3>
-
+        <button id="btnCreate">Create user</button>
+        <h3 id="txtResult">Result...</h3>
+    </div>
 </body>
 
 <script>
 
     // ---------------------------------------  
-    
+
     let inpUsername = document.getElementById('inpUsername')
     let inpEmail = document.getElementById('inpEmail');
     let inpPassword = document.getElementById('inpPassword');
@@ -30,7 +31,7 @@
 
 
 
-    btnCreate.addEventListener('click', async function(evt) {
+    btnCreate.addEventListener('click', async function (evt) {
 
         let url = "http://localhost:3000/users";
 
@@ -42,7 +43,7 @@
 
         let cfg = {
             method: "POST",
-            headers: {"Content-type":"application/json"},
+            headers: { "Content-type": "application/json" },
             body: JSON.stringify(updata)
         }
 
@@ -51,11 +52,11 @@
             var data = await resp.json();
             txtResult.innerHTML = data.msg;
         }
-        catch (err){
+        catch (err) {
             console.log(err);
         }
     });
-    
+
 
 </script>
 
