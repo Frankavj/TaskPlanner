@@ -43,7 +43,6 @@
 
         try {
             var resp = await fetch(url, cfg);
-            console.log(resp);
             var data = await resp.json();
             if(resp.status > 202) {
                 throw(data);

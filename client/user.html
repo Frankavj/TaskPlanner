@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My document</title>
 </head>
+
 <body>
 
-    <div id = "container"></div>
+    <div id="container"></div>
 
-    
 </body>
 
 <script>
 
-    let container = document.getElementById('container');
+    let container = document.getElementById("container");
+
     let url = "http://localhost:3000/users";
 
     // ---------------------------------------
@@ -30,8 +32,7 @@
             };
 
             var resp = await fetch(url, cfg);
-            console.log(resp);
-            var data = await resp.json();
+            var user = await resp.json();
 
             if (resp.status > 202) {
                 throw (data);
@@ -39,58 +40,68 @@
 
             container.innerHTML = ""; // delete previous content
 
-            for (let user of data) {
+            let div = document.createElement('div');
+            let html = `<h3>${user.username}</h3>
+                            <p>${user.email}</p>`;
+            div.innerHTML = html;
 
-                let div = document.createElement('div');
-                let html = `<h3>${user.username}</h3>
-                            <p>${user.email}</p>
-                            <hr>`;
-                div.innerHTML = html;
+            // Update button
+            let btnUpdate = document.createElement('button');
+            btnUpdate.innerHTML = "Update";
+            btnUpdate.addEventListener('click', function (evt) {
+                window.location.href = "./userupdate.html";
+            });
 
-                let btnUpdate = document.createElement('button');
-                btnUpdate.innerHTML = "Update";
-                btnUpdate.addEventListener('click', function (evt) {
-                    window.location.href = "./userupdate.html";
-                });
+            div.appendChild(btnUpdate);
 
-                div.insertBefore(btnUpdate, div.lastElementChild);
+            // Delete button
+            let btnDelete = document.createElement('button');
+            btnDelete.innerHTML = "Delete";
+            btnDelete.addEventListener('click', function (evt) {
+                deleteUser(user.id);
+            });
 
-                let btnDelete = document.createElement('button');
-                btnDelete.innerHTML = "Delete";
-                btnDelete.addEventListener('click', function (evt) {
-                    deleteUser(user.id);
-                });
+            div.appendChild(btnDelete);
 
-                div.insertBefore(btnDelete, div.lastElementChild);
-                container.appendChild(div);
-            }
+            // Log out button
+            let btnLogOut = document.createElement('button');
+            btnLogOut.innerHTML = "Log out";
+            btnLogOut.addEventListener('click', function(evt) {
+                sessionStorage.setItem('logindata', null);
+                window.location.href = "./userlogin.html";
+            });
+
+            div.appendChild(btnLogOut);
+
+            container.appendChild(div);
+
         } catch (err) {
             console.log(err);
         }
-    } 
+    }
 
     // --------------------------------------- (cecilie)
-    
+
     async function deleteUser(id) {
 
-        let updata = {userid: id};
+        let updata = { userid: id };
         let cfg = {
             method: "DELETE",
-            headers: {"Content-Type":"application/json"},
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(updata)
         }
 
         try {
             await fetch(url, cfg);
-            showUser();  
+            showUser();
         }
-        catch(err) {
+        catch (err) {
             console.log(err);
         }
 
     }
 
-    showUser(); 
+    showUser();
 
 </script>
 

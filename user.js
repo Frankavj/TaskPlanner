@@ -65,7 +65,7 @@ router.get('/', async function (req, res, next) {
 
     try {
         let result = await pool.query(sql, values);
-        res.status(200).json(result.rows); //send response    
+        res.status(200).json(result.rows[0]); //send response    
     } catch (err) {
         res.status(500).json(err); //send response    
     }
