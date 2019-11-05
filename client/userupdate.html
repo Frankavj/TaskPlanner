@@ -8,14 +8,16 @@
 </head>
 
 <body>
-    <h4>Update Username</h4>
+    <h4>New Username</h4>
     <input type="text" id="inpUsername" placeholder="Username">
-    <h4>Update Email</h4>
+    <h4>New Email</h4>
     <input type="text" id="inpEmail" placeholder="Email">
-    <h4>Old Password</h4>
-    <input type="text" id="inpOldPass" placeholder="Old Password">
     <h4>New Password</h4>
-    <input type="text" id="inpNewPass" placeholder="New Password">
+    <input type="password" id="inpNewPass" placeholder="New Password">
+    <h4>Retype New Password</h4>
+    <input type="password" id="inpNewPass2" placeholder="New Password">
+    <h4>Old Password*</h4>
+    <input type="password" id="inpOldPass" placeholder="Old Password">
     
     <button id="btnCreate">Change</button>
     <h3 id="txtResult">Result...</h3>
@@ -28,25 +30,34 @@ let uname = document.getElementById("inpUsername");
 let email = document.getElementById("inpEmail");
 let oldPass = document.getElementById("inpOldPass");
 let newPass = document.getElementById("inpNewPass");
+let newPassAgain = document.getElementById("inpNewPass2");
 
 let btnCreate = document.getElementById("btnCreate");
 let txtResult = document.getElementById("txtResult");
 
-//DOESN'T WORK!!---------------------------------------------------
 btnCreate.addEventListener("click", async function() {
 
-    let url = "http:/localhost:3000/users";
+    if(newPass.value.localeCompare(newPassAgain.value) != 0) {
+        newPassAgain.style = "border-color: red";
+        return;
+    }
+
+    let logindata = JSON.parse(sessionStorage.getItem("logindata"));
+    let token = logindata.token;
+
+    let url = "http://localhost:3000/users";
 
     let updata = {
         username: uname.value,
         email: email.value,
-        oldpass: oldPass.value,
-        newpass: newPass.value
+        newpass: newPass.value,
+        oldpass: oldPass.value
     }
 
     let cfg = {
-        method: "UPDATE",
-        headers: {"Content-Type": "application/json"},
+        method: "PUT",
+        headers: { "Content-Type": "application/json"
+                 , "authorisation": token},
         body: JSON.stringify(updata)
     }
 
@@ -58,8 +69,11 @@ btnCreate.addEventListener("click", async function() {
         }
         txtResult.innerHTML = "update successful";
         
-    }catch (err){
+    } catch (err){
         console.log(err);
+        if(err.msg) {
+            txtResult.innerHTML = err.msg;
+        }
     }
 
 });
