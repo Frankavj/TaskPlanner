@@ -98,12 +98,14 @@ router.put('/', async function (req, res, next) {
                     let needComma = false;
                     let index = 2;
 
+                    // change username
                     if (updata.username) {
                         sql = sql + ` username = $${index}`;
                         values.push(updata.username);
                         needComma = true;
                         index++;
                     }
+                    // change email
                     if (updata.email) {
                         if(needComma) {
                             sql = sql + ",";
@@ -114,6 +116,7 @@ router.put('/', async function (req, res, next) {
                         values.push(updata.email);
                         index++;
                     }
+                    // change password
                     if (updata.newpass) {
                         if(needComma) {
                             sql = sql + ",";
