@@ -16,6 +16,11 @@ let logindata;
 router.use('/', function(req, res, next) {
     let token = req.headers['authorisation'];
 
+    if(req.method.localeCompare("POST") == 0) {
+        next();
+        return;
+    }
+
     if(token) {
         try {
             logindata = jwt.verify(token, secret);

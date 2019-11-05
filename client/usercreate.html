@@ -51,8 +51,7 @@
             var resp = await fetch(url, cfg);
             var data = await resp.json();
             txtResult.innerHTML = data.msg;
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
         }
     });
