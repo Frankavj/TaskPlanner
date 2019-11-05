@@ -16,7 +16,7 @@
 <form action="/action_page.php">
     <select id="Share" onchange="Shared()">
       <option value="Public">Public</option>
-      <option value="Privat">Privat</option>
+      <option value="Privat">Private</option>
       <option value="Individual">Individual</option>
     </select>
 
@@ -44,12 +44,12 @@
 
     btnCreate.addEventListener('click', async function(evt) {
 
-        let url = "http://localhost:3000/Createlist";
+        let url = "http://localhost:3000/lists";
 
         let updata = {
-            listname: inplistname.value,
-            task: inptask.value,
-            access: inpaccess.value
+            listname: inpListname.value,
+            task: inpTask.value,
+            access: inpAccess.value
         }
 
         let cfg = {
@@ -70,7 +70,7 @@
 
 // Dropdown Function
 function Shared() {
-  var x = document.getElementById("Share").value;
+  let x = document.getElementById("Share").value;
   document.getElementById("demo").innerHTML = "You selected: " + x;
 }
 
