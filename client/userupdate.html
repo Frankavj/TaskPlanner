@@ -49,9 +49,10 @@
     // --------------------------------------- 
     updateForm.addEventListener("submit", async function (evt) {
         evt.preventDefault();
+        console.log("submit");
 
         if (newPass.value.localeCompare(newPassAgain.value) != 0) {
-            newPassAgain.style = "border-color: red";
+            newPassAgain.style = "border: solid 1px red";
             return;
         }
 
