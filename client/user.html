@@ -34,8 +34,12 @@
             var resp = await fetch(url, cfg);
             var user = await resp.json();
 
-            if (resp.status > 202) {
-                throw (data);
+            if (resp.status == 403) {
+                // If user hasn't logged in, go to the login page
+                window.location.href = "./userlogin.html";
+                return;
+            } else if (resp.status > 202) {
+                throw (user);
             }
 
             container.innerHTML = ""; // delete previous content
@@ -67,7 +71,7 @@
             let btnLogOut = document.createElement('button');
             btnLogOut.innerHTML = "Log out";
             btnLogOut.addEventListener('click', function(evt) {
-                sessionStorage.setItem('logindata', null);
+                sessionStorage.removeItem('logindata');
                 window.location.href = "./userlogin.html";
             });
 
