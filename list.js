@@ -37,8 +37,8 @@ router.use('/', function (req, res, next) {
 router.post("/", async function(req, res, next) {
     let updata = req.body;
 
-    let sql = "INSERT INTO lists (id, name, shared, owner, individual_access) VALUES(DEFAULT, $1, $2, $3, $4) RETURNING *";
-    let values = [updata.listname, updata.shared, updata.owner, updata.hasaccess];
+    let sql = "INSERT INTO lists (id, name, shared, owner) VALUES(DEFAULT, $1, $2, $3) RETURNING *";
+    let values = [updata.listname, updata.shared, logindata.userid];
 
     try {
         let result = await pool.query(sql, values);
