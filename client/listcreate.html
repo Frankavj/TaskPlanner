@@ -12,9 +12,9 @@
 <input type="text" id="inpListname" placeholder="Listname">
 
     <select id="inpShare">
-      <option value="Public">Public</option>
-      <option value="Privat">Private</option>
-      <option value="Individual">Individual</option>
+      <option value="0">Public</option>
+      <option value="1">Private</option>
+      <option value="2">Individual</option>
     </select>
 
 <button id="btnCreate">Create list</button>
@@ -37,9 +37,11 @@
 
         let url = "http://localhost:3000/lists";
 
+        console.log(typeof share.value)
+
         let updata = {
             listname: listname.value,
-            share: share.value
+            shared: share.value
         }
 
         let cfg = {
@@ -52,8 +54,7 @@
             var resp = await fetch(url, cfg);
             var data = await resp.json();
             txtResult.innerHTML = data.msg;
-        }
-        catch (err){
+        } catch (err){
             console.log(err);
         }
     });
