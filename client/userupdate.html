@@ -26,67 +26,75 @@
     <input type="password" id="inpOldPass" placeholder="Old Password*">
     </div>
     
+>>>>>>> 6f296f32c923232a45bc753449623f282e08236c
     <button id="btnCreate">Change</button>
 
 </body>
 
 <script>
 
-let uname = document.getElementById("inpUsername");
-let email = document.getElementById("inpEmail");
-let oldPass = document.getElementById("inpOldPass");
-let newPass = document.getElementById("inpNewPass");
-let newPassAgain = document.getElementById("inpNewPass2");
+    let uname = document.getElementById("inpUsername");
+    let email = document.getElementById("inpEmail");
+    let oldPass = document.getElementById("inpOldPass");
+    let newPass = document.getElementById("inpNewPass");
+    let newPassAgain = document.getElementById("inpNewPass2");
 
-let btnCreate = document.getElementById("btnCreate");
-let txtResult = document.getElementById("txtResult");
-
-btnCreate.addEventListener("click", async function() {
-
-    if(newPass.value.localeCompare(newPassAgain.value) != 0) {
-        newPassAgain.style = "border-color: red";
-        return;
-    }
+    let btnCreate = document.getElementById("btnCreate");
+    let txtResult = document.getElementById("txtResult");
 
     let logindata = JSON.parse(sessionStorage.getItem("logindata"));
-    let token = logindata.token;
-
-    let url = "http://localhost:3000/users";
-
-    let updata = {
-        username: uname.value,
-        email: email.value,
-        newpass: newPass.value,
-        oldpass: oldPass.value
+    if (!logindata) {
+        window.location.href = "./userlogin.html";
     }
 
-    let cfg = {
-        method: "PUT",
-        headers: { "Content-Type": "application/json"
-                 , "authorisation": token},
-        body: JSON.stringify(updata)
-    }
+    btnCreate.addEventListener("click", async function () {
 
-    try {
-
-        var resp = await fetch(url, cfg);
-        var data = await resp.json();
-
-        if(resp.status == 403) {
-            window.location.href = "./userlogin.html";
-        } else if(resp.status > 202) {
-            throw(data);
+        if (newPass.value.localeCompare(newPassAgain.value) != 0) {
+            newPassAgain.style = "border-color: red";
+            return;
         }
-        txtResult.innerHTML = "update successful";
-        
-    } catch (err){
-        console.log(err);
-        if(err.msg) {
-            txtResult.innerHTML = err.msg;
-        }
-    }
 
-});
+        let token = logindata.token;
+
+        let url = "http://localhost:3000/users";
+
+        let updata = {
+            username: uname.value,
+            email: email.value,
+            newpass: newPass.value,
+            oldpass: oldPass.value
+        }
+
+        let cfg = {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+                , "authorisation": token
+            },
+            body: JSON.stringify(updata)
+        }
+
+        try {
+
+            var resp = await fetch(url, cfg);
+            var data = await resp.json();
+
+            if (resp.status == 403) {
+                window.location.href = "./userlogin.html";
+                return;
+            } else if (resp.status > 202) {
+                throw (data);
+            }
+            txtResult.innerHTML = "update successful";
+
+        } catch (err) {
+            console.log(err);
+            if (err.msg) {
+                txtResult.innerHTML = err.msg;
+            }
+        }
+
+    });
 
 
 
