@@ -24,6 +24,10 @@
         // now shows all users - will be just the one that's logged in once we have authentication
         try {
             let logindata = JSON.parse(sessionStorage.getItem("logindata"));
+            if (!logindata) {
+                window.location.href = "./userlogin.html";
+                return;
+            }
             let token = logindata.token;
 
             let cfg = {
@@ -70,7 +74,7 @@
             // Log out button
             let btnLogOut = document.createElement('button');
             btnLogOut.innerHTML = "Log out";
-            btnLogOut.addEventListener('click', function(evt) {
+            btnLogOut.addEventListener('click', function (evt) {
                 sessionStorage.removeItem('logindata');
                 window.location.href = "./userlogin.html";
             });

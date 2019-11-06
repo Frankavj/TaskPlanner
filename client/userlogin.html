@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My document</title>
     <link rel="stylesheet" href="../css/userlogin.css">
 
 </head>
+
 <body>
 
-    <form action="index.html" class="login-form">
+    <form id="loginForm" class="login-form">
         <h1>Login</h1>
 
-    <div class="txtb">
-    <input type="text" id="inpUsername" placeholder="Username">
-    <input type="password" id="inpPassword" placeholder="Password">
-    </div>
+        <div class="txtb">
+            <input type="text" id="inpUsername" placeholder="Username">
+            <input type="password" id="inpPassword" placeholder="Password">
+        </div>
 
-    <button id="btn">Login</button>
-    
+        <button id="btn" type="submit">Login</button>
 
-    <div class="bottom-text">
-    Don't have account? <a href="#">Sign up</a>
-    </div>
-    
+        <div class="bottom-text">
+            Don't have account? <a href="./usercreate.html">Sign up</a>
+        </div>
+    </form>    
+
 </body>
 
 <script>
@@ -31,34 +33,33 @@
     let uname = document.getElementById('inpUsername');
     let pwd = document.getElementById('inpPassword');
 
-    let btn = document.getElementById('btn');
-    let txtResult = document.getElementById('txtResult');
+    let loginForm = document.getElementById('loginForm');
 
     // ---------------------------------------    
-    btn.addEventListener('click', async function() {
+    loginForm.addEventListener('submit', async function (evt) {
+        evt.preventDefault();
 
         let url = "http://localhost:3000/auth";
 
-        let updata =  {
+        let updata = {
             uname: uname.value,
             password: pwd.value
         }
-        
+
         let cfg = {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(updata) 
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updata)
         }
 
         try {
             var resp = await fetch(url, cfg);
             var data = await resp.json();
-            if(resp.status > 202) {
-                throw(data);
+            if (resp.status > 202) {
+                throw (data);
             }
-            txtResult.innerHTML = data.email + " is logged in!";
             sessionStorage.setItem("logindata", JSON.stringify(data));
-            window.location.href = "./home.html";
+            window.location.href = "./index.html";
         } catch (err) {
             console.log(err);
         }
