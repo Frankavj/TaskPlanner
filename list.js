@@ -5,10 +5,33 @@ const dbURI = "postgres://kqtgokmgwwiwlv:6eadab2bf3f619a6cbffdf551abd6d0469b1134
 const connString = process.env.DATABASE_URL || dbURI;
 const pool = new pg.Pool({connectionString: connString });
 const crypto = require('crypto');
-const secret = "frenchfriestastegood!"; // for tokens = should be store as an environment variable;
+const secret = "stroopwafelstastegood!"; // for tokens = should be store as an environment variable;
 const jwt = require('jsonwebtoken');
 
 const router = express.Router();
+
+let logindata;
+
+// middleware ------------------------------------
+router.use('/', function (req, res, next) {
+    let token = req.headers['authorisation'];
+
+    if (req.method.localeCompare("POST") == 0) {
+        next();
+        return;
+    }
+
+    if (token) {
+        try {
+            logindata = jwt.verify(token, secret);
+            next();
+        } catch (err) {
+            res.status(403).json({ msg: "Not a valid token" });
+        }
+    } else {
+        res.status(403).json({ msg: "No token" });
+    }
+});
 
 // endpoint - lists POST ---------------------------------
 router.post("/", async function(req, res, next) {
@@ -21,13 +44,29 @@ router.post("/", async function(req, res, next) {
         let result = await pool.query(sql, values);
 
         if(result.rows.length > 0) {
-            res.status(200).json({msg: `User created: ${updata.name}`})
+            res.status(200).json({msg: `List created: ${updata.name}`})
         } else {
-            throw "User creation failed.";
+            throw "List creation failed.";
         }
     } catch (err) {
         res.status(500).json({error: err});
     }
+});
+
+// endpoint - list GET ------------------------------------
+router.get('/', async function (req, res, next) {
+
+    // uncomment once we have authentication
+let sql = "SELECT * FROM users WHERE id=$1";
+let values = [logindata.userid];
+
+try {
+    let result = await pool.query(sql, values);
+    res.status(200).json(result.rows[0]); //send response    
+} catch (err) {
+    res.status(500).json(err); //send response    
+}
+
 });
 
 // export module ------------------------------------------
