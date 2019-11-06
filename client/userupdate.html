@@ -62,9 +62,13 @@ btnCreate.addEventListener("click", async function() {
     }
 
     try {
+
         var resp = await fetch(url, cfg);
         var data = await resp.json();
-        if(resp.status > 202) {
+
+        if(resp.status == 403) {
+            window.location.href = "./userlogin.html";
+        } else if(resp.status > 202) {
             throw(data);
         }
         txtResult.innerHTML = "update successful";
