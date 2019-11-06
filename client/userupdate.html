@@ -5,29 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Createlist</title>
-    <link rel="stylesheet" href="../css/userupdate.css">
+    <link rel="stylesheet" href="./css/userupdate.css">
 </head>
 
 <body>
 
-<form action="index.html" class="login-form">
-    <h1>Update user</h1>
+    <form id="updateForm" class="login-form">
+        <h1>Update user</h1>
 
         <div class="txtb">
-   
-    <input type="text" id="inpUsername" placeholder="Username">
-    
-    <input type="text" id="inpEmail" placeholder="Email">
-    
-    <input type="password" id="inpNewPass" placeholder="New Password">
-    
-    <input type="password" id="inpNewPass2" placeholder="New Password">
-    
-    <input type="password" id="inpOldPass" placeholder="Old Password*">
-    </div>
-    
->>>>>>> 6f296f32c923232a45bc753449623f282e08236c
-    <button id="btnCreate">Change</button>
+
+            <input type="text" id="inpUsername" placeholder="Username">
+
+            <input type="text" id="inpEmail" placeholder="Email">
+
+            <input type="password" id="inpNewPass" placeholder="New Password">
+
+            <input type="password" id="inpNewPass2" placeholder="New Password">
+
+            <input type="password" id="inpOldPass" placeholder="Old Password*">
+        </div>
+
+        <button id="btnCreate" type="submit">Change</button>
+    </form>
 
 </body>
 
@@ -39,18 +39,20 @@
     let newPass = document.getElementById("inpNewPass");
     let newPassAgain = document.getElementById("inpNewPass2");
 
-    let btnCreate = document.getElementById("btnCreate");
-    let txtResult = document.getElementById("txtResult");
+    let updateForm = document.getElementById("updateForm");
 
     let logindata = JSON.parse(sessionStorage.getItem("logindata"));
     if (!logindata) {
         window.location.href = "./userlogin.html";
     }
 
-    btnCreate.addEventListener("click", async function () {
+    // --------------------------------------- 
+    updateForm.addEventListener("submit", async function (evt) {
+        evt.preventDefault();
+        console.log("submit");
 
         if (newPass.value.localeCompare(newPassAgain.value) != 0) {
-            newPassAgain.style = "border-color: red";
+            newPassAgain.style = "border: solid 1px red";
             return;
         }
 
@@ -85,7 +87,7 @@
             } else if (resp.status > 202) {
                 throw (data);
             }
-            txtResult.innerHTML = "update successful";
+            window.location.href = "./user.html";
 
         } catch (err) {
             console.log(err);
