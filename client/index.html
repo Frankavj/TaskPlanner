@@ -23,8 +23,10 @@
     let logout = document.getElementById('logout');
     let container = document.getElementById('container');
 
+    let url = "http://localhost:3000/lists";
+
     createList.addEventListener('click', function () {
-        showLists();
+        // create list
     });
 
     showUser.addEventListener('click', function () {
@@ -36,10 +38,49 @@
         window.location.href = "./userlogin.html";
     });
 
-    function showLists() {
-        ///TODO
+    async function showLists() {
+        try {
+            let logindata = JSON.parse(sessionStorage.getItem("logindata"));
+            let token = logindata.token;
+
+            let cfg = {
+                method: "GET",
+                headers: { "authorisation": token }
+            };
+
+            var resp = await fetch(url, cfg);
+            var data = await resp.json();
+
+            if (resp.status == 403) {
+                // If user hasn't logged in, go to the login page
+                window.location.href = "./userlogin.html";
+                return;
+            } else if (resp.status > 202) {
+                throw (data);
+            }
+
+            container.innerHTML = ""; // delete previous content
+
+            for (let value of data) {
+
+                let div = document.createElement('div');
+                let html = `<h3>${value.name}</h3>
+                            <hr>`;
+                div.innerHTML = html;
+
+                div.addEventListener('click', function (evt) {
+                    console.log(`open list ${value.name}`);
+                });
+
+                container.appendChild(div);
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
 
+    showLists();
 
 </script>
 
