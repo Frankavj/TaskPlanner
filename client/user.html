@@ -8,16 +8,22 @@
 </head>
 
 <body>
-
+    
+    <button id="btnBack">Back</button>
     <div id="container"></div>
-
+    
 </body>
 
 <script>
 
     let container = document.getElementById("container");
+    let btnBack = document.getElementById('btnBack');
 
     let url = "http://localhost:3000/users";
+
+    btnBack.addEventListener('click', function() {
+        window.location.href = "./index.html";
+    });
 
     // ---------------------------------------
     async function showUser() {

@@ -9,38 +9,108 @@
 
 <body>
 
-    <button id="createList">New List</button>
-    <button id="showUser">My Profile</button>
+    <!-- In sidebar -->
+    <button id="myProfile"></button>
+    <h2 id="allLists">Public Lists</h2>
+    <div id="allListsContainer"></div>
+
+    <h2>My Lists</h2>
+
+    <h4 id="private">Private</h4>
+    <div id="privateLists"></div>
+
+    <h4 id="public">Public</h4>
+    <div id="publicLists"></div>
+
+    <!-- To be used when we implement individual lists -->
+    <h4 id="individual">Shared with me</h4>
+    <div id="individualLists"></div>
+
     <button id="logout">Log Out</button>
-    <div id="container"></div>
+
+    <!-- Not in sidebar -->
+    <h2 id="listTitle">Welcome Back!</h2>
+
+    <h3 id="columnL">Private Lists</h3>
+    <div id="containerL"></div>
+
+    <h3 id="columnR">Public Lists</h3>
+    <div id="containerR"></div>
+
+    <button id="createList">Create new list</button>
 
 </body>
 
 <script>
 
-    let createList = document.getElementById('createList');
-    let showUser = document.getElementById('showUser');
-    let logout = document.getElementById('logout');
-    let container = document.getElementById('container');
+    let btnMyProfile = document.getElementById('myProfile');
+    let allLists = document.getElementById('allLists');
+    let allListsContainer = document.getElementById('allListsContainer');
 
-    let url = "http://localhost:3000/lists";
+    let privateHeader = document.getElementById('private');
+    let privateContainer = document.getElementById('privateLists');
+    let publicHeader = document.getElementById('public');
+    let publicContainer = document.getElementById('publicLists');
+    let individualHeader = document.getElementById('individual');
+    let individualContainer = document.getElementById('individualLists');
+
+    let btnLogout = document.getElementById('logout');
+
+    let title = document.getElementById('listTitle');
+    let leftHeader = document.getElementById('columnL');
+    let leftContainer = document.getElementById('containerL');
+    let rightHeader = document.getElementById('columnR');
+    let rightContainer = document.getElementById('containerR');
+    let createList = document.getElementById('createList');
+
+    let logindata = JSON.parse(sessionStorage.getItem("logindata"));
+    if (!logindata) {
+        window.location.href = "./userlogin.html";
+    }
+
+    myProfile.innerHTML = logindata.username;
 
     createList.addEventListener('click', function () {
         // create list
     });
 
-    showUser.addEventListener('click', function () {
+    btnMyProfile.addEventListener('click', function () {
         window.location.href = "./user.html";
     });
 
-    logout.addEventListener('click', function () {
+    allLists.addEventListener('click', function () {
+        toggleLists(allListsContainer, "allpublic");
+    });
+
+    privateHeader.addEventListener('click', function () {
+        toggleLists(privateContainer, "private");
+    });
+
+    publicHeader.addEventListener('click', function () {
+        toggleLists(publicContainer, "public");
+    });
+
+    individualHeader.addEventListener('click', function () {
+        toggleLists(individualContainer, "individual");
+    });
+
+    btnLogout.addEventListener('click', function () {
         sessionStorage.removeItem('logindata');
         window.location.href = "./userlogin.html";
     });
 
-    async function showLists() {
+    function toggleLists(container, shared) {
+        if (container.innerHTML == "") {
+            showLists(container, shared);
+        } else {
+            container.innerHTML = "";
+        }
+    }
+
+    async function showLists(container, shared) {
         try {
-            let logindata = JSON.parse(sessionStorage.getItem("logindata"));
+            let url = `http://localhost:3000/lists/${shared}`;
+
             let token = logindata.token;
 
             let cfg = {
@@ -64,8 +134,8 @@
             for (let value of data) {
 
                 let div = document.createElement('div');
-                let html = `<h3>${value.name}</h3>
-                            <hr>`;
+                let html;
+                html = `<p>${value.name}</p>`;
                 div.innerHTML = html;
 
                 div.addEventListener('click', function (evt) {
@@ -74,13 +144,14 @@
 
                 container.appendChild(div);
             }
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
+            console.log(shared);
         }
     }
 
-    showLists();
+    showLists(leftContainer, "private");
+    showLists(rightContainer, "public");
 
 </script>
 

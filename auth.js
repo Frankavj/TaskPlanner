@@ -30,7 +30,7 @@ router.post('/', async function (req, res) {
             if (hashedInput == result.rows[0].pwdhash) {
                 let payload = { userid: result.rows[0].id };
                 let tok = jwt.sign(payload, secret, { expiresIn: "12h" }); // create token
-                res.status(200).json({ email: result.rows[0].email, userid: result.rows[0].id, token: tok });
+                res.status(200).json({ username: result.rows[0].username, email: result.rows[0].email, userid: result.rows[0].id, token: tok });
             } else {
                 res.status(400).json({ msg: "Wrong password" });
             }
