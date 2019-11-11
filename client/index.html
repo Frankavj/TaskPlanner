@@ -14,7 +14,7 @@
     <!-- In sidebar -->
     
 <div class="list">
-    <button id="myProfile"></button>
+    <img src="boy_2.png" id="myProfile">
     <h2 id="allLists">Public Lists</h2>
     <div id="allListsContainer"></div>
     
@@ -30,7 +30,7 @@
     <h4 id="individual">Shared with me</h4>
     <div id="individualLists"></div>
 
-    <button id="createListSidebar">+</button>
+    <img src="add.png" id="createListSidebar">
 
     <button id="logout">Log Out</button>
     
@@ -45,10 +45,8 @@
     <h2 id="listTitle">Welcome Back!</h2>
     <input id="changeListName" type="text" style="display: none;">
 
-    
-    <div id="containerL">
-        <h3 id="columnL">Private Lists</h3>
-    </div>
+    <h3 id="columnL">Private Lists</h3>
+    <div id="containerL"></div>
 
     <h3 id="columnR">Public Lists</h3>
     <div id="containerR"></div>
@@ -88,11 +86,9 @@
 
     let logindata = JSON.parse(sessionStorage.getItem("logindata"));
     if (!logindata) {
-        //window.location.href = "./userlogin.html";
+        window.location.href = "./userlogin.html";
     }
     let token = logindata.token;
-
-    myProfile.innerHTML = logindata.username;
 
     createListSidebar.addEventListener('click', function () {
         window.location.href = "./listcreate.html";

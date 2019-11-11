@@ -70,10 +70,10 @@
         
         left: 0;
         bottom: 0; 
-        height: 0px;
-        width: 0px;
+        width: 50px;
         margin-top: 0px;
         float: top ;
+        cursor: pointer;
     }
 
     #logout{
