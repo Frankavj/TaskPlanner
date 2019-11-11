@@ -59,18 +59,39 @@
                             <p>${user.email}</p>`;
             div.innerHTML = html;
 
-            // Update button
-            let btnUpdate = document.createElement('button');
-            btnUpdate.innerHTML = "Update";
-            btnUpdate.addEventListener('click', function (evt) {
+            // Change email button
+            let btnEmail = document.createElement('button');
+            btnEmail.innerHTML = "Change email";
+            btnEmail.addEventListener('click', function (evt) {
                 window.location.href = "./userupdate.html";
+                localStorage.setItem('update', "email");
             });
 
-            div.appendChild(btnUpdate);
+            div.appendChild(btnEmail);
+
+            // Change username button
+            let btnUsername = document.createElement('button');
+            btnUsername.innerHTML = "Change username";
+            btnUsername.addEventListener('click', function (evt) {
+                window.location.href = "./userupdate.html";
+                localStorage.setItem('update', "username");
+            });
+
+            div.appendChild(btnUsername);
+
+            // Change password button
+            let btnPwd = document.createElement('button');
+            btnPwd.innerHTML = "Reset password";
+            btnPwd.addEventListener('click', function (evt) {
+                window.location.href = "./userupdate.html";
+                localStorage.setItem('update', "password");
+            });
+
+            div.appendChild(btnPwd);
 
             // Delete button
             let btnDelete = document.createElement('button');
-            btnDelete.innerHTML = "Delete";
+            btnDelete.innerHTML = "Delete account";
             btnDelete.addEventListener('click', function (evt) {
                 deleteUser(user.id);
             });
