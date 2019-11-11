@@ -44,7 +44,6 @@ router.post("/", async function (req, res, next) {
             throw "List creation failed.";
         }
     } catch (err) {
-        console.log(err);
         res.status(500).json({ error: err });
     }
 });
@@ -105,6 +104,49 @@ router.get('/allpublic', async function (req, res, next) {
         res.status(200).json(result.rows); //send response    
     } catch (err) {
         res.status(500).json(err); //send response    
+    }
+
+});
+
+// endpoint - lists PUT --------------------------------- 
+router.put('/:id', async function (req, res, next) {
+
+    let updata = req.body;
+
+    let sql = 'SELECT * FROM lists WHERE id = $1 AND owner = $2';
+    let values = [req.params.id, logindata.userid];
+
+    try {
+        let result = await pool.query(sql, values);
+
+        if (result.rows.length == 0) {
+            res.status(400).json({ msg: "List doesn't exist" }); //send response 
+        } else {
+            sql = "UPDATE lists SET";
+
+            // change list name
+            if (!updata.update.localeCompare("name")) {
+                sql = sql + ` name = $3`;
+                values.push(updata.value);
+            }
+            // change public / private
+            // if (!updata.update.localeCompare("email")) {
+            //     sql = sql + ` email = $2`;
+            //     values.push(updata.value);
+            // }
+            // change inidivual access - later
+
+            sql = sql + ` WHERE id = $1 AND owner = $2`;
+
+            try {
+                await pool.query(sql, values);
+                res.status(200).json({ msg: "Update OK" });
+            } catch (err) {
+                res.status(500).json(err);
+            }
+        }
+    } catch (err) {
+        res.status(500).json(err); //send error response 
     }
 
 });

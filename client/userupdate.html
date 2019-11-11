@@ -11,18 +11,9 @@
 <body>
 
     <form id="updateForm" class="login-form">
-        <h1>Update user</h1>
+        <h1 id="title"></h1>
 
-        <div class="txtb">
-
-            <input type="text" id="inpUsername" placeholder="Username">
-
-            <input type="text" id="inpEmail" placeholder="Email">
-
-            <input type="password" id="inpNewPass" placeholder="New Password">
-
-            <input type="password" id="inpNewPass2" placeholder="New Password">
-
+        <div id="container" class="txtb">
             <input type="password" id="inpOldPass" placeholder="Old Password*">
         </div>
 
@@ -33,25 +24,60 @@
 
 <script>
 
-    let uname = document.getElementById("inpUsername");
-    let email = document.getElementById("inpEmail");
+    let title = document.getElementById('title')
+    let container = document.getElementById("container");
     let oldPass = document.getElementById("inpOldPass");
-    let newPass = document.getElementById("inpNewPass");
-    let newPassAgain = document.getElementById("inpNewPass2");
-
     let updateForm = document.getElementById("updateForm");
+
+    let uname;
+    let email;
+    let newPass;
+    let newPassAgain;
 
     let logindata = JSON.parse(sessionStorage.getItem("logindata"));
     if (!logindata) {
         window.location.href = "./userlogin.html";
     }
 
+    let update = localStorage.getItem('update');
+
+    if(!update.localeCompare('email')) {
+        title.innerHTML = "Update Email";
+
+        email = document.createElement('input');
+        email.setAttribute('type', 'text');
+        email.setAttribute('placeholder', 'Email');
+        container.insertBefore(email, oldPass);
+    }
+
+    if(!update.localeCompare('username')) {
+        title.innerHTML = "Update Username";
+
+        uname = document.createElement('input');
+        uname.setAttribute('type', 'text');
+        uname.setAttribute('placeholder', 'Username');
+        container.insertBefore(uname, oldPass);
+    }
+
+    if(!update.localeCompare('password')) {
+        title.innerHTML = "Reset Password";
+
+        newPass = document.createElement('input');
+        newPass.setAttribute('type', 'password');
+        newPass.setAttribute('placeholder', 'New Password');
+        container.insertBefore(newPass, oldPass);
+
+        newPassAgain = document.createElement('input');
+        newPassAgain.setAttribute('type', 'password');
+        newPassAgain.setAttribute('placeholder', 'Retype New Password');
+        container.insertBefore(newPassAgain, oldPass);
+    }
+
     // --------------------------------------- 
     updateForm.addEventListener("submit", async function (evt) {
         evt.preventDefault();
-        console.log("submit");
 
-        if (newPass.value.localeCompare(newPassAgain.value) != 0) {
+        if (!update.localeCompare("password") && newPass.value.localeCompare(newPassAgain.value) != 0) {
             newPassAgain.style = "border: solid 1px red";
             return;
         }
@@ -61,17 +87,23 @@
         let url = "http://localhost:3000/users";
 
         let updata = {
-            username: uname.value,
-            email: email.value,
-            newpass: newPass.value,
+            update: update,
             oldpass: oldPass.value
+        }
+
+        if(email) {
+            updata["value"] = email.value;
+        } else if(uname) {
+            updata["value"] = uname.value;
+        } else if(newPass) {
+            updata["value"] = newPass.value;
         }
 
         let cfg = {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
-                , "authorisation": token
+                "Content-Type": "application/json", 
+                "authorisation": token
             },
             body: JSON.stringify(updata)
         }
@@ -91,9 +123,6 @@
 
         } catch (err) {
             console.log(err);
-            if (err.msg) {
-                txtResult.innerHTML = err.msg;
-            }
         }
 
     });

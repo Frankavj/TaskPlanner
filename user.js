@@ -89,41 +89,26 @@ router.put('/', async function (req, res, next) {
             let hashedInput = crypto.createHash('sha256').update(updata.oldpass).digest('hex');
 
             if (hashedInput == result.rows[0].pwdhash) {
-                // user didn't fill in any of the fields
-                if (!updata.username && !updata.email && !updata.newpass) {
+                // don't do anything if value is null
+                if (!updata.value) {
                     res.status(400).json({ msg: "No new user data" });
                 } else {
                     sql = "UPDATE users SET";
-                    let needComma = false;
-                    let index = 2;
 
                     // change username
-                    if (updata.username) {
-                        sql = sql + ` username = $${index}`;
-                        values.push(updata.username);
-                        needComma = true;
-                        index++;
+                    if (!updata.update.localeCompare("username")) {
+                        sql = sql + ` username = $2`;
+                        values.push(updata.value);
                     }
                     // change email
-                    if (updata.email) {
-                        if(needComma) {
-                            sql = sql + ",";
-                        } else {
-                            needComma = true;
-                        }
-                        sql = sql + ` email = $${index}`;
-                        values.push(updata.email);
-                        index++;
+                    if (!updata.update.localeCompare("email")) {
+                        sql = sql + ` email = $2`;
+                        values.push(updata.value);
                     }
                     // change password
-                    if (updata.newpass) {
-                        if(needComma) {
-                            sql = sql + ",";
-                        } else {
-                            needComma = true;
-                        }
-                        let hash = crypto.createHash('sha256').update(updata.newpass).digest('hex');
-                        sql = sql + ` pwdhash = $${index}`;
+                    if (!updata.update.localeCompare("password")) {
+                        let hash = crypto.createHash('sha256').update(updata.value).digest('hex');
+                        sql = sql + ` pwdhash = $2`;
                         values.push(hash);
                     }
 
@@ -133,7 +118,7 @@ router.put('/', async function (req, res, next) {
                         await pool.query(sql, values);
                         res.status(200).json({msg: "Update OK"});
                     } catch (err) {
-                        res.status(500).json({ error: err });
+                        res.status(500).json(err);
                     }
 
                 }
@@ -142,7 +127,7 @@ router.put('/', async function (req, res, next) {
             }
         }
     } catch (err) {
-        res.status(500).json({ error: err }); //send error response 
+        res.status(500).json(err); //send error response 
     }
 
 });
