@@ -229,12 +229,16 @@
             }
 
             // Everything OK: reload list
-            title.style = "display:block";
-            changeListName.style = "display:none";
-            privateContainer.innerHTML = "";
-            publicContainer.innerHTML = "";
-            individualContainer.innerHTML = "";
-            openList(listID, value);
+            if (!feature.localeCompare("name")) {
+                title.style = "display:block";
+                changeListName.style = "display:none";
+                privateContainer.innerHTML = "";
+                publicContainer.innerHTML = "";
+                individualContainer.innerHTML = "";
+                openList(listID, value);
+            } else {
+                openList(listID, listName);
+            }
 
         } catch (err) {
             console.log(err);
