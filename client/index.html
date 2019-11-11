@@ -12,51 +12,54 @@
  
 
     <!-- In sidebar -->
-    
-<div class="list">
-    <button id="myProfile"></button>
-    <h2 id="allLists">Public Lists</h2>
-    <div id="allListsContainer"></div>
-    
-    <h2>My Lists</h2>
 
-    <h4 id="private">Private</h4>
-    <div id="privateLists"></div>
+    <div class="list">
+        <button id="myProfile"><img src="boy_2.png" height="40px" width="40px"/></button> <br> <br> <br>
+        <h2 id="allLists">Public Lists</h2>
+        <div id="allListsContainer"></div>
+        
+        <h2 id="myList"> My Lists</h2>
 
-    <h4 id="public">Public</h4> 
-    <div id="publicLists"></div>
 
-    <!-- To be used when we implement individual lists -->
-    <h4 id="individual">Shared with me</h4>
-    <div id="individualLists"></div>
+        <h4 id="private">Private</h4>
+        <div id="privateLists"></div>
 
-    <button id="createListSidebar">+</button>
+        <h4 id="public">Public</h4> 
+        <div id="publicLists"></div>
 
-    <button id="logout">Log Out</button>
-    
-    <!--list class ends-->
-</div>
+        <!-- To be used when we implement individual lists -->
+        <h4 id="individual">Shared with me</h4>
+        <div id="individualLists"></div>
+
+        <button id="createListSidebar"><img src="add.png" height="20px" width="20px"/></button>
+
+        <button id="logout">Log Out</button>
+        
+        <!--list class ends-->
+    </div>
+
    
 
     <!-- Not in sidebar -->
 
 <div class="home">
 
-    <h2 id="listTitle">Welcome Back!</h2>
+    <h2 id="listTitle">Oh hello</h2>
     <input id="changeListName" type="text" style="display: none;">
 
     
     <div id="containerL">
         <h3 id="columnL">Private Lists</h3>
+        <button id="createList"><img src="add_home.png" height="20px" width="20px"/></button>
     </div>
 
-    <h3 id="columnR">Public Lists</h3>
-    <div id="containerR"></div>
-
-    <button id="createList">Create new list</button>
-    
-    <!--list class ends-->
+    <div id="containerR">
+        <h3 id="columnR">Public Lists</h3>
+        <button id="createList"><img src="add_home.png" height="20px" width="20px"/></button>
+    </div>
+     
 </div>
+<!--list class ends-->
 
 
 </body>
@@ -88,7 +91,7 @@
 
     let logindata = JSON.parse(sessionStorage.getItem("logindata"));
     if (!logindata) {
-        //window.location.href = "./userlogin.html";
+        window.location.href = "./userlogin.html";
     }
     let token = logindata.token;
 
@@ -151,7 +154,7 @@
 
             if (resp.status == 403) {
                 //If user hasn't logged in, go to the login page
-                //window.location.href = "./userlogin.html";
+                window.location.href = "./userlogin.html";
                 return;
             } else if (resp.status > 202) {
                 throw (data);
