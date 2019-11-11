@@ -39,7 +39,7 @@ router.post("/", async function (req, res, next) {
         let result = await pool.query(sql, values);
 
         if (result.rows.length > 0) {
-            res.status(200).json({ msg: `List created: ${updata.name}` })
+            res.status(200).json({ msg: `List created: ${updata.listname}` })
         } else {
             throw "List creation failed.";
         }
