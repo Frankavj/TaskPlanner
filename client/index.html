@@ -5,21 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My document</title>
+    <link rel="stylesheet" href="../css/index.css">
 </head>
 
 <body>
+ 
 
     <!-- In sidebar -->
+    
+<div class="list">
     <button id="myProfile"></button>
     <h2 id="allLists">Public Lists</h2>
     <div id="allListsContainer"></div>
-
+    
     <h2>My Lists</h2>
 
     <h4 id="private">Private</h4>
     <div id="privateLists"></div>
 
-    <h4 id="public">Public</h4>
+    <h4 id="public">Public</h4> 
     <div id="publicLists"></div>
 
     <!-- To be used when we implement individual lists -->
@@ -29,18 +33,31 @@
     <button id="createListSidebar">+</button>
 
     <button id="logout">Log Out</button>
+    
+    <!--list class ends-->
+</div>
+   
 
     <!-- Not in sidebar -->
+
+<div class="home">
+
     <h2 id="listTitle">Welcome Back!</h2>
     <input id="changeListName" type="text" style="display: none;">
 
-    <h3 id="columnL">Private Lists</h3>
-    <div id="containerL"></div>
+    
+    <div id="containerL">
+        <h3 id="columnL">Private Lists</h3>
+    </div>
 
     <h3 id="columnR">Public Lists</h3>
     <div id="containerR"></div>
 
     <button id="createList">Create new list</button>
+    
+    <!--list class ends-->
+</div>
+
 
 </body>
 
@@ -71,7 +88,7 @@
 
     let logindata = JSON.parse(sessionStorage.getItem("logindata"));
     if (!logindata) {
-        window.location.href = "./userlogin.html";
+        //window.location.href = "./userlogin.html";
     }
     let token = logindata.token;
 
@@ -133,8 +150,8 @@
             var data = await resp.json();
 
             if (resp.status == 403) {
-                // If user hasn't logged in, go to the login page
-                window.location.href = "./userlogin.html";
+                //If user hasn't logged in, go to the login page
+                //window.location.href = "./userlogin.html";
                 return;
             } else if (resp.status > 202) {
                 throw (data);
