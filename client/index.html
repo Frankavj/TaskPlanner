@@ -5,31 +5,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My document</title>
+    <link rel="stylesheet" href="../css/index.css">
 </head>
 
 <body>
+ 
 
     <!-- In sidebar -->
-    <button id="myProfile"></button>
+    
+<div class="list">
+    <img src="boy_2.png" id="myProfile">
     <h2 id="allLists">Public Lists</h2>
     <div id="allListsContainer"></div>
-
+    
     <h2>My Lists</h2>
 
     <h4 id="private">Private</h4>
     <div id="privateLists"></div>
 
-    <h4 id="public">Public</h4>
+    <h4 id="public">Public</h4> 
     <div id="publicLists"></div>
 
     <!-- To be used when we implement individual lists -->
     <h4 id="individual">Shared with me</h4>
     <div id="individualLists"></div>
 
+    <img src="add.png" id="createListSidebar">
+
     <button id="logout">Log Out</button>
+    
+    <!--list class ends-->
+</div>
+   
 
     <!-- Not in sidebar -->
+
+<div class="home">
+
     <h2 id="listTitle">Welcome Back!</h2>
+    <input id="changeListName" type="text" style="display: none;">
 
     <h3 id="columnL">Private Lists</h3>
     <div id="containerL"></div>
@@ -38,6 +52,10 @@
     <div id="containerR"></div>
 
     <button id="createList">Create new list</button>
+    
+    <!--list class ends-->
+</div>
+
 
 </body>
 
@@ -54,9 +72,12 @@
     let individualHeader = document.getElementById('individual');
     let individualContainer = document.getElementById('individualLists');
 
+    let createListSidebar = document.getElementById('createListSidebar');
     let btnLogout = document.getElementById('logout');
 
     let title = document.getElementById('listTitle');
+    let changeListName = document.getElementById('changeListName');
+
     let leftHeader = document.getElementById('columnL');
     let leftContainer = document.getElementById('containerL');
     let rightHeader = document.getElementById('columnR');
@@ -67,8 +88,11 @@
     if (!logindata) {
         window.location.href = "./userlogin.html";
     }
+    let token = logindata.token;
 
-    myProfile.innerHTML = logindata.username;
+    createListSidebar.addEventListener('click', function () {
+        window.location.href = "./listcreate.html";
+    });
 
     createList.addEventListener('click', function () {
         window.location.href = "./listcreate.html";
@@ -99,6 +123,7 @@
         window.location.href = "./userlogin.html";
     });
 
+    // show list in sidebar ---------------------------------------
     function toggleLists(container, shared) {
         if (container.innerHTML == "") {
             showLists(container, shared);
@@ -107,11 +132,10 @@
         }
     }
 
+    // show lists in any container --------------------------------
     async function showLists(container, shared) {
         try {
             let url = `http://localhost:3000/lists/${shared}`;
-
-            let token = logindata.token;
 
             let cfg = {
                 method: "GET",
@@ -122,8 +146,8 @@
             var data = await resp.json();
 
             if (resp.status == 403) {
-                // If user hasn't logged in, go to the login page
-                window.location.href = "./userlogin.html";
+                //If user hasn't logged in, go to the login page
+                //window.location.href = "./userlogin.html";
                 return;
             } else if (resp.status > 202) {
                 throw (data);
@@ -139,19 +163,100 @@
                 div.innerHTML = html;
 
                 div.addEventListener('click', function (evt) {
-                    console.log(`open list ${value.name}`);
+                    openList(value.id, value.name);
                 });
 
                 container.appendChild(div);
             }
         } catch (err) {
             console.log(err);
-            console.log(shared);
         }
     }
 
     showLists(leftContainer, "private");
     showLists(rightContainer, "public");
+
+    // open list by id (inclused showing tasks) -------------------
+    async function openList(id, name) {
+        title.innerHTML = name;
+
+        localStorage.setItem("listinfo", JSON.stringify({ id: id, name: name }))
+
+        title.addEventListener('dblclick', function () {
+            title.style = "display: none";
+            changeListName.value = name;
+            changeListName.style = "display:block";
+        });
+
+        leftHeader.innerHTML = "Tasks";
+        rightHeader.innerHTML = "Completed tasks";
+
+        leftContainer.innerHTML = "";
+        rightContainer.innerHTML = "";
+        /// TODO: show tasks in the two containers (left and right)
+        /// TODO: add button for making new task, delete the one for making new list
+
+
+    }
+
+    changeListName.addEventListener('keydown', function () {
+        if (event.keyCode == 13) {
+            let currentlist = JSON.parse(localStorage.getItem("listinfo"));
+            updateList("name", changeListName.value, currentlist.id, currentlist.name);
+        }
+    });
+
+    // update list ------------------------------------------------
+    async function updateList(feature, value, listID, listName) {
+        if (!value) {
+            return;
+        }
+
+        let url = `http://localhost:3000/lists/${listID}`;
+
+        let updata = {
+            update: feature,
+            value: value,
+            listID: listID
+        }
+
+        let cfg = {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "authorisation": token
+            },
+            body: JSON.stringify(updata)
+        }
+
+        try {
+
+            var resp = await fetch(url, cfg);
+            var data = await resp.json();
+
+            if (resp.status == 403) {
+                window.location.href = "./userlogin.html";
+                return;
+            } else if (resp.status > 202) {
+                throw (data);
+            }
+
+            // Everything OK: reload list
+            if (!feature.localeCompare("name")) {
+                title.style = "display:block";
+                changeListName.style = "display:none";
+                privateContainer.innerHTML = "";
+                publicContainer.innerHTML = "";
+                individualContainer.innerHTML = "";
+                openList(listID, value);
+            } else {
+                openList(listID, listName);
+            }
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
 </script>
 

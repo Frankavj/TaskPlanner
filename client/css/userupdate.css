@@ -65,12 +65,7 @@
     transition: .5s;
   }
   
-  .focus + span::before{
-    top: -5px;
-  }
-  .focus + span::after{
-    width: 100%;
-  }
+  
   
   #btnCreate{
     display: block;

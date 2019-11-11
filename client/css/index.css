@@ -1,0 +1,117 @@
+*{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    font-family: Arial Rounded MT Bold;
+    box-sizing: border-box;
+    }
+  
+   body{
+    min-height: 100vh;
+    background-image: url("../img/bakgrunn_forslag.jpg");
+    }
+  
+    /*sidebar class*/
+
+  .list{
+    width: 300px;
+    background: #f1f1f1;
+    height: 900px;
+    padding: 50px 50px;
+    border-radius: 10px;
+    float: left;
+    margin-top: 0px;
+    
+
+    }
+  
+  .list input{
+    font-size: 15px;
+    color: #333;
+    border: none;
+    width: 100%;
+    outline: none;
+    background: none;
+    padding: 0 5px;
+    height: 20px;
+    
+    
+    
+    }
+
+    /*homepage*/
+
+  .home{
+    width: 700px;
+    background: #f1f1f1;
+    height: 580px;
+    padding: 80px 40px;
+    border-radius: 10px;
+    float: right;
+    margin-right: 200px;
+    margin-top: 100px;
+
+    }
+  
+  .home input{
+    font-size: 15px;
+    color: #333;
+    border: none;
+    width: 100%;
+    outline: none;
+    background: none;
+    padding: 0 5px;
+    height: 40px;
+  
+    }
+  
+   
+    #myProfile{
+        
+        left: 0;
+        bottom: 0; 
+        width: 50px;
+        margin-top: 0px;
+        float: top ;
+        cursor: pointer;
+    }
+
+    #logout{
+        display: block;
+        width: 100%;
+        height: 30px;
+        border: none;
+        margin-top: 500px;
+        background: linear-gradient(120deg,#f4e0cd,#bbd2c5,#9c9fa1);
+        background-size: 200%;
+        color: #fff;
+        outline: none;
+        cursor: pointer;
+        transition: .5s;
+      }
+      
+      #logout:hover{
+        background-position: right;
+      }
+
+
+      #containerL {
+        border-style: solid ;
+        border-width: 0px;
+        background-color: #BEC5BE;
+        width: 250px;
+
+
+          
+        
+
+      }
+
+
+
+  .bottom-text{
+    margin-top: 60px;
+    text-align: center;
+    font-size: 13px;
+
+    }
