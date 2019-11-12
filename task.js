@@ -31,19 +31,19 @@ router.use('/', function (req, res, next) {
 // endpoint - lists POST ---------------------------------
 router.post("/", async function (req, res, next) {
     let updata = req.body;
-
-    let sql = "INSERT INTO lists (id, name, shared, owner) VALUES(DEFAULT, $1, $2, $3) RETURNING *";
-    let values = [updata.listname, updata.shared, logindata.userid];
+    let sql = "INSERT INTO lists (id, name, completed, owner) VALUES(DEFAULT, $1, $2, $3) RETURNING *";
+    let values = [updata.taskname, updata.completed, logindata.userid];
 
     try {
         let result = await pool.query(sql, values);
 
         if (result.rows.length > 0) {
-            res.status(200).json({ msg: `List created: ${updata.listname}` })
+            res.status(200).json({ msg: `List created: ${updata.name}` })
         } else {
             throw "List creation failed.";
         }
     } catch (err) {
+        console.log(err);
         res.status(500).json({ error: err });
     }
 });
@@ -52,7 +52,7 @@ router.post("/", async function (req, res, next) {
 router.get('/private', async function (req, res, next) {
 
     let sql = "SELECT * FROM lists WHERE owner=$1 AND shared=$2";
-    let values = [logindata.userid, 0];
+    let values = [logindata.userid, 1];
 
     try {
         let result = await pool.query(sql, values);
@@ -67,7 +67,7 @@ router.get('/private', async function (req, res, next) {
 router.get('/public', async function (req, res, next) {
 
     let sql = "SELECT * FROM lists WHERE owner=$1 AND shared=$2";
-    let values = [logindata.userid, 1];
+    let values = [logindata.userid, 0];
 
     try {
         let result = await pool.query(sql, values);
@@ -97,83 +97,13 @@ router.get('/individual', async function (req, res, next) {
 router.get('/allpublic', async function (req, res, next) {
 
     let sql = "SELECT * FROM lists WHERE shared=$1";
-    let values = [1];
+    let values = [0];
 
     try {
         let result = await pool.query(sql, values);
         res.status(200).json(result.rows); //send response    
     } catch (err) {
         res.status(500).json(err); //send response    
-    }
-
-});
-
-// endpoint - lists PUT --------------------------------- 
-router.put('/:id', async function (req, res, next) {
-
-    let updata = req.body;
-
-    let sql = 'SELECT * FROM lists WHERE id = $1 AND owner = $2';
-    let values = [req.params.id, logindata.userid];
-
-    try {
-        let result = await pool.query(sql, values);
-
-        if (result.rows.length == 0) {
-            res.status(400).json({ msg: "List doesn't exist" }); //send response 
-        } else {
-            sql = "UPDATE lists SET";
-
-            // change list name
-            if (!updata.update.localeCompare("name")) {
-                sql = sql + ` name = $3`;
-                values.push(updata.value);
-            }
-            // change public / private
-            if (!updata.update.localeCompare("shared")) {
-                sql = sql + ` shared = $3`;
-                values.push(updata.value);
-            }
-            // change individual access
-            if (!updata.update.localeCompare("individual_access") && value.localeCompare("NULL")) {
-                sql = sql + ` individual_access = $3`;
-                values.push(updata.value);
-            }
-
-            sql = sql + ` WHERE id = $1 AND owner = $2`;
-
-            try {
-                await pool.query(sql, values);
-                res.status(200).json({ msg: "Update OK" });
-            } catch (err) {
-                res.status(500).json(err);
-            }
-        }
-    } catch (err) {
-        res.status(500).json(err); //send error response 
-    }
-
-});
-
-// endpoint - lists DELETE --------------------------------- 
-router.delete('/', async function (req, res, next) {
-
-    let updata = req.body;
-
-    let sql = 'DELETE FROM lists WHERE id = $1 AND owner = $2 RETURNING *'
-    let values = [updata.listid, logindata.userid];
-
-    try {
-        let result = await pool.query(sql, values);
-
-        if (result.rows.length > 0) {
-            res.status(200).json({ msg: "Delete OK" }); //send response 
-        }
-        else {
-            throw "Delete failed"
-        }
-    } catch (err) {
-        res.status(500).json({ error: err }); //send error response 
     }
 
 });

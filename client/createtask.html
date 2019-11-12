@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Createlist</title>
+    <link rel="stylesheet" href="../css/createtask.css">
+</head>
+
+<body>
+
+<input type="text" id="inptaskname" placeholder="taskname">
+<input type="notes" id="inpnotes" placeholder="notes">
+
+    <select id="inpcompleted">
+      <option value="0">not complete</option>
+      <option value="1">complete</option>
+    </select>
+
+<button id="btnCreate">Create list</button>
+<h3 id="txtResult">Result...</h3>
+
+</body>
+
+<script>
+
+    // ---------------------------------------  
+    
+    let taskname = document.getElementById('inptaskname');
+    let completed = document.getElementById('inpcompleted');
+    let notes = document.getElementById('inpnotes');
+    let btnCreate = document.getElementById('btnCreate');
+    let txtResult = document.getElementById('txtResult');
+
+    let logindata = JSON.parse(sessionStorage.getItem("logindata"));
+    if (!logindata) {
+       window.location.href = "./userlogin.html";
+    }
+
+    btnCreate.addEventListener('click', async function(evt) {
+
+        let token = logindata.token;
+
+        let url = "http://localhost:3000/task";
+
+        let updata = {
+            listname: taskname.value,
+            complete: completed.value,
+            notes: notes.value,
+        }
+
+        let cfg = {
+            method: "POST",
+            headers: {
+                "Content-type":"application/json",
+                "authorisation": token
+            },
+            body: JSON.stringify(updata)
+        }
+
+        try {
+            var resp = await fetch(url, cfg);
+            var data = await resp.json();
+            console.log()
+            txtResult.innerHTML = data.msg;
+        } catch (err){
+            console.log(err);
+        }
+    });
+
+
+</script>
+
+</html>
