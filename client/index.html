@@ -45,8 +45,7 @@
 
     <div class="home">
 
-        <h2 id="listTitle">Welcome back!</h2>
-        <input id="changeListName" type="text" style="display: none;">
+        <h2 id="listTitle" contenteditable="true">Welcome back!</h2>
 
         <!--style= "border-width: 1; border: solid; color: grey";-->
 
@@ -87,13 +86,14 @@
     let btnLogout = document.getElementById('logout');
 
     let title = document.getElementById('listTitle');
-    let changeListName = document.getElementById('changeListName');
 
     let leftHeader = document.getElementById('columnL');
     let leftContainer = document.getElementById('containerL');
     let rightHeader = document.getElementById('columnR');
     let rightContainer = document.getElementById('containerR');
     let createList = document.getElementById('createList');
+    let btnCreateTask = document.createElement('button');
+    btnCreateTask.innerHTML = "Add Task";
 
     let btnShare = document.getElementById('btnShare');
     let btnAddPeople = document.getElementById('btnAddPeople');
@@ -232,12 +232,6 @@
         let list = JSON.parse(localStorage.getItem('listinfo'));
         title.innerHTML = list.name;
 
-        title.addEventListener('dblclick', function () {
-            title.style = "display: none";
-            changeListName.value = list.name;
-            changeListName.style = "display:block";
-        });
-
         rightContainer.style = "display:block";
         rightHeader.style = "display:block";
 
@@ -247,12 +241,7 @@
         leftContainer.innerHTML = "";
         rightContainer.innerHTML = "";
 
-        showTasks(rightContainer, 1);
-        await showTasks(leftContainer, 0);
-
-        let btnCreateTask = document.createElement('button');
-        btnCreateTask.innerHTML = "Add Task";
-        leftContainer.appendChild(btnCreateTask);
+        loadTasks();
 
         btnCreateTask.addEventListener('click', function () {
             ///TODO create new task
@@ -274,10 +263,16 @@
         btnListDelete.style = "display:block";
     }
 
-    changeListName.addEventListener('keydown', function () {
+    async function loadTasks() {
+        showTasks(rightContainer, 1);
+        await showTasks(leftContainer, 0);
+        leftContainer.appendChild(btnCreateTask);
+    }
+
+    title.addEventListener('keydown', function (evt) {
         if (event.keyCode == 13) {
-            let currentlist = JSON.parse(localStorage.getItem("listinfo"));
-            updateList("name", changeListName.value);
+            evt.preventDefault();
+            updateList("name", title.innerHTML);
         }
     });
 
@@ -343,8 +338,6 @@
 
             // Everything OK: reload list
             if (!feature.localeCompare("name")) {
-                title.style = "display:block";
-                changeListName.style = "display:none";
                 privateContainer.innerHTML = "";
                 publicContainer.innerHTML = "";
                 individualContainer.innerHTML = "";
@@ -432,6 +425,13 @@
 
                 let taskName = document.createElement('p');
                 taskName.innerHTML = value.name;
+                taskName.contentEditable = true;
+                taskName.addEventListener('keydown', function(evt) {
+                    if(event.keyCode == 13) {
+                        evt.preventDefault();
+                        updateTask(value.id, "name", taskName.innerHTML);
+                    }
+                });
                 div.appendChild(taskName);
 
                 ///TODO replace by img
@@ -487,8 +487,7 @@
             }
 
             // Everything OK: reload
-            showTasks(rightContainer, 1);
-            showTasks(leftContainer, 0);
+            loadTasks();
 
         } catch (err) {
             console.log(err);
