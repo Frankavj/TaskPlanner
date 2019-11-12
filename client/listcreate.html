@@ -32,9 +32,14 @@
     let btnCreate = document.getElementById('btnCreate');
     let txtResult = document.getElementById('txtResult');
 
-
+    let logindata = JSON.parse(sessionStorage.getItem("logindata"));
+    if (!logindata) {
+        window.location.href = "./userlogin.html";
+    }
 
     btnCreate.addEventListener('click', async function(evt) {
+
+        let token = logindata.token;
 
         let url = "http://localhost:3000/lists";
 
@@ -45,13 +50,17 @@
 
         let cfg = {
             method: "POST",
-            headers: {"Content-type":"application/json"},
+            headers: {
+                "Content-type":"application/json",
+                "authorisation": token
+            },
             body: JSON.stringify(updata)
         }
 
         try {
             var resp = await fetch(url, cfg);
             var data = await resp.json();
+            console.log()
             txtResult.innerHTML = data.msg;
         } catch (err){
             console.log(err);

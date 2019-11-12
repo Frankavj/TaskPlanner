@@ -88,7 +88,6 @@
   }
   
   #myProfile{
-        
     left: 0;
     bottom: 0; 
     height: 40px;
@@ -96,7 +95,6 @@
     margin-top: 0px;
     border-width: 0px;
     cursor: pointer;
-  
     }
 
     #myProfile:hover{

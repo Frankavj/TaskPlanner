@@ -13,12 +13,13 @@
 
     <!-- In sidebar -->
 
-    <div class="list">
-        <button id="myProfile"><img src="boy_2.png" height="40px" width="40px"/></button> <br> <br> <br>
-        <h2 id="allLists">Public Lists</h2>
-        <div id="allListsContainer"></div>
-        
-        <h2 id="myList"> My Lists </h2>
+    
+<div class="list">
+    <img src="boy_2.png" id="myProfile">
+    <h2 id="allLists">Public Lists</h2>
+    <div id="allListsContainer"></div>
+    
+    <h2>My Lists</h2>
 
 
         <h4 id="private">Private</h4>
@@ -31,7 +32,7 @@
         <h4 id="individual">Shared with me</h4>
         <div id="individualLists"></div>
 
-        <button id="createListSidebar"><img src="add.png" height="20px" width="20px"/></button>
+        <img src="add.png" id="createListSidebar">
 
         <button id="logout">Log Out</button>
         
@@ -48,15 +49,15 @@
     <input id="changeListName" type="text" style="display: none;">
 
     <!--style= "border-width: 1; border: solid; color: grey";-->
-   
+
+    <h3 id="columnL">Private Lists</h3>
     <div id="containerL">
-        <h3 id="columnL">Private Lists</h3>
-        <button id="createList"><img src="add_home.png" height="20px" width="20px"/></button>
+        <img id="createList" src="add_home.png"/>
     </div>
 
+    <h3 id="columnR">Public Lists</h3>
     <div id="containerR">
-        <h3 id="columnR">Public Lists</h3>
-        <button id="createList"><img src="add_home.png" height="20px" width="20px"/></button>
+        <img id="createList" src="add_home.png"/>
     </div>
      
 </div>
@@ -92,11 +93,9 @@
 
     let logindata = JSON.parse(sessionStorage.getItem("logindata"));
     if (!logindata) {
-        //window.location.href = "./userlogin.html";
+        window.location.href = "./userlogin.html";
     }
     let token = logindata.token;
-
-    myProfile.innerHTML = logindata.username;
 
     createListSidebar.addEventListener('click', function () {
         window.location.href = "./listcreate.html";
@@ -250,12 +249,16 @@
             }
 
             // Everything OK: reload list
-            title.style = "display:block";
-            changeListName.style = "display:none";
-            privateContainer.innerHTML = "";
-            publicContainer.innerHTML = "";
-            individualContainer.innerHTML = "";
-            openList(listID, value);
+            if (!feature.localeCompare("name")) {
+                title.style = "display:block";
+                changeListName.style = "display:none";
+                privateContainer.innerHTML = "";
+                publicContainer.innerHTML = "";
+                individualContainer.innerHTML = "";
+                openList(listID, value);
+            } else {
+                openList(listID, listName);
+            }
 
         } catch (err) {
             console.log(err);
