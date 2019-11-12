@@ -109,12 +109,12 @@ router.get('/allpublic', async function (req, res, next) {
 });
 
 // endpoint - lists PUT --------------------------------- 
-router.put('/:id', async function (req, res, next) {
+router.put('/', async function (req, res, next) {
 
     let updata = req.body;
 
-    let sql = 'SELECT * FROM lists WHERE id = $1 AND owner = $2';
-    let values = [req.params.id, logindata.userid];
+    let sql = 'SELECT * FROM lists WHERE id = $1';
+    let values = [updata.listid];
 
     try {
         let result = await pool.query(sql, values);
@@ -126,21 +126,21 @@ router.put('/:id', async function (req, res, next) {
 
             // change list name
             if (!updata.update.localeCompare("name")) {
-                sql = sql + ` name = $3`;
+                sql = sql + ` name = $2`;
                 values.push(updata.value);
             }
             // change public / private
             if (!updata.update.localeCompare("shared")) {
-                sql = sql + ` shared = $3`;
+                sql = sql + ` shared = $2`;
                 values.push(updata.value);
             }
             // change individual access
             if (!updata.update.localeCompare("individual_access") && value.localeCompare("NULL")) {
-                sql = sql + ` individual_access = $3`;
+                sql = sql + ` individual_access = $2`;
                 values.push(updata.value);
             }
 
-            sql = sql + ` WHERE id = $1 AND owner = $2`;
+            sql = sql + ` WHERE id = $1`;
 
             try {
                 await pool.query(sql, values);
@@ -160,8 +160,8 @@ router.delete('/', async function (req, res, next) {
 
     let updata = req.body;
 
-    let sql = 'DELETE FROM lists WHERE id = $1 AND owner = $2 RETURNING *'
-    let values = [updata.listid, logindata.userid];
+    let sql = 'DELETE FROM lists WHERE id = $1 RETURNING *'
+    let values = [updata.listid];
 
     try {
         let result = await pool.query(sql, values);

@@ -208,7 +208,7 @@
                     } else if (resp.status > 202) {
                         throw (user);
                     }
-                    
+
                     let owner = document.createElement('p');
                     owner.innerHTML = `Shared by ${user.username}`;
 
@@ -246,7 +246,7 @@
 
         leftContainer.innerHTML = "";
         rightContainer.innerHTML = "";
-        
+
         showTasks(rightContainer, 1);
         await showTasks(leftContainer, 0);
 
@@ -254,7 +254,7 @@
         btnCreateTask.innerHTML = "Add Task";
         leftContainer.appendChild(btnCreateTask);
 
-        btnCreateTask.addEventListener('click', function() {
+        btnCreateTask.addEventListener('click', function () {
             ///TODO create new task
         });
 
@@ -312,12 +312,12 @@
 
         let list = JSON.parse(localStorage.getItem('listinfo'));
 
-        let url = `http://localhost:3000/lists/${list.id}`;
+        let url = `http://localhost:3000/lists`;
 
         let updata = {
             update: feature,
             value: value,
-            listID: list.id
+            listid: list.id
         }
 
         let cfg = {
@@ -385,6 +385,7 @@
         }
     }
 
+    // GET tasks ------------------------------------------------
     async function showTasks(container, completed) {
 
         let list = JSON.parse(localStorage.getItem('listinfo'));
@@ -413,13 +414,19 @@
             for (let value of data) {
 
                 let div = document.createElement('div');
-                
+
                 ///TODO replace by img
                 let checkbox = document.createElement('button');
-                if(!completed) {
-                    checkbox.innerHTML = "Uncheck";
-                } else {
+                if (!completed) {
                     checkbox.innerHTML = "Check";
+                    checkbox.addEventListener('click', function () {
+                        updateTask(value.id, "completed", 1);
+                    });
+                } else {
+                    checkbox.innerHTML = "Uncheck";
+                    checkbox.addEventListener('click', function () {
+                        updateTask(value.id, "completed", 0);
+                    });
                 }
                 div.appendChild(checkbox);
 
@@ -430,7 +437,7 @@
                 ///TODO replace by img
                 let btnTaskDelete = document.createElement('button');
                 btnTaskDelete.innerHTML = "Delete";
-                btnTaskDelete.addEventListener('click', function() {
+                btnTaskDelete.addEventListener('click', function () {
                     ///TODO delete task
                     console.log(`Delete task ${value.name}`);
                 });
@@ -438,6 +445,51 @@
 
                 container.appendChild(div);
             }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    // PUT tasks ------------------------------------------------
+    async function updateTask(taskid, feature, value) {
+
+        if (!value && value !== 0) {
+            return;
+        }
+
+        let url = `http://localhost:3000/tasks/`;
+
+        let updata = {
+            update: feature,
+            value: value,
+            taskid: taskid
+        }
+
+        let cfg = {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "authorisation": token
+            },
+            body: JSON.stringify(updata)
+        }
+
+        try {
+
+            var resp = await fetch(url, cfg);
+            var data = await resp.json();
+
+            if (resp.status == 403) {
+                window.location.href = "./userlogin.html";
+                return;
+            } else if (resp.status > 202) {
+                throw (data);
+            }
+
+            // Everything OK: reload
+            showTasks(rightContainer, 1);
+            showTasks(leftContainer, 0);
+
         } catch (err) {
             console.log(err);
         }

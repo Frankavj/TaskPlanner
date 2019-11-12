@@ -63,5 +63,47 @@ router.get('/:listid/:completed', async function (req, res, next) {
 
 });
 
+// endpoint - tasks PUT --------------------------------- 
+router.put('/', async function (req, res, next) {
+
+    let updata = req.body;
+
+    let sql = 'SELECT * FROM tasks WHERE id = $1';
+    let values = [updata.taskid];
+
+    try {
+        let result = await pool.query(sql, values);
+
+        if (result.rows.length == 0) {
+            res.status(400).json({ msg: "Task doesn't exist" }); //send response 
+        } else {
+            sql = "UPDATE tasks SET";
+
+            // change task name
+            if (!updata.update.localeCompare("name")) {
+                sql = sql + ` name = $2`;
+                values.push(updata.value);
+            }
+            // change completed
+            if (!updata.update.localeCompare("completed")) {
+                sql = sql + ` completed = $2`;
+                values.push(updata.value);
+            }
+
+            sql = sql + ` WHERE id = $1`;
+
+            try {
+                await pool.query(sql, values);
+                res.status(200).json({ msg: "Update OK" });
+            } catch (err) {
+                res.status(500).json(err);
+            }
+        }
+    } catch (err) {
+        res.status(500).json(err); //send error response 
+    }
+
+});
+
 // export module ------------------------------------------
 module.exports = router;
