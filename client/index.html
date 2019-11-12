@@ -18,7 +18,7 @@
         <h2 id="allLists">Public Lists</h2>
         <div id="allListsContainer"></div>
         
-        <h2 id="myList"> My Lists</h2>
+        <h2 id="myList"> My Lists </h2>
 
 
         <h4 id="private">Private</h4>
@@ -42,12 +42,13 @@
 
     <!-- Not in sidebar -->
 
-<div class="home">
+    <div class="home">
 
     <h2 id="listTitle">Oh hello</h2>
     <input id="changeListName" type="text" style="display: none;">
 
-    
+    <!--style= "border-width: 1; border: solid; color: grey";-->
+   
     <div id="containerL">
         <h3 id="columnL">Private Lists</h3>
         <button id="createList"><img src="add_home.png" height="20px" width="20px"/></button>
@@ -91,7 +92,7 @@
 
     let logindata = JSON.parse(sessionStorage.getItem("logindata"));
     if (!logindata) {
-        window.location.href = "./userlogin.html";
+        //window.location.href = "./userlogin.html";
     }
     let token = logindata.token;
 
@@ -154,7 +155,7 @@
 
             if (resp.status == 403) {
                 //If user hasn't logged in, go to the login page
-                window.location.href = "./userlogin.html";
+                //window.location.href = "./userlogin.html";
                 return;
             } else if (resp.status > 202) {
                 throw (data);
