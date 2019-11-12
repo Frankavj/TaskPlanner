@@ -130,11 +130,15 @@ router.put('/:id', async function (req, res, next) {
                 values.push(updata.value);
             }
             // change public / private
-            // if (!updata.update.localeCompare("email")) {
-            //     sql = sql + ` email = $2`;
-            //     values.push(updata.value);
-            // }
-            // change inidivual access - later
+            if (!updata.update.localeCompare("shared")) {
+                sql = sql + ` shared = $3`;
+                values.push(updata.value);
+            }
+            // change individual access
+            if (!updata.update.localeCompare("individual_access") && value.localeCompare("NULL")) {
+                sql = sql + ` individual_access = $3`;
+                values.push(updata.value);
+            }
 
             sql = sql + ` WHERE id = $1 AND owner = $2`;
 

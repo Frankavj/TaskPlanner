@@ -9,23 +9,23 @@
 </head>
 
 <body>
- 
+
 
     <!-- In sidebar -->
 
-    
-<div class="list">
-    <img src="boy_2.png" id="myProfile">
-    <h2 id="allLists">Public Lists</h2>
-    <div id="allListsContainer"></div>
-    
-    <h2>My Lists</h2>
+
+    <div class="list">
+        <img src="boy_2.png" id="myProfile">
+        <h2 id="allLists">Public Lists</h2>
+        <div id="allListsContainer"></div>
+
+        <h2>My Lists</h2>
 
 
         <h4 id="private">Private</h4>
         <div id="privateLists"></div>
 
-        <h4 id="public">Public</h4> 
+        <h4 id="public">Public</h4>
         <div id="publicLists"></div>
 
         <!-- To be used when we implement individual lists -->
@@ -35,33 +35,37 @@
         <img src="add.png" id="createListSidebar">
 
         <button id="logout">Log Out</button>
-        
+
         <!--list class ends-->
     </div>
 
-   
+
 
     <!-- Not in sidebar -->
 
     <div class="home">
 
-    <h2 id="listTitle">Oh hello</h2>
-    <input id="changeListName" type="text" style="display: none;">
+        <h2 id="listTitle">Welcome back!</h2>
+        <input id="changeListName" type="text" style="display: none;">
 
-    <!--style= "border-width: 1; border: solid; color: grey";-->
+        <!--style= "border-width: 1; border: solid; color: grey";-->
 
-    <h3 id="columnL">Private Lists</h3>
-    <div id="containerL">
-        <img id="createList" src="add_home.png"/>
+        <h3 id="columnL">Private Lists</h3>
+        <div id="containerL">
+            <img id="createList" src="add_home.png" />
+        </div>
+
+        <h3 id="columnR">Public Lists</h3>
+        <div id="containerR">
+            <img id="createList" src="add_home.png" />
+        </div>
+
+        <button id="btnShare" style="display:none"></button>
+        <button id="btnAddPeople" style="display:none">Add people</button>
+        <button id="btnListDelete" style="display:none">Delete</button>
+
     </div>
-
-    <h3 id="columnR">Public Lists</h3>
-    <div id="containerR">
-        <img id="createList" src="add_home.png"/>
-    </div>
-     
-</div>
-<!--list class ends-->
+    <!--list class ends-->
 
 
 </body>
@@ -90,6 +94,10 @@
     let rightHeader = document.getElementById('columnR');
     let rightContainer = document.getElementById('containerR');
     let createList = document.getElementById('createList');
+
+    let btnShare = document.getElementById('btnShare');
+    let btnAddPeople = document.getElementById('btnAddPeople');
+    let btnListDelete = document.getElementById('btnListDelete');
 
     let logindata = JSON.parse(sessionStorage.getItem("logindata"));
     if (!logindata) {
@@ -129,6 +137,8 @@
         sessionStorage.removeItem('logindata');
         window.location.href = "./userlogin.html";
     });
+
+    reloadPage();
 
     // show list in sidebar ---------------------------------------
     function toggleLists(container, shared) {
@@ -170,7 +180,8 @@
                 div.innerHTML = html;
 
                 div.addEventListener('click', function (evt) {
-                    openList(value.id, value.name);
+                    localStorage.setItem('listinfo', JSON.stringify(value));
+                    openList();
                 });
 
                 container.appendChild(div);
@@ -180,18 +191,19 @@
         }
     }
 
-    showLists(leftContainer, "private");
-    showLists(rightContainer, "public");
+    function reloadPage() {
+        showLists(leftContainer, "private");
+        showLists(rightContainer, "public");
+    }
 
     // open list by id (inclused showing tasks) -------------------
-    async function openList(id, name) {
-        title.innerHTML = name;
-
-        localStorage.setItem("listinfo", JSON.stringify({ id: id, name: name }))
+    async function openList() {
+        let list = JSON.parse(localStorage.getItem('listinfo'));
+        title.innerHTML = list.name;
 
         title.addEventListener('dblclick', function () {
             title.style = "display: none";
-            changeListName.value = name;
+            changeListName.value = list.name;
             changeListName.style = "display:block";
         });
 
@@ -204,27 +216,66 @@
         /// TODO: add button for making new task, delete the one for making new list
 
 
+        // show share, addPeople and delete btns based on shared property of this list
+        if(list.shared == 1 || list.shared == 2) {
+            // private
+            // later: change img src, for now use btns
+            btnShare.style = "display:block";
+            btnShare.innerHTML = "Share";
+            btnAddPeople.style = "display:block";
+        } else if(!list.shared) {
+            // later: change img src, for now use btns
+            btnShare.style = "display:block";
+            btnShare.innerHTML = "Unshare";
+            btnAddPeople.style = "display:none";
+        }
+        btnListDelete.style = "display:block";
     }
 
     changeListName.addEventListener('keydown', function () {
         if (event.keyCode == 13) {
             let currentlist = JSON.parse(localStorage.getItem("listinfo"));
-            updateList("name", changeListName.value, currentlist.id, currentlist.name);
+            updateList("name", changeListName.value);
         }
     });
 
+    btnShare.addEventListener('click', function() {
+        let list = JSON.parse(localStorage.getItem('listinfo'));
+        if(!list.shared) {
+            //public
+            updateList("shared", 1);
+        } else {
+            //private or individual
+            updateList("shared", 0);
+            //public lists don't have individual access
+            updateList("individual_access", "NULL");
+        }
+    });
+
+    btnAddPeople.addEventListener('click', function() {
+        ///TODO give users individual access
+    });
+
+    btnListDelete.addEventListener('click', function() {
+        //delete list
+    });
+
     // update list ------------------------------------------------
-    async function updateList(feature, value, listID, listName) {
-        if (!value) {
+    async function updateList(feature, value) {
+        console.log("update " + feature + " " + value);
+        if (!value && value !== 0) {
+            console.log(value);
             return;
         }
 
-        let url = `http://localhost:3000/lists/${listID}`;
+        let list = JSON.parse(localStorage.getItem('listinfo'));
+
+        let url = `http://localhost:3000/lists/${list.id}`;
 
         let updata = {
             update: feature,
             value: value,
-            listID: listID
+            listID: list.id
         }
 
         let cfg = {
@@ -255,9 +306,13 @@
                 privateContainer.innerHTML = "";
                 publicContainer.innerHTML = "";
                 individualContainer.innerHTML = "";
-                openList(listID, value);
+
+                list.name = value;
+                localStorage.setItem('listinfo', JSON.stringify(list));
+
+                openList();
             } else {
-                openList(listID, listName);
+                window.location.reload();
             }
 
         } catch (err) {
