@@ -138,8 +138,6 @@
         window.location.href = "./userlogin.html";
     });
 
-    reloadPage();
-
     // show list in sidebar ---------------------------------------
     function toggleLists(container, shared) {
         if (container.innerHTML == "") {
@@ -191,10 +189,8 @@
         }
     }
 
-    function reloadPage() {
-        showLists(leftContainer, "private");
-        showLists(rightContainer, "public");
-    }
+    showLists(leftContainer, "private");
+    showLists(rightContainer, "public");
 
     // open list by id (inclused showing tasks) -------------------
     async function openList() {
@@ -217,13 +213,13 @@
 
 
         // show share, addPeople and delete btns based on shared property of this list
-        if(list.shared == 1 || list.shared == 2) {
+        if (list.shared == 1 || list.shared == 2) {
             // private
             // later: change img src, for now use btns
             btnShare.style = "display:block";
             btnShare.innerHTML = "Share";
             btnAddPeople.style = "display:block";
-        } else if(!list.shared) {
+        } else if (!list.shared) {
             // later: change img src, for now use btns
             btnShare.style = "display:block";
             btnShare.innerHTML = "Unshare";
@@ -239,9 +235,9 @@
         }
     });
 
-    btnShare.addEventListener('click', function() {
+    btnShare.addEventListener('click', function () {
         let list = JSON.parse(localStorage.getItem('listinfo'));
-        if(!list.shared) {
+        if (!list.shared) {
             //public
             updateList("shared", 1);
         } else {
@@ -252,19 +248,19 @@
         }
     });
 
-    btnAddPeople.addEventListener('click', function() {
+    btnAddPeople.addEventListener('click', function () {
         ///TODO give users individual access
     });
 
-    btnListDelete.addEventListener('click', function() {
-        //delete list
+    btnListDelete.addEventListener('click', function () {
+        let list = JSON.parse(localStorage.getItem('listinfo'));
+        deleteList(list.id);
     });
 
     // update list ------------------------------------------------
     async function updateList(feature, value) {
-        console.log("update " + feature + " " + value);
+
         if (!value && value !== 0) {
-            console.log(value);
             return;
         }
 
@@ -315,6 +311,29 @@
                 window.location.reload();
             }
 
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    // delete list ------------------------------------------------
+    async function deleteList(id) {
+
+        let url = "http://localhost:3000/lists";
+
+        let updata = { listid: id };
+        let cfg = {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "authorisation": token
+            },
+            body: JSON.stringify(updata)
+        }
+
+        try {
+            await fetch(url, cfg);
+            window.location.reload();
         } catch (err) {
             console.log(err);
         }
