@@ -118,7 +118,10 @@
     });
 
     allLists.addEventListener('click', function () {
-        toggleLists(allListsContainer, "allpublic");
+        showLists(leftContainer, "allpublic");
+        leftHeader.innerHTML = "Lists";
+        rightContainer.style = "display:none";
+        rightHeader.style = "display:none";
     });
 
     privateHeader.addEventListener('click', function () {
@@ -149,6 +152,10 @@
 
     // show lists in any container --------------------------------
     async function showLists(container, shared) {
+        btnShare.style = "display:none";
+        btnAddPeople.style = "display:none";
+        btnListDelete.style = "display:none";
+
         try {
             let url = `http://localhost:3000/lists/${shared}`;
 
@@ -162,7 +169,7 @@
 
             if (resp.status == 403) {
                 //If user hasn't logged in, go to the login page
-                //window.location.href = "./userlogin.html";
+                window.location.href = "./userlogin.html";
                 return;
             } else if (resp.status > 202) {
                 throw (data);
@@ -182,6 +189,33 @@
                     openList();
                 });
 
+                if (!shared.localeCompare("allpublic")) {
+                    // get the name of the owner and desplay it
+                    url = `http://localhost:3000/users/${value.owner}`;
+
+                    cfg = {
+                        method: "GET",
+                        headers: { "authorisation": token }
+                    }
+
+                    var resp = await fetch(url, cfg);
+                    var user = await resp.json();
+
+                    if (resp.status == 403) {
+                        // If user hasn't logged in, go to the login page
+                        window.location.href = "./userlogin.html";
+                        return;
+                    } else if (resp.status > 202) {
+                        throw (user);
+                    }
+                    
+                    let owner = document.createElement('p');
+                    owner.innerHTML = `Shared by ${user.username}`;
+
+                    div.appendChild(owner);
+
+                }
+
                 container.appendChild(div);
             }
         } catch (err) {
@@ -194,6 +228,7 @@
 
     // open list by id (inclused showing tasks) -------------------
     async function openList() {
+
         let list = JSON.parse(localStorage.getItem('listinfo'));
         title.innerHTML = list.name;
 
@@ -202,6 +237,9 @@
             changeListName.value = list.name;
             changeListName.style = "display:block";
         });
+
+        rightContainer.style = "display:block";
+        rightHeader.style = "display:block";
 
         leftHeader.innerHTML = "Tasks";
         rightHeader.innerHTML = "Completed tasks";
