@@ -52,7 +52,7 @@ router.post("/", async function (req, res, next) {
 router.get('/private', async function (req, res, next) {
 
     let sql = "SELECT * FROM lists WHERE owner=$1 AND shared=$2";
-    let values = [logindata.userid, 1];
+    let values = [logindata.userid, 0];
 
     try {
         let result = await pool.query(sql, values);
@@ -67,7 +67,7 @@ router.get('/private', async function (req, res, next) {
 router.get('/public', async function (req, res, next) {
 
     let sql = "SELECT * FROM lists WHERE owner=$1 AND shared=$2";
-    let values = [logindata.userid, 0];
+    let values = [logindata.userid, 1];
 
     try {
         let result = await pool.query(sql, values);
@@ -97,7 +97,7 @@ router.get('/individual', async function (req, res, next) {
 router.get('/allpublic', async function (req, res, next) {
 
     let sql = "SELECT * FROM lists WHERE shared=$1";
-    let values = [0];
+    let values = [1];
 
     try {
         let result = await pool.query(sql, values);

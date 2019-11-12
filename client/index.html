@@ -251,13 +251,13 @@
 
 
         // show share, addPeople and delete btns based on shared property of this list
-        if (list.shared == 1 || list.shared == 2) {
-            // private
+        if (list.shared == 0 || list.shared == 2) {
+            // private or individual
             // later: change img src, for now use btns
             btnShare.style = "display:block";
             btnShare.innerHTML = "Share";
             btnAddPeople.style = "display:block";
-        } else if (!list.shared) {
+        } else if (list.shared == 1) {
             // later: change img src, for now use btns
             btnShare.style = "display:block";
             btnShare.innerHTML = "Unshare";
@@ -275,12 +275,12 @@
 
     btnShare.addEventListener('click', function () {
         let list = JSON.parse(localStorage.getItem('listinfo'));
-        if (!list.shared) {
+        if (list.shared == 1) {
             //public
-            updateList("shared", 1);
+            updateList("shared", 0);
         } else {
             //private or individual
-            updateList("shared", 0);
+            updateList("shared", 1);
             //public lists don't have individual access
             updateList("individual_access", "NULL");
         }
