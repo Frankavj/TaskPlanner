@@ -13,10 +13,7 @@
 <input type="text" id="inptaskname" placeholder="taskname">
 <input type="notes" id="inpnotes" placeholder="notes">
 
-    <select id="inpcompleted">
-      <option value="0">not complete</option>
-      <option value="1">complete</option>
-    </select>
+<input type="checkbox" id="inpcompleted"> completed<br>
 
 <button id="btnCreate">Create list</button>
 <h3 id="txtResult">Result...</h3>
@@ -42,12 +39,14 @@
 
         let token = logindata.token;
 
-        let url = "http://localhost:3000/task";
+        let url = "http://localhost:3000/tasks";
+        let parentlist = JSON.parse(localStorage.getItem('listinfo')).id;
 
         let updata = {
-            listname: taskname.value,
-            complete: completed.value,
+            taskname: taskname.value,
+            completed: completed.checked,
             notes: notes.value,
+            parentlist,
         }
 
         let cfg = {

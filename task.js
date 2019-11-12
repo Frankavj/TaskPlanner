@@ -31,16 +31,16 @@ router.use('/', function (req, res, next) {
 // endpoint - lists POST ---------------------------------
 router.post("/", async function (req, res, next) {
     let updata = req.body;
-    let sql = "INSERT INTO lists (id, name, completed, owner) VALUES(DEFAULT, $1, $2, $3) RETURNING *";
-    let values = [updata.taskname, updata.completed, logindata.userid];
+    let sql = "INSERT INTO tasks (id, name, completed, list, notes, deadline) VALUES(DEFAULT, $1, $2, $3, $4, $5) RETURNING *";
+    let values = [updata.taskname, updata.completed, updata.parentlist, updata.notes, null];
 
     try {
         let result = await pool.query(sql, values);
 
         if (result.rows.length > 0) {
-            res.status(200).json({ msg: `List created: ${updata.name}` })
+            res.status(200).json({ msg: `Task created: ${updata.taskname}` })
         } else {
-            throw "List creation failed.";
+            throw "Task creation failed.";
         }
     } catch (err) {
         console.log(err);
