@@ -105,5 +105,28 @@ router.put('/', async function (req, res, next) {
 
 });
 
+// endpoint - tasks DELETE --------------------------------- 
+router.delete('/', async function (req, res, next) {
+
+    let updata = req.body;
+
+    let sql = 'DELETE FROM tasks WHERE id = $1 RETURNING *'
+    let values = [updata.taskid];
+
+    try {
+        let result = await pool.query(sql, values);
+
+        if (result.rows.length > 0) {
+            res.status(200).json({ msg: "Delete OK" }); //send response 
+        }
+        else {
+            throw "Delete failed"
+        }
+    } catch (err) {
+        res.status(500).json({ error: err }); //send error response 
+    }
+
+});
+
 // export module ------------------------------------------
 module.exports = router;

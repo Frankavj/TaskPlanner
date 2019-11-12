@@ -355,7 +355,7 @@
         }
     }
 
-    // delete list ------------------------------------------------
+    // DELETE list ------------------------------------------------
     async function deleteList(id) {
 
         let url = "http://localhost:3000/lists";
@@ -438,8 +438,7 @@
                 let btnTaskDelete = document.createElement('button');
                 btnTaskDelete.innerHTML = "Delete";
                 btnTaskDelete.addEventListener('click', function () {
-                    ///TODO delete task
-                    console.log(`Delete task ${value.name}`);
+                    deleteTask(value.id);
                 });
                 div.appendChild(btnTaskDelete);
 
@@ -489,6 +488,29 @@
             // Everything OK: reload
             loadTasks();
 
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    // DELETE tasks ------------------------------------------------
+    async function deleteTask(id) {
+
+        let url = "http://localhost:3000/tasks";
+
+        let updata = { taskid: id };
+        let cfg = {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "authorisation": token
+            },
+            body: JSON.stringify(updata)
+        }
+
+        try {
+            await fetch(url, cfg);
+            loadTasks();
         } catch (err) {
             console.log(err);
         }
