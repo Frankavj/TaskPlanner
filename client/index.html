@@ -246,9 +246,17 @@
 
         leftContainer.innerHTML = "";
         rightContainer.innerHTML = "";
-        /// TODO: show tasks in the two containers (left and right)
-        /// TODO: add button for making new task, delete the one for making new list
+        
+        showTasks(rightContainer, 1);
+        await showTasks(leftContainer, 0);
 
+        let btnCreateTask = document.createElement('button');
+        btnCreateTask.innerHTML = "Add Task";
+        leftContainer.appendChild(btnCreateTask);
+
+        btnCreateTask.addEventListener('click', function() {
+            ///TODO create new task
+        });
 
         // show share, addPeople and delete btns based on shared property of this list
         if (list.shared == 0 || list.shared == 2) {
@@ -372,6 +380,64 @@
         try {
             await fetch(url, cfg);
             window.location.reload();
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    async function showTasks(container, completed) {
+
+        let list = JSON.parse(localStorage.getItem('listinfo'));
+
+        try {
+            let url = `http://localhost:3000/tasks/${list.id}/${completed}`;
+
+            let cfg = {
+                method: "GET",
+                headers: { "authorisation": token }
+            };
+
+            var resp = await fetch(url, cfg);
+            var data = await resp.json();
+
+            if (resp.status == 403) {
+                //If user hasn't logged in, go to the login page
+                window.location.href = "./userlogin.html";
+                return;
+            } else if (resp.status > 202) {
+                throw (data);
+            }
+
+            container.innerHTML = ""; // delete previous content
+
+            for (let value of data) {
+
+                let div = document.createElement('div');
+                
+                ///TODO replace by img
+                let checkbox = document.createElement('button');
+                if(!completed) {
+                    checkbox.innerHTML = "Uncheck";
+                } else {
+                    checkbox.innerHTML = "Check";
+                }
+                div.appendChild(checkbox);
+
+                let taskName = document.createElement('p');
+                taskName.innerHTML = value.name;
+                div.appendChild(taskName);
+
+                ///TODO replace by img
+                let btnTaskDelete = document.createElement('button');
+                btnTaskDelete.innerHTML = "Delete";
+                btnTaskDelete.addEventListener('click', function() {
+                    ///TODO delete task
+                    console.log(`Delete task ${value.name}`);
+                });
+                div.appendChild(btnTaskDelete);
+
+                container.appendChild(div);
+            }
         } catch (err) {
             console.log(err);
         }

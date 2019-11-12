@@ -48,56 +48,11 @@ router.post("/", async function (req, res, next) {
     }
 });
 
-// endpoint - lists GET private ---------------------------
-router.get('/private', async function (req, res, next) {
+// endpoint - completed tasks GET ----------------------------------
+router.get('/:listid/:completed', async function (req, res, next) {
 
-    let sql = "SELECT * FROM lists WHERE owner=$1 AND shared=$2";
-    let values = [logindata.userid, 1];
-
-    try {
-        let result = await pool.query(sql, values);
-        res.status(200).json(result.rows); //send response    
-    } catch (err) {
-        res.status(500).json(err); //send response    
-    }
-
-});
-
-// endpoint - lists GET mypublic --------------------------
-router.get('/public', async function (req, res, next) {
-
-    let sql = "SELECT * FROM lists WHERE owner=$1 AND shared=$2";
-    let values = [logindata.userid, 0];
-
-    try {
-        let result = await pool.query(sql, values);
-        res.status(200).json(result.rows); //send response    
-    } catch (err) {
-        res.status(500).json(err); //send response    
-    }
-
-});
-
-// endpoint - lists GET individual ------------------------
-router.get('/individual', async function (req, res, next) {
-
-    let sql = "SELECT * FROM lists WHERE owner=$1 AND shared=$2";
-    let values = [logindata.userid, 2];
-
-    try {
-        let result = await pool.query(sql, values);
-        res.status(200).json(result.rows); //send response    
-    } catch (err) {
-        res.status(500).json(err); //send response    
-    }
-
-});
-
-// endpoint - lists GET allpublic -------------------------
-router.get('/allpublic', async function (req, res, next) {
-
-    let sql = "SELECT * FROM lists WHERE shared=$1";
-    let values = [0];
+    let sql = "SELECT * FROM tasks WHERE list=$1 AND completed=$2";
+    let values = [req.params.listid, req.params.completed];
 
     try {
         let result = await pool.query(sql, values);
