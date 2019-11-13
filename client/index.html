@@ -48,17 +48,14 @@
     <h2 id="listTitle">Oh hello</h2>
     <input id="changeListName" type="text" style="display: none;">
 
-    <!--style= "border-width: 1; border: solid; color: grey";-->
+    
 
     <h3 id="columnL">Private Lists</h3>
-    <div id="containerL">
-        <img id="createList" src="add_home.png"/>
-    </div>
+    <div id="containerL"></div>
 
     <h3 id="columnR">Public Lists</h3>
-    <div id="containerR">
-        <img id="createList" src="add_home.png"/>
-    </div>
+    <div id="containerR"></div>
+
      
 </div>
 <!--list class ends-->
@@ -89,7 +86,6 @@
     let leftContainer = document.getElementById('containerL');
     let rightHeader = document.getElementById('columnR');
     let rightContainer = document.getElementById('containerR');
-    let createList = document.getElementById('createList');
 
     let logindata = JSON.parse(sessionStorage.getItem("logindata"));
     if (!logindata) {
@@ -98,10 +94,6 @@
     let token = logindata.token;
 
     createListSidebar.addEventListener('click', function () {
-        window.location.href = "./listcreate.html";
-    });
-
-    createList.addEventListener('click', function () {
         window.location.href = "./listcreate.html";
     });
 
@@ -154,7 +146,7 @@
 
             if (resp.status == 403) {
                 //If user hasn't logged in, go to the login page
-                //window.location.href = "./userlogin.html";
+                window.location.href = "./userlogin.html";
                 return;
             } else if (resp.status > 202) {
                 throw (data);
@@ -175,6 +167,18 @@
 
                 container.appendChild(div);
             }
+
+            // add the createlist button again
+            let createList = document.createElement('img');
+            createList.setAttribute('id', 'createList');
+            createList.setAttribute('src','add_home.png');
+
+            createList.addEventListener('click', function () {
+                window.location.href = "./listcreate.html";
+            });
+
+            container.appendChild(createList);
+
         } catch (err) {
             console.log(err);
         }
