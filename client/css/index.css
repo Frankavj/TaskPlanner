@@ -8,7 +8,8 @@
   
    body{
     min-height: 100vh;
-    background-image: url("../img/bakgrunn_forslag.jpg");
+    background: url("../img/bakgrunn_forslag.jpg") no-repeat center center fixed;
+    background-size: cover;
     }
 
 /*sidebar class*/
@@ -17,11 +18,21 @@
   .list{
     background: #f1f1f1;
     width: 300px;
-    height: 850px;
+    height: 100%;
     padding: 50px 50px;
     float: left;
     margin-top: 0px;
     text-align: left;
+    position: fixed;
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-auto-rows: 100px 50px 1fr 50px;
+    grid-template-areas: "img"
+                         "pL"
+                         "mL"
+                         "lO";
+
+  
     }
   
   .list input{
@@ -102,6 +113,7 @@
     margin-top: 0px;
     border-width: 30px;
     cursor: pointer;
+    grid-area: img;
     }
 
     #myProfile:hover{
@@ -120,13 +132,13 @@
     width: 100%;
     height: 30px;
     border: none;
-    margin-top: 400px;
     background: linear-gradient(120deg,#9b9b9a,#bbd2c5,#9c9fa1);
     background-size: 200%;
     color: #f1f1f1;
     outline: none;
     cursor: pointer;
     transition: .5s;
+    grid-area: lO;
   }
       
   #logout:hover{
@@ -173,7 +185,7 @@
     background-color: #f1f1f1;
     opacity: 20%;
     }
-
+    
 /*private lists box ENDS*/
 
 /*public lists box*/
@@ -201,7 +213,19 @@
    border-radius: 10px;
    padding: 10px;
    margin: 10px;
-    grid-area: cR;
+   grid-area: cR;
+  }
+
+  #containerR.scroll {
+    margin:4px, 4px; 
+                padding:4px; 
+                background-color: green; 
+                width: 500px; 
+                height: 110px; 
+                overflow-x: hidden; 
+                overflow-x: auto; 
+                text-align:justify;
+
   }
 
  #columnR {
@@ -225,10 +249,8 @@
     width: 25px;
     background-color: #f1f1f1;
     color: black;
-    margin-top: 30px;
-    
     cursor: pointer;
-    
+    grid-area: mL;
   }
 
   #createListSidebar:hover{
@@ -257,3 +279,54 @@
   }
 
   /*ADD list home private and public ENDS*/
+
+  #myList {
+    cursor: pointer;
+    grid-area: mL;
+  }
+
+ 
+
+
+
+#allLists {
+  cursor: pointer;
+
+}
+
+#allLists:hover{
+  background-color: #f1f1f1;
+  opacity: 40%;
+}
+
+#private {
+  cursor: pointer;
+
+}
+
+#private:hover{
+  background-color: #f1f1f1;
+  opacity: 40%;
+}
+
+#public {
+  cursor: pointer;
+  grid-area: pL;
+
+}
+
+#public:hover{
+  background-color: #f1f1f1;
+  opacity: 40%;
+}
+
+#individual {
+  cursor: pointer;
+
+}
+
+#individual:hover{
+  background-color: #f1f1f1;
+  opacity: 40%;
+}
+
