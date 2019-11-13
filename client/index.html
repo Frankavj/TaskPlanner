@@ -31,7 +31,10 @@
         <h4 id="individual">Shared with me</h4>
         <div id="individualLists"></div>
 
-        <img src="add.png" id="createListSidebar">
+        <div id="newListSB">
+            <img id="addImgSB" src="add.png">
+            <input type="text" id="inpNameSB" style="display:none">
+        </div>
 
         <button id="logout">Log Out</button>
 
@@ -54,6 +57,12 @@
         <h3 id="columnR">Public Lists</h3>
         <div id="containerR"></div>
 
+        <div id="newList" style="display:none">
+            <p id="createTxt">Create new list</p>
+            <img id="addImg" src="add.png">
+            <input type="text" id="inpName" style="display:none">
+        </div>
+
         <button id="btnShare" style="display:none"></button>
         <button id="btnAddPeople" style="display:none">Add people</button>
         <button id="btnListDelete" style="display:none">Delete</button>
@@ -73,13 +82,8 @@
     let token = logindata.token;
 
     // redirect to other pages ----------------------------------------------------------------------------
-    let createListSidebar = document.getElementById('createListSidebar');
     let btnMyProfile = document.getElementById('myProfile');
     let btnLogout = document.getElementById('logout');
-
-    createListSidebar.addEventListener('click', function () {
-        window.location.href = "./listcreate.html";
-    });
 
     btnMyProfile.addEventListener('click', function () {
         window.location.href = "./user.html";
@@ -124,6 +128,83 @@
     }
 
 
+    // POST list --------------------------------------------------------------------------------------------
+    // sidebar button ---------------------------------------
+    let newListSB = document.getElementById('newListSB');
+    let addImgSB = document.getElementById('addImgSB');
+    let inpNameSB = document.getElementById('inpNameSB');
+
+    newListSB.addEventListener('click', function () {
+        addImgSB.style = "display:none";
+        inpNameSB.style = "display:block;border:1px solid red";
+        inpNameSB.value = "My new list";
+    });
+
+    inpNameSB.addEventListener('blur', function () {
+        addImgSB.style = "display:block";
+        inpNameSB.style = "display:none";
+    });
+
+    inpNameSB.addEventListener('keydown', function () {
+        if (event.keyCode == 13 && inpNameSB.value) {
+            createList(inpNameSB.value);
+        }
+    });
+
+    // homepage button ---------------------------------------
+    let newList = document.getElementById('newList');
+    let addImg = document.getElementById('addImg');
+    let inpName = document.getElementById('inpName');
+    let createTxt = document.getElementById('createTxt');
+
+    newList.addEventListener('click', function () {
+        addImg.style = "display:none";
+        createTxt.style = "display:none";
+        inpName.style = "display:block;border:1px solid red";
+        inpName.value = "My new list";
+    });
+
+    inpName.addEventListener('blur', function () {
+        addImg.style = "display:block";
+        createTxt.style = "display:block";
+        inpName.style = "display:none";
+    });
+
+    inpName.addEventListener('keydown', function () {
+        if (event.keyCode == 13 && inpName.value) {
+            createList(inpName.value);
+        }
+    });
+
+    // POST list -------------------------------------------
+    async function createList(name) {
+        console.log("new list " + name);
+        let url = "http://localhost:3000/lists";
+
+        let updata = {
+            listname: name
+        }
+
+        let cfg = {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+                "authorisation": token
+            },
+            body: JSON.stringify(updata)
+        }
+
+        try {
+            var resp = await fetch(url, cfg);
+            var data = await resp.json();
+
+            window.location.reload();
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
     // GET all public lists ---------------------------------------------------------------------------------
     let allLists = document.getElementById('allLists');
     let leftHeader = document.getElementById('columnL');
@@ -142,20 +223,8 @@
     // GET private and public lists of user (homepage) ------------------------------------------------------
     showLists(leftContainer, "private");
     showLists(rightContainer, "public");
-
-    let createList = document.createElement('div');
-    createList.setAttribute('id', 'createList');
-    createList.setAttribute('contenteditable', 'true');
-    createList.innerHTML = "Create new list";
-    rightContainer.parentElement.appendChild(createList);
-
-    let createListImg = document.createElement('img');
-    createListImg.setAttribute('src', 'add_home.png');
-    createList.appendChild(createListImg);
-
-    createList.addEventListener('click', function () {
-        window.location.href = "./listcreate.html";
-    });
+    // show the newlist button
+    newList.style = "display:block";
 
 
     // GET list ---------------------------------------------------------------------------------------------
@@ -239,6 +308,9 @@
     btnCreateTask.innerHTML = "Add Task";
 
     async function openList() {
+
+        // hide the newlist button
+        newList.style = "display:none";
 
         let list = JSON.parse(localStorage.getItem('listinfo'));
         title.innerHTML = list.name;
