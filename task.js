@@ -31,43 +31,28 @@ router.use('/', function (req, res, next) {
 // endpoint - lists POST ---------------------------------
 router.post("/", async function (req, res, next) {
     let updata = req.body;
-
-    let sql = "INSERT INTO lists (id, name, shared, owner) VALUES(DEFAULT, $1, $2, $3) RETURNING *";
-    let values = [updata.listname, updata.shared, logindata.userid];
+    let sql = "INSERT INTO tasks (id, name, completed, list, notes, deadline) VALUES(DEFAULT, $1, $2, $3, $4, $5) RETURNING *";
+    let values = [updata.taskname, updata.completed, updata.parentlist, updata.notes, null];
 
     try {
         let result = await pool.query(sql, values);
 
         if (result.rows.length > 0) {
-            res.status(200).json({ msg: `List created: ${updata.listname}` })
+            res.status(200).json({ msg: `Task created: ${updata.taskname}` })
         } else {
-            throw "List creation failed.";
+            throw "Task creation failed.";
         }
     } catch (err) {
+        console.log(err);
         res.status(500).json({ error: err });
     }
 });
 
-// endpoint - lists GET private ---------------------------
-router.get('/private', async function (req, res, next) {
+// endpoint - completed tasks GET ----------------------------------
+router.get('/:listid/:completed', async function (req, res, next) {
 
-    let sql = "SELECT * FROM lists WHERE owner=$1 AND shared=$2";
-    let values = [logindata.userid, 0];
-
-    try {
-        let result = await pool.query(sql, values);
-        res.status(200).json(result.rows); //send response    
-    } catch (err) {
-        res.status(500).json(err); //send response    
-    }
-
-});
-
-// endpoint - lists GET mypublic --------------------------
-router.get('/public', async function (req, res, next) {
-
-    let sql = "SELECT * FROM lists WHERE owner=$1 AND shared=$2";
-    let values = [logindata.userid, 1];
+    let sql = "SELECT * FROM tasks WHERE list=$1 AND completed=$2";
+    let values = [req.params.listid, req.params.completed];
 
     try {
         let result = await pool.query(sql, values);
@@ -78,65 +63,30 @@ router.get('/public', async function (req, res, next) {
 
 });
 
-// endpoint - lists GET individual ------------------------
-router.get('/individual', async function (req, res, next) {
-
-    let sql = "SELECT * FROM lists WHERE owner=$1 AND shared=$2";
-    let values = [logindata.userid, 2];
-
-    try {
-        let result = await pool.query(sql, values);
-        res.status(200).json(result.rows); //send response    
-    } catch (err) {
-        res.status(500).json(err); //send response    
-    }
-
-});
-
-// endpoint - lists GET allpublic -------------------------
-router.get('/allpublic', async function (req, res, next) {
-
-    let sql = "SELECT * FROM lists WHERE shared=$1";
-    let values = [1];
-
-    try {
-        let result = await pool.query(sql, values);
-        res.status(200).json(result.rows); //send response    
-    } catch (err) {
-        res.status(500).json(err); //send response    
-    }
-
-});
-
-// endpoint - lists PUT --------------------------------- 
+// endpoint - tasks PUT --------------------------------- 
 router.put('/', async function (req, res, next) {
 
     let updata = req.body;
 
-    let sql = 'SELECT * FROM lists WHERE id = $1';
-    let values = [updata.listid];
+    let sql = 'SELECT * FROM tasks WHERE id = $1';
+    let values = [updata.taskid];
 
     try {
         let result = await pool.query(sql, values);
 
         if (result.rows.length == 0) {
-            res.status(400).json({ msg: "List doesn't exist" }); //send response 
+            res.status(400).json({ msg: "Task doesn't exist" }); //send response 
         } else {
-            sql = "UPDATE lists SET";
+            sql = "UPDATE tasks SET";
 
-            // change list name
+            // change task name
             if (!updata.update.localeCompare("name")) {
                 sql = sql + ` name = $2`;
                 values.push(updata.value);
             }
-            // change public / private
-            if (!updata.update.localeCompare("shared")) {
-                sql = sql + ` shared = $2`;
-                values.push(updata.value);
-            }
-            // change individual access
-            if (!updata.update.localeCompare("individual_access") && value.localeCompare("NULL")) {
-                sql = sql + ` individual_access = $2`;
+            // change completed
+            if (!updata.update.localeCompare("completed")) {
+                sql = sql + ` completed = $2`;
                 values.push(updata.value);
             }
 
@@ -155,13 +105,13 @@ router.put('/', async function (req, res, next) {
 
 });
 
-// endpoint - lists DELETE --------------------------------- 
+// endpoint - tasks DELETE --------------------------------- 
 router.delete('/', async function (req, res, next) {
 
     let updata = req.body;
 
-    let sql = 'DELETE FROM lists WHERE id = $1 RETURNING *'
-    let values = [updata.listid];
+    let sql = 'DELETE FROM tasks WHERE id = $1 RETURNING *'
+    let values = [updata.taskid];
 
     try {
         let result = await pool.query(sql, values);

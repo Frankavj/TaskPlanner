@@ -10,23 +10,23 @@
 
 <body>
 
-<input type="text" id="inpListname" placeholder="Listname">
+    <input type="text" id="inpListname" placeholder="Listname">
 
     <select id="inpShare">
-      <option value="0">Public</option>
-      <option value="1">Private</option>
-      <option value="2">Individual</option>
+        <option value="0">Private</option>
+        <option value="1">Public</option>
+        <option value="2">Individual</option>
     </select>
 
-<button id="btnCreate">Create list</button>
-<h3 id="txtResult">Result...</h3>
+    <button id="btnCreate">Create list</button>
+    <h3 id="txtResult">Result...</h3>
 
 </body>
 
 <script>
 
     // ---------------------------------------  
-    
+
     let listname = document.getElementById('inpListname')
     let share = document.getElementById('inpShare');
     let btnCreate = document.getElementById('btnCreate');
@@ -37,7 +37,7 @@
         window.location.href = "./userlogin.html";
     }
 
-    btnCreate.addEventListener('click', async function(evt) {
+    btnCreate.addEventListener('click', async function (evt) {
 
         let token = logindata.token;
 
@@ -51,7 +51,7 @@
         let cfg = {
             method: "POST",
             headers: {
-                "Content-type":"application/json",
+                "Content-type": "application/json",
                 "authorisation": token
             },
             body: JSON.stringify(updata)
@@ -60,9 +60,9 @@
         try {
             var resp = await fetch(url, cfg);
             var data = await resp.json();
-            console.log()
-            txtResult.innerHTML = data.msg;
-        } catch (err){
+
+            window.location.href = "./index.html";
+        } catch (err) {
             console.log(err);
         }
     });
