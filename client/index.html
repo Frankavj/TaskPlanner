@@ -86,10 +86,6 @@
         window.location.href = "./listcreate.html";
     });
 
-    createList.addEventListener('click', function () {
-        window.location.href = "./listcreate.html";
-    });
-
     btnMyProfile.addEventListener('click', function () {
         window.location.href = "./user.html";
     });
@@ -221,6 +217,18 @@
 
                 container.appendChild(div);
             }
+
+            // add the createlist button again
+            let createList = document.createElement('img');
+            createList.setAttribute('id', 'createList');
+            createList.setAttribute('src','add_home.png');
+
+            createList.addEventListener('click', function () {
+                window.location.href = "./listcreate.html";
+            });
+
+            container.appendChild(createList);
+
         } catch (err) {
             console.log(err);
         }
