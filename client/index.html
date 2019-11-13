@@ -104,6 +104,10 @@
     let individualHeader = document.getElementById('individual');
     let individualContainer = document.getElementById('individualLists');
 
+    let btnShare = document.getElementById('btnShare');
+    let btnAddPeople = document.getElementById('btnAddPeople');
+    let btnListDelete = document.getElementById('btnListDelete');
+
     privateHeader.addEventListener('click', function () {
         toggleLists(privateContainer, "private");
     });
@@ -146,10 +150,6 @@
 
 
     // GET list ---------------------------------------------------------------------------------------------
-    let btnShare = document.getElementById('btnShare');
-    let btnAddPeople = document.getElementById('btnAddPeople');
-    let btnListDelete = document.getElementById('btnListDelete');
-
     async function showLists(container, shared) {
         btnShare.style = "display:none";
         btnAddPeople.style = "display:none";
