@@ -17,7 +17,6 @@
     <div class="list">
         <img src="boy_2.png" id="myProfile">
         <h2 id="allLists">Public Lists</h2>
-        <div id="allListsContainer"></div>
 
         <h2>My Lists</h2>
 
@@ -71,39 +70,17 @@
 
 <script>
 
-    let btnMyProfile = document.getElementById('myProfile');
-    let allLists = document.getElementById('allLists');
-    let allListsContainer = document.getElementById('allListsContainer');
-
-    let privateHeader = document.getElementById('private');
-    let privateContainer = document.getElementById('privateLists');
-    let publicHeader = document.getElementById('public');
-    let publicContainer = document.getElementById('publicLists');
-    let individualHeader = document.getElementById('individual');
-    let individualContainer = document.getElementById('individualLists');
-
-    let createListSidebar = document.getElementById('createListSidebar');
-    let btnLogout = document.getElementById('logout');
-
-    let title = document.getElementById('listTitle');
-
-    let leftHeader = document.getElementById('columnL');
-    let leftContainer = document.getElementById('containerL');
-    let rightHeader = document.getElementById('columnR');
-    let rightContainer = document.getElementById('containerR');
-    let createList = document.getElementById('createList');
-    let btnCreateTask = document.createElement('button');
-    btnCreateTask.innerHTML = "Add Task";
-
-    let btnShare = document.getElementById('btnShare');
-    let btnAddPeople = document.getElementById('btnAddPeople');
-    let btnListDelete = document.getElementById('btnListDelete');
-
     let logindata = JSON.parse(sessionStorage.getItem("logindata"));
     if (!logindata) {
         window.location.href = "./userlogin.html";
     }
     let token = logindata.token;
+
+    // redirect to other pages ----------------------------------------------------------------------------
+    let createListSidebar = document.getElementById('createListSidebar');
+    let createList = document.getElementById('createList');
+    let btnMyProfile = document.getElementById('myProfile');
+    let btnLogout = document.getElementById('logout');
 
     createListSidebar.addEventListener('click', function () {
         window.location.href = "./listcreate.html";
@@ -117,12 +94,19 @@
         window.location.href = "./user.html";
     });
 
-    allLists.addEventListener('click', function () {
-        showLists(leftContainer, "allpublic");
-        leftHeader.innerHTML = "Lists";
-        rightContainer.style = "display:none";
-        rightHeader.style = "display:none";
+    btnLogout.addEventListener('click', function () {
+        sessionStorage.removeItem('logindata');
+        window.location.href = "./userlogin.html";
     });
+
+
+    // sidebar expand/collapse -----------------------------------------------------------------------------
+    let privateHeader = document.getElementById('private');
+    let privateContainer = document.getElementById('privateLists');
+    let publicHeader = document.getElementById('public');
+    let publicContainer = document.getElementById('publicLists');
+    let individualHeader = document.getElementById('individual');
+    let individualContainer = document.getElementById('individualLists');
 
     privateHeader.addEventListener('click', function () {
         toggleLists(privateContainer, "private");
@@ -136,12 +120,6 @@
         toggleLists(individualContainer, "individual");
     });
 
-    btnLogout.addEventListener('click', function () {
-        sessionStorage.removeItem('logindata');
-        window.location.href = "./userlogin.html";
-    });
-
-    // show list in sidebar ---------------------------------------
     function toggleLists(container, shared) {
         if (container.innerHTML == "") {
             showLists(container, shared);
@@ -150,7 +128,32 @@
         }
     }
 
-    // show lists in any container --------------------------------
+
+    // GET all public lists ---------------------------------------------------------------------------------
+    let allLists = document.getElementById('allLists');
+    let leftHeader = document.getElementById('columnL');
+    let leftContainer = document.getElementById('containerL');
+    let rightHeader = document.getElementById('columnR');
+    let rightContainer = document.getElementById('containerR');
+
+    allLists.addEventListener('click', function () {
+        showLists(leftContainer, "allpublic");
+        leftHeader.innerHTML = "Lists";
+        rightContainer.style = "display:none";
+        rightHeader.style = "display:none";
+    });
+
+
+    // GET private and public lists of user (homepage) ------------------------------------------------------
+    showLists(leftContainer, "private");
+    showLists(rightContainer, "public");
+
+
+    // GET list ---------------------------------------------------------------------------------------------
+    let btnShare = document.getElementById('btnShare');
+    let btnAddPeople = document.getElementById('btnAddPeople');
+    let btnListDelete = document.getElementById('btnListDelete');
+
     async function showLists(container, shared) {
         btnShare.style = "display:none";
         btnAddPeople.style = "display:none";
@@ -223,10 +226,12 @@
         }
     }
 
-    showLists(leftContainer, "private");
-    showLists(rightContainer, "public");
 
-    // open list by id (inclused showing tasks) -------------------
+    // Details list -----------------------------------------------------------------------------------------
+    let title = document.getElementById('listTitle');
+    let btnCreateTask = document.createElement('button');
+    btnCreateTask.innerHTML = "Add Task";
+
     async function openList() {
 
         let list = JSON.parse(localStorage.getItem('listinfo'));
@@ -263,12 +268,9 @@
         btnListDelete.style = "display:block";
     }
 
-    async function loadTasks() {
-        showTasks(rightContainer, 1);
-        await showTasks(leftContainer, 0);
-        leftContainer.appendChild(btnCreateTask);
-    }
 
+    // PUT list --------------------------------------------------------------------------------------------
+    // name ----------------------------------------------------
     title.addEventListener('keydown', function (evt) {
         if (event.keyCode == 13) {
             evt.preventDefault();
@@ -276,6 +278,7 @@
         }
     });
 
+    // shared --------------------------------------------------
     btnShare.addEventListener('click', function () {
         let list = JSON.parse(localStorage.getItem('listinfo'));
         if (list.shared == 1) {
@@ -289,16 +292,12 @@
         }
     });
 
+    // individual access ---------------------------------------
     btnAddPeople.addEventListener('click', function () {
         ///TODO give users individual access
     });
 
-    btnListDelete.addEventListener('click', function () {
-        let list = JSON.parse(localStorage.getItem('listinfo'));
-        deleteList(list.id);
-    });
-
-    // update list ------------------------------------------------
+    // PUT list ------------------------------------------------
     async function updateList(feature, value) {
 
         if (!value && value !== 0) {
@@ -355,7 +354,13 @@
         }
     }
 
-    // DELETE list ------------------------------------------------
+
+    // DELETE list -------------------------------------------------------------------------------------------
+    btnListDelete.addEventListener('click', function () {
+        let list = JSON.parse(localStorage.getItem('listinfo'));
+        deleteList(list.id);
+    });
+
     async function deleteList(id) {
 
         let url = "http://localhost:3000/lists";
@@ -378,7 +383,14 @@
         }
     }
 
-    // GET tasks ------------------------------------------------
+
+    // GET tasks ---------------------------------------------------------------------------------------------
+    async function loadTasks() {
+        showTasks(rightContainer, 1);
+        await showTasks(leftContainer, 0);
+        leftContainer.appendChild(btnCreateTask);
+    }
+
     async function showTasks(container, completed) {
 
         let list = JSON.parse(localStorage.getItem('listinfo'));
@@ -426,8 +438,8 @@
                 let taskName = document.createElement('p');
                 taskName.innerHTML = value.name;
                 taskName.contentEditable = true;
-                taskName.addEventListener('keydown', function(evt) {
-                    if(event.keyCode == 13) {
+                taskName.addEventListener('keydown', function (evt) {
+                    if (event.keyCode == 13) {
                         evt.preventDefault();
                         updateTask(value.id, "name", taskName.innerHTML);
                     }
@@ -449,7 +461,8 @@
         }
     }
 
-    // PUT tasks ------------------------------------------------
+
+    // PUT tasks ----------------------------------------------------------------------------------------------
     async function updateTask(taskid, feature, value) {
 
         if (!value && value !== 0) {
@@ -493,7 +506,8 @@
         }
     }
 
-    // DELETE tasks ------------------------------------------------
+
+    // DELETE tasks ------------------------------------------------------------------------------------------
     async function deleteTask(id) {
 
         let url = "http://localhost:3000/tasks";
