@@ -32,13 +32,13 @@ router.use('/', function (req, res, next) {
 router.post("/", async function (req, res, next) {
     let updata = req.body;
     let sql = "INSERT INTO tasks (id, name, completed, list, notes, deadline) VALUES(DEFAULT, $1, $2, $3, $4, $5) RETURNING *";
-    let values = [updata.taskname, updata.completed, updata.parentlist, updata.notes, null];
+    let values = [updata.name, false, updata.list, null, null];
 
     try {
         let result = await pool.query(sql, values);
 
         if (result.rows.length > 0) {
-            res.status(200).json({ msg: `Task created: ${updata.taskname}` })
+            res.status(200).json({ msg: `Task created: ${updata.name}` })
         } else {
             throw "Task creation failed.";
         }

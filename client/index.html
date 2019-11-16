@@ -17,20 +17,20 @@
     <div class="list">
         <img src="boy_2.png" id="myProfile">
         <h2 id="allLists">Public Lists</h2>
-  
-    <div id="myList"> 
-        <h2>My Lists</h2>
-        
-        <h4 id="private">Private</h4>
-        <div id="privateLists"></div>
 
-        <h4 id="public">Public</h4>
-        <div id="publicLists"></div>
+        <div id="myList">
+            <h2>My Lists</h2>
 
-        <!-- To be used when we implement individual lists -->
-        <h4 id="individual">Shared with me</h4>
-        <div id="individualLists"></div>
-    </div>
+            <h4 id="private">Private</h4>
+            <div id="privateLists"></div>
+
+            <h4 id="public">Public</h4>
+            <div id="publicLists"></div>
+
+            <!-- To be used when we implement individual lists -->
+            <h4 id="individual">Shared with me</h4>
+            <div id="individualLists"></div>
+        </div>
 
         <div id="newListSB">
             <img id="addImgSB" src="add.png">
@@ -214,6 +214,9 @@
     let rightContainer = document.getElementById('containerR');
 
     allLists.addEventListener('click', function () {
+        // hide the newlist button
+        newList.style = "display:none";
+
         showLists(leftContainer, "allpublic");
         leftHeader.innerHTML = "Lists";
         rightContainer.style = "display:none";
@@ -227,7 +230,6 @@
 
     // show the newlist button
     newList.style = "display:block";
-
 
 
     // GET list ---------------------------------------------------------------------------------------------
@@ -307,8 +309,40 @@
 
     // Details list -----------------------------------------------------------------------------------------
     let title = document.getElementById('listTitle');
-    let btnCreateTask = document.createElement('button');
-    btnCreateTask.innerHTML = "Add Task";
+    let newTask = document.createElement('div');
+
+    let taskName = document.createElement('input');
+    taskName.style = "display:none";
+    newTask.appendChild(taskName);
+
+    let taskAddImg = document.createElement('img');
+    taskAddImg.setAttribute('src', "add.png");
+    newTask.appendChild(taskAddImg);
+
+    let taskAddTxt = document.createElement('p');
+    taskAddTxt.innerHTML = "Add task";
+    newTask.appendChild(taskAddTxt);
+
+    // POST task
+    newTask.addEventListener('click', function () {
+        taskAddImg.style = "display:none";
+        taskAddTxt.style = "display:none";
+        taskName.style = "display:block;border:1px solid red";
+        taskName.value = "My new task";
+    });
+
+    taskName.addEventListener('blur', function () {
+        taskAddImg.style = "display:block";
+        taskAddTxt.style = "display:block";
+        taskName.style = "display:none";
+    });
+
+    taskName.addEventListener('keydown', function () {
+        if (event.keyCode == 13 && taskName.value) {
+            createTask(taskName.value);
+        }
+    });
+
 
     async function openList() {
 
@@ -327,11 +361,8 @@
         leftContainer.innerHTML = "";
         rightContainer.innerHTML = "";
 
+        // GET tasks 
         loadTasks();
-
-        btnCreateTask.addEventListener('click', function () {
-            ///TODO create new task
-        });
 
         // show share, addPeople and delete btns based on shared property of this list
         if (list.shared == 0 || list.shared == 2) {
@@ -349,6 +380,9 @@
         btnListDelete.style = "display:block";
     }
 
+    document.addEventListener('newTaskClick', function () {
+        console.log("click");
+    });
 
     // PUT list --------------------------------------------------------------------------------------------
     // name ----------------------------------------------------
@@ -464,12 +498,46 @@
         }
     }
 
+    // POST tasks --------------------------------------------------------------------------------------------
+    async function createTask(name) {
+        console.log("POST");
+        let url = "http://localhost:3000/tasks";
+
+        let list = JSON.parse(localStorage.getItem('listinfo'));
+
+        let updata = {
+            name: name,
+            list: list.id,
+        }
+
+        let cfg = {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+                "authorisation": token
+            },
+            body: JSON.stringify(updata)
+        }
+
+        try {
+            var resp = await fetch(url, cfg);
+            var data = await resp.json();
+            // reload the tasks of the current list
+            loadTasks();
+            taskAddImg.style = "display:block";
+            taskAddTxt.style = "display:block";
+            taskName.style = "display:none";
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
 
     // GET tasks ---------------------------------------------------------------------------------------------
     async function loadTasks() {
         showTasks(rightContainer, 1);
         await showTasks(leftContainer, 0);
-        leftContainer.appendChild(btnCreateTask);
+        leftContainer.appendChild(newTask);
     }
 
     async function showTasks(container, completed) {
@@ -501,6 +569,7 @@
 
                 let div = document.createElement('div');
 
+                // PUT task
                 ///TODO replace by img
                 let checkbox = document.createElement('button');
                 if (!completed) {
@@ -527,6 +596,7 @@
                 });
                 div.appendChild(taskName);
 
+                // DELETE task
                 ///TODO replace by img
                 let btnTaskDelete = document.createElement('button');
                 btnTaskDelete.innerHTML = "Delete";
