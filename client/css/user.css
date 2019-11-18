@@ -10,6 +10,15 @@ body{
     
 }
 
+#addImg {
+    height: 100px;
+    width: 100px;
+    display: block;
+    margin: 0 auto;
+    cursor: pointer;  
+
+}
+
 *{
     font-family: Arial Rounded MT Bold;
 }
@@ -21,7 +30,8 @@ body{
     height: 50px;
     transition: .5s;
     white-space: nowrap;
-    text-align: center;   
+    text-align: center; 
+      
 }
 
 
@@ -54,6 +64,7 @@ button{
     left: 3%;
     font-size: 30px;
     padding-bottom: 40px;
+    
     
 }
 
