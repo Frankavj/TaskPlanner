@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My document</title>
+    <title>User</title>
     <link rel="stylesheet" href="../css/user.css">
 </head>
 
@@ -66,8 +66,8 @@
             // Add username and email
             let div = document.createElement('div');
             let html = `<img id="addImg" src="../img/pic.png">
-                        <h3>${user.username}</h3>
-                        <p>${user.email}</p>`;
+                        <h3 class="username">${user.username}</h3>
+                        <p class="email">${user.email}</p>`;
             div.innerHTML = html;
 
             // Change email button
@@ -79,6 +79,7 @@
             });
 
             div.appendChild(btnEmail);
+            btnEmail.setAttribute("class", "btnEmail");
 
             // Change username button
             let btnUsername = document.createElement('button');
@@ -89,6 +90,7 @@
             });
 
             div.appendChild(btnUsername);
+            btnUsername.setAttribute("class", "btnUsername");
 
             // Change password button
             let btnPwd = document.createElement('button');
@@ -99,6 +101,7 @@
             });
 
             div.appendChild(btnPwd);
+            btnPwd.setAttribute("class", "btnPwd");
 
             // Delete button
             let btnDelete = document.createElement('button');
@@ -108,6 +111,7 @@
             });
 
             div.appendChild(btnDelete);
+            btnDelete.setAttribute("class", "btnDelete");
 
             // Log out button
             let btnLogOut = document.createElement('button');
