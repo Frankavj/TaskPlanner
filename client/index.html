@@ -15,7 +15,7 @@
 
 
     <div class="list">
-        <img src="boy_2.png" id="myProfile">
+        <img src="/img/boy_2.png" id="myProfile">
         <h2 id="allLists">Public Lists</h2>
 
         <div id="myList">
@@ -33,7 +33,7 @@
 
             <!-- All te stuff to create new lists -->
             <div id="newListSB">
-                <img id="addImgSB" src="add.png">
+                <img id="addImgSB" src="/img/add.png">
                 <input type="text" id="inpNameSB" class="hidden">
             </div>
         </div>
@@ -61,13 +61,13 @@
 
         <div id="newList" class="hidden">
             <p id="createTxt">Create new list</p>
-            <img id="addImg" src="add.png">
+            <img id="addImg" src="/img/add.png">
             <input type="text" id="inpName" class="hidden">
         </div>
 
-        <img id="btnShare" class="hidden" src="add.png"></img>
-        <img id="btnAddPeople" class="hidden" src="add.png"></img>
-        <img id="btnListDelete" class="hidden" src="add.png"></img>
+        <img id="btnShare" class="hidden" src="/img/share.png"></img>
+        <img id="btnAddPeople" class="hidden" src="/img/share_with_friend.png"></img>
+        <img id="btnListDelete" class="hidden" src="/img/trash.png"></img>
 
     </div>
     <!--list class ends-->
@@ -315,7 +315,7 @@
     newTask.appendChild(taskName);
 
     let taskAddImg = document.createElement('img');
-    taskAddImg.setAttribute('src', "add.png");
+    taskAddImg.setAttribute('src', "/img/add.png");
     newTask.appendChild(taskAddImg);
 
     let taskAddTxt = document.createElement('p');
@@ -366,14 +366,13 @@
         // show share, addPeople and delete btns based on shared property of this list
         if (list.shared == 0 || list.shared == 2) {
             // private or individual
-            // later: change img src, for now use btns
             btnShare.classList.remove("hidden");
-            btnShare.innerHTML = "Share";
+            btnShare.setAttribute("src", "/img/share.png")
             btnAddPeople.classList.remove("hidden");;
         } else if (list.shared == 1) {
-            // later: change img src, for now use btns
+            // public
             btnShare.classList.remove("hidden");
-            btnShare.innerHTML = "Unshare";
+            btnShare.setAttribute("src", "/img/share.png")
             btnAddPeople.classList.add("hidden");;
         }
         btnListDelete.classList.remove("hidden");;
@@ -571,12 +570,12 @@
                 // PUT task
                 let checkbox = document.createElement('img');
                 if (!completed) {
-                    checkbox.setAttribute("src", "add.png"); // img: empty checkbox
+                    checkbox.setAttribute("src", "/img/unchecked_check.png"); // img: empty checkbox
                     checkbox.addEventListener('click', function () {
                         updateTask(value.id, "completed", 1);
                     });
                 } else {
-                    checkbox.setAttribute("src", "add.png"); // img: checked box
+                    checkbox.setAttribute("src", "/img/check.png"); // img: checked box
                     checkbox.addEventListener('click', function () {
                         updateTask(value.id, "completed", 0);
                     });
@@ -596,7 +595,7 @@
 
                 // DELETE task
                 let btnTaskDelete = document.createElement('img');
-                btnTaskDelete.setAttribute("src", "add.png");
+                btnTaskDelete.setAttribute("src", "/img/trash.png");
                 btnTaskDelete.addEventListener('click', function () {
                     deleteTask(value.id);
                 });
