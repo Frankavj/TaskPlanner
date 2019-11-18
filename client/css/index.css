@@ -97,7 +97,9 @@ body {
   height: 25px;
   width: 25px;
   cursor: pointer;
-}
+  float: left;
+  grid-area: addI;
+  }
 
 #btnShare:hover {
   background-color: #f1f1f1;
@@ -108,6 +110,8 @@ body {
   height: 25px;
   width: 25px;
   cursor: pointer;
+  float: left;
+  grid-area: addI;
 }
 
 #btnAddPeople:hover {
@@ -119,6 +123,8 @@ body {
   height: 25px;
   width: 25px;
   cursor: pointer;
+  float: left;
+  grid-area: addI;
 }
 
 #btnListDelete:hover {
@@ -157,17 +163,20 @@ body {
   height: 25px;
   width: 25px;
   cursor: pointer;
+  margin-left: 1%;
 }
 
 .checkbox:hover {
   background-color: #f1f1f1;
-  opacity: 50%;
+  opacity: 20%;
 }
 
 .taskName {
   height: 25px;
   width: 25px;
   cursor: pointer;
+  display: inline;
+
 }
 
 .taskName:hover {
@@ -176,9 +185,10 @@ body {
 }
 
 .deleteTask {
-  height: 25px;
+  height: 25;
   width: 25px;
   cursor: pointer;
+  float: right;
 }
 
 .deleteTask:hover {
@@ -197,6 +207,20 @@ body {
   background-color: #f1f1f1;
   opacity: 20%;
 }
+
+.addImgTask {
+  height: 25px;
+  width: 25px;
+  cursor: pointer;
+  margin-left: 90%;
+  grid-area: mL;
+}
+
+#addImgTask:hover {
+  background-color: #f1f1f1;
+  opacity: 20%;
+}
+
 
 /*log out*/
 
@@ -344,9 +368,9 @@ body {
 #addImg {
   height: 25px;
   width: 25px;
-  margin-left: 280px;
+  margin-left: 350px;
   cursor: pointer;
-  grid-area: addI addI;
+  grid-area: addI;
 }
 
 #addImg.hover {
