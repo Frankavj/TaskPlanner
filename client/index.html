@@ -20,9 +20,15 @@
             <p id="myName"></p>
         </div>
 
-        <h2 id="allLists">All Lists</h2>
+        <div class="listSB">
+            <img src="img/list.png">
+            <h2 id="allLists">All Lists</h2>
+        </div>
 
-        <h2 id="myLists">My Lists</h2>
+        <div class="listSB">
+            <img src="img/list.png">
+            <h2 id="myLists">My Lists</h2>
+        </div>
 
         <h4 id="private" class="subheading">Private</h4>
         <div id="privateLists" class="subsubheading"></div>
@@ -146,7 +152,7 @@
     let addImgSB = document.getElementById('addImgSB');
     let inpNameSB = document.getElementById('inpNameSB');
 
-    newListSB.addEventListener('click', function () {
+    addImgSB.addEventListener('click', function () {
         addImgSB.classList.add('hidden');
         inpNameSB.classList.remove("hidden");
     });
@@ -277,13 +283,13 @@
                 name.innerHTML = value.name;
                 div.appendChild(name);
 
-                if((container.id == "containerR" || container.id == "containerL") && shared.localeCompare("allpublic")) {
+                if ((container.id == "containerR" || container.id == "containerL") && shared.localeCompare("allpublic")) {
                     div.setAttribute('class', "deleteable");
                     name.classList.add('class', "whitebox");
                     let delList = document.createElement('img');
                     delList.setAttribute('src', "/img/trash.png");
                     delList.setAttribute('class', 'deleteTask');
-                    delList.addEventListener('click', function() {
+                    delList.addEventListener('click', function () {
                         deleteList(value.id);
                     });
                     div.appendChild(delList);
