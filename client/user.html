@@ -5,12 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My document</title>
+    <link rel="stylesheet" href="../css/user.css">
 </head>
 
 <body>
     
-    <button id="btnBack">Back</button>
-    <div id="container"></div>
+   
+    <button class="back" id="btnBack">«</button>
+    <div class="container" id="container"></div>
+    <img id="addImg" src="boy_2.png" >
+
     
 </body>
 
@@ -107,6 +111,8 @@
             });
 
             div.appendChild(btnLogOut);
+
+            btnLogOut.setAttribute("class", "logout");
 
             container.appendChild(div);
 
