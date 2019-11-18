@@ -10,7 +10,8 @@ body {
   min-height: 100vh;
   background: url("../img/bakgrunn_forslag.jpg") no-repeat center center fixed;
   background-size: cover;
-  padding-left: 300px;  /* 300px: width of sidebar */
+  padding-left: 300px;
+  /* 300px: width of sidebar */
   display: grid;
   justify-items: center;
   align-items: center;
@@ -46,6 +47,7 @@ body {
 }
 
 /*homepage*/
+
 .home {
   width: 80%;
   height: 65%;
@@ -94,7 +96,7 @@ body {
 #btnShare {
   height: 25px;
   width: 25px;
-  cursor: pointer; 
+  cursor: pointer;
 }
 
 #btnShare:hover {
@@ -105,7 +107,7 @@ body {
 #btnAddPeople {
   height: 25px;
   width: 25px;
-  cursor: pointer; 
+  cursor: pointer;
 }
 
 #btnAddPeople:hover {
@@ -116,7 +118,7 @@ body {
 #btnListDelete {
   height: 25px;
   width: 25px;
-  cursor: pointer; 
+  cursor: pointer;
 }
 
 #btnListDelete:hover {
@@ -151,51 +153,50 @@ body {
 
 /*btn delete...*/
 
-    .checkbox {
-      height: 25px;
-      width: 25px;
-      cursor: pointer; 
-    }
-    
-    .checkbox:hover {
-      background-color: #f1f1f1;
-      opacity: 50%;
-    }
-
-    .taskName {
-      height: 25px;
-      width: 25px;
-      cursor: pointer; 
-    }
-    
-    .taskName:hover {
-      background-color: #f1f1f1;
-      opacity: 50%;
-    }
-
-    .deleteTask {
-     height: 25px;
-     width: 25px;
-     cursor: pointer; 
+.checkbox {
+  height: 25px;
+  width: 25px;
+  cursor: pointer;
 }
 
-  .deleteTask:hover {
-    background-color: #f1f1f1;
-    opacity: 50%;
-  }
+.checkbox:hover {
+  background-color: #f1f1f1;
+  opacity: 50%;
+}
 
-  #addImgSB {
-    height: 25px;
-    width: 25px;
-    cursor: pointer;
-    grid-area: mL;
+.taskName {
+  height: 25px;
+  width: 25px;
+  cursor: pointer;
+}
+
+.taskName:hover {
+  background-color: #f1f1f1;
+  opacity: 50%;
+}
+
+.deleteTask {
+  height: 25px;
+  width: 25px;
+  cursor: pointer;
+}
+
+.deleteTask:hover {
+  background-color: #f1f1f1;
+  opacity: 50%;
+}
+
+#addImgSB {
+  height: 25px;
+  width: 25px;
+  cursor: pointer;
+  grid-area: mL;
 }
 
 #addImgSB:hover {
   background-color: #f1f1f1;
   opacity: 20%;
 }
-
 
 /*log out*/
 
@@ -221,14 +222,13 @@ body {
 
 /*private lists box*/
 
-  #containerL div {
-    background-color: #f1f1f1;
-    border-radius: 10px;
-    padding: 5px;
-    margin: 10px;
-    cursor: pointer;
-  }
-
+#containerL div {
+  background-color: #f1f1f1;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 10px;
+  cursor: pointer;
+}
 
 #containerL {
   border-style: solid;
@@ -251,17 +251,17 @@ body {
   opacity: 20%;
 }
 
-  #listName {
-    height: 25px;
-    width: 25px;
-    cursor: pointer; 
+#listName {
+  height: 25px;
+  width: 25px;
+  cursor: pointer;
 }
 
-  #listName:hover {
-   background-color: #a71717;
-   opacity: 20%;
-  }
-  
+#listName:hover {
+  background-color: #a71717;
+  opacity: 20%;
+}
+
 /*private lists box ENDS*/
 
 /*public lists box*/
