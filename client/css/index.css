@@ -4,6 +4,8 @@
   text-decoration: none;
   font-family: Arial Rounded MT Bold;
   box-sizing: border-box;
+  --offwhite: #f1f1f1;
+  --grey: #BEC5BE;
 }
 
 body {
@@ -28,7 +30,7 @@ input {
 /*sidebar class*/
 
 .list {
-  background: #f1f1f1;
+  background: var(--offwhite);
   width: 300px;
   left: 0;
   top: 0;
@@ -69,7 +71,7 @@ input {
 .home {
   grid-area: home;
   align-items: center;
-  background: #f1f1f1;
+  background: var(--offwhite);
   padding: 10px;
   opacity: 90%;
   border-radius: 5px;
@@ -98,17 +100,8 @@ input {
   height: 10px;
 }
 
-/*My lists placement*/
-
-#privateLists {
-  overflow-x: scroll;
-}
-
-#privateLists {
-  overflow-x: scroll;
-}
-
 /* New list button in the sidebar */
+
 #addImgSB {
   height: 25px;
   cursor: pointer;
@@ -116,7 +109,7 @@ input {
 }
 
 #addImgSB:hover {
-  background-color: #f1f1f1;
+  background-color: var(--offwhite);
   opacity: 20%;
 }
 
@@ -129,7 +122,7 @@ input {
 }
 
 #listTitle:hover {
-  background-color: #f1f1f1;
+  background-color: var(--offwhite);
   opacity: 20%;
 }
 
@@ -145,7 +138,7 @@ input {
 }
 
 #btnShare:hover {
-  background-color: #f1f1f1;
+  background-color: var(--offwhite);
   opacity: 50%;
 }
 
@@ -157,7 +150,7 @@ input {
 }
 
 #btnAddPeople:hover {
-  background-color: #f1f1f1;
+  background-color: var(--offwhite);
   opacity: 50%;
 }
 
@@ -169,7 +162,7 @@ input {
 }
 
 #btnListDelete:hover {
-  background-color: #f1f1f1;
+  background-color: var(--offwhite);
   opacity: 50%;
 }
 
@@ -184,7 +177,7 @@ input {
 }
 
 #myProfile:hover {
-  background-color: #f1f1f1;
+  background-color: var(--offwhite);
   opacity: 20%;
 }
 
@@ -199,10 +192,26 @@ input {
 /*Profile icon ENDS*/
 
 /* List detail display*/
+
+.deleteable {
+  display: grid;
+  grid-template-columns: auto 35px;
+  align-items: center;
+  background-color: var(--grey) !important;
+  padding: 0 !important;
+}
+
 .task {
   display: grid;
-  grid-template-columns: 25px auto 25px;
+  grid-template-columns: 25px auto;
   align-items: center;
+}
+
+.whitebox {
+  background-color: var(--offwhite);
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
 }
 
 .checkbox {
@@ -211,7 +220,7 @@ input {
 }
 
 .checkbox:hover {
-  background-color: #f1f1f1;
+  background-color: var(--offwhite);
   opacity: 20%;
 }
 
@@ -220,17 +229,17 @@ input {
 }
 
 .taskName:hover {
-  background-color: #f1f1f1;
+  background-color: var(--offwhite);
   opacity: 50%;
 }
 
 .deleteTask {
-  width: 25px;
+  height: 25px;
   cursor: pointer;
+  margin-left:10px;
 }
 
 .deleteTask:hover {
-  background-color: #f1f1f1;
   opacity: 50%;
 }
 
@@ -239,7 +248,7 @@ input {
   grid-template-columns: 25px auto;
   align-items: center;
   width: 50%;
-  background-color: #BEC5BE !important;
+  background-color: var(--grey) !important;
 }
 
 .newTask:hover {
@@ -256,7 +265,7 @@ input {
 }
 
 #addImgTask:hover {
-  background-color: #f1f1f1;
+  background-color: var(--offwhite);
   opacity: 20%;
 }
 
@@ -277,12 +286,12 @@ input {
   border: none;
   background: linear-gradient(120deg, #9b9b9a, #bbd2c5, #9c9fa1);
   background-size: 200%;
-  color: #f1f1f1;
+  color: var(--offwhite);
   outline: none;
   cursor: pointer;
   transition: .5s;
   grid-area: lO;
-  padding:10px;
+  padding: 10px;
 }
 
 #logout:hover {
@@ -292,8 +301,9 @@ input {
 /*log out ENDS*/
 
 /* general list box style */
+
 .container {
-  background-color: #BEC5BE;
+  background-color: var(--grey);
   border-radius: 5px;
   padding: 10px;
   margin: 10px;
@@ -302,7 +312,7 @@ input {
 }
 
 .container>div {
-  background-color: #f1f1f1;
+  background-color: var(--offwhite);
   border-radius: 5px;
   padding: 5px;
   margin: 5px 5px 10px 5px;
@@ -338,21 +348,10 @@ input {
 
 /*right lists box ENDS*/
 
-#listName {
-  height: 25px;
-  width: 25px;
-  cursor: pointer;
-}
-
-#listName:hover {
-  background-color: #a71717;
-  opacity: 20%;
-}
-
 #newList {
   grid-area: footerL;
   height: 30px;
-  background-color: #BEC5BE;
+  background-color: var(--grey);
   border-radius: 5px;
   padding-left: 10px;
   padding-right: 10px;
@@ -375,7 +374,7 @@ input {
 }
 
 #addImg.hover {
-  background-color: #f1f1f1;
+  background-color: var(--offwhite);
   opacity: 50%;
 }
 
@@ -390,7 +389,7 @@ input {
 }
 
 #allLists:hover {
-  background-color: #f1f1f1;
+  background-color: var(--offwhite);
   opacity: 40%;
 }
 
@@ -404,11 +403,12 @@ input {
 }
 
 #private:hover {
-  background-color: #f1f1f1;
+  background-color: var(--offwhite);
   opacity: 40%;
 }
 
 #privateLists {
+  height: 100%;
   grid-area: privateLists;
   overflow-x: scroll;
 }
@@ -419,11 +419,12 @@ input {
 }
 
 #public:hover {
-  background-color: #f1f1f1;
+  background-color: var(--offwhite);
   opacity: 40%;
 }
 
 #publicLists {
+  height: 100%;
   grid-area: publicLists;
   overflow-x: scroll;
 }
@@ -434,12 +435,14 @@ input {
 }
 
 #individual:hover {
-  background-color: #f1f1f1;
+  background-color: var(--offwhite);
   opacity: 40%;
 }
 
 #individualLists {
   grid-area: individualLists;
+  height: 100%;
+  overflow-x: scroll;
 }
 
 #newListSB {
@@ -461,4 +464,3 @@ input {
 .listName:hover {
   opacity: 20%;
 }
-

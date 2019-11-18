@@ -272,9 +272,22 @@
             for (let value of data) {
 
                 let div = document.createElement('div');
-                let html;
-                html = `<p class="listName">${value.name}</p>`;
-                div.innerHTML = html;
+                let name = document.createElement('p');
+                name.classList.add('class', "listName");
+                name.innerHTML = value.name;
+                div.appendChild(name);
+
+                if((container.id == "containerR" || container.id == "containerL") && shared.localeCompare("allpublic")) {
+                    div.setAttribute('class', "deleteable");
+                    name.classList.add('class', "whitebox");
+                    let delList = document.createElement('img');
+                    delList.setAttribute('src', "/img/trash.png");
+                    delList.setAttribute('class', 'deleteTask');
+                    delList.addEventListener('click', function() {
+                        deleteList(value.id);
+                    });
+                    div.appendChild(delList);
+                }
 
                 div.addEventListener('click', function (evt) {
                     localStorage.setItem('listinfo', JSON.stringify(value));
@@ -319,7 +332,7 @@
     }
 
 
-    // Details list -----------------------------------------------------------------------------------------
+    // Open list -----------------------------------------------------------------------------------------
     let title = document.getElementById('listTitle');
     let newTask = document.createElement('div');
     newTask.setAttribute('class', "newTask");
@@ -395,10 +408,6 @@
         }
         btnListDelete.classList.remove("hidden");
     }
-
-    document.addEventListener('newTaskClick', function () {
-        console.log("click");
-    });
 
     // PUT list --------------------------------------------------------------------------------------------
     // name ----------------------------------------------------
@@ -585,7 +594,11 @@
             for (let value of data) {
 
                 let div = document.createElement('div');
-                div.setAttribute('class', 'task');
+                div.setAttribute('class', 'deleteable');
+
+                let whitebox = document.createElement('div');
+                whitebox.setAttribute('class', 'task whitebox');
+                div.appendChild(whitebox);
 
                 // PUT task
                 let checkbox = document.createElement('img');
@@ -601,7 +614,7 @@
                         updateTask(value.id, "completed", 0);
                     });
                 }
-                div.appendChild(checkbox);
+                whitebox.appendChild(checkbox);
 
                 let taskName = document.createElement('p');
                 taskName.setAttribute("class", "taskName");
@@ -613,7 +626,7 @@
                         updateTask(value.id, "name", taskName.innerHTML);
                     }
                 });
-                div.appendChild(taskName);
+                whitebox.appendChild(taskName);
 
                 // DELETE task
                 let btnTaskDelete = document.createElement('img');
