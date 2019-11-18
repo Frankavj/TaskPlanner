@@ -17,17 +17,35 @@ body{
     width: 160px;
     display: block;
     margin: 0 auto;
-    cursor: pointer;  
+    cursor: pointer;
     position: relative;
+    bottom: 590px;
+    
 }
 
+#addImg:hover {
+    opacity: 90%;
+    background: url("../img/add.png");
+    background-repeat: no-repeat;
+    background-size: 20px 20px; 
+
+
+}   
+
+
+
+
 #addLine {
-    height: 160px;
-    width: 100px;
+    height: 320%;
+    width: 100%;
     display: block;
     margin: 0 auto;  
     position: relative;
-    margin-top: 155px;
+    z-index: 999999;
+    bottom: 15%;
+    
+
+
 }
 
 
@@ -40,7 +58,7 @@ body{
     transition: .5s;
     white-space: nowrap;
     text-align: center; 
-      
+    
 }
 
 
@@ -52,12 +70,6 @@ button{
     
 }
 
-
-
-
-.logout {
-    grid-area: logout;
-}
 
 
 .back {
@@ -93,9 +105,39 @@ div {
     transform: translate(-50%,-50%);
     display: grid;
     grid-auto-columns: 1fr;
-    grid-auto-rows: 30px 90px 60px 60px 60px 80px 50px;
-    grid-template-areas: "img" "username" "email" "changeEmail" "changeUsername" "resetPassword" "logout";
+    grid-auto-rows:    30px 70px 60px 60px 60px 60px 100px;
+    grid-template-areas:  "username" "email" "changeEmail" "changeUsername" "resetPassword" "deleteAccount" "logout";
+    
     
 }
 
   
+/* Grid area */
+.username {
+    grid-area: username;
+}
+
+.email {
+    grid-area: email;
+}
+    
+.btnEmail{
+    grid-area: changeEmail;
+}
+
+.btnUsername {
+    grid-area: changeUsername;
+}
+
+.btnPwd {
+    grid-area: resetPassword;
+} 
+
+.btnDelete {
+    grid-area: deleteAccount; 
+}
+
+.logout {
+    grid-area:logout;
+}
+
