@@ -262,7 +262,7 @@
 
                 let div = document.createElement('div');
                 let html;
-                html = `<p>${value.name}</p>`;
+                html = `<p class="listName">${value.name}</p>`;
                 div.innerHTML = html;
 
                 div.addEventListener('click', function (evt) {
@@ -372,7 +372,7 @@
         } else if (list.shared == 1) {
             // public
             btnShare.classList.remove("hidden");
-            btnShare.setAttribute("src", "/img/share.png")
+            btnShare.setAttribute("src", "/img/unshare.png")
             btnAddPeople.classList.add("hidden");;
         }
         btnListDelete.classList.remove("hidden");;
@@ -569,6 +569,7 @@
 
                 // PUT task
                 let checkbox = document.createElement('img');
+                checkbox.setAttribute("class", "checkbox");
                 if (!completed) {
                     checkbox.setAttribute("src", "/img/unchecked_check.png"); // img: empty checkbox
                     checkbox.addEventListener('click', function () {
@@ -583,6 +584,7 @@
                 div.appendChild(checkbox);
 
                 let taskName = document.createElement('p');
+                taskName.setAttribute("class", "taskName");
                 taskName.innerHTML = value.name;
                 taskName.contentEditable = true;
                 taskName.addEventListener('keydown', function (evt) {
@@ -595,6 +597,7 @@
 
                 // DELETE task
                 let btnTaskDelete = document.createElement('img');
+                btnTaskDelete.setAttribute("class", "deleteTask");
                 btnTaskDelete.setAttribute("src", "/img/trash.png");
                 btnTaskDelete.addEventListener('click', function () {
                     deleteTask(value.id);
