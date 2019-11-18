@@ -46,7 +46,6 @@ body {
 }
 
 /*homepage*/
-
 .home {
   width: 80%;
   height: 65%;
@@ -92,6 +91,39 @@ body {
   opacity: 20%;
 }
 
+#btnShare {
+  height: 25px;
+  width: 25px;
+  cursor: pointer; 
+}
+
+#btnShare:hover {
+  background-color: #f1f1f1;
+  opacity: 50%;
+}
+
+#btnAddPeople {
+  height: 25px;
+  width: 25px;
+  cursor: pointer; 
+}
+
+#btnAddPeople:hover {
+  background-color: #f1f1f1;
+  opacity: 50%;
+}
+
+#btnListDelete {
+  height: 25px;
+  width: 25px;
+  cursor: pointer; 
+}
+
+#btnListDelete:hover {
+  background-color: #f1f1f1;
+  opacity: 50%;
+}
+
 /*Profile icon*/
 
 #myprofile img {
@@ -117,17 +149,53 @@ body {
 
 /*Profile icon ENDS*/
 
-#addImgSB {
-  height: 25px;
-  width: 25px;
-  cursor: pointer;
-  grid-area: mL;
+/*btn delete...*/
+
+    .checkbox {
+      height: 25px;
+      width: 25px;
+      cursor: pointer; 
+    }
+    
+    .checkbox:hover {
+      background-color: #f1f1f1;
+      opacity: 50%;
+    }
+
+    .taskName {
+      height: 25px;
+      width: 25px;
+      cursor: pointer; 
+    }
+    
+    .taskName:hover {
+      background-color: #f1f1f1;
+      opacity: 50%;
+    }
+
+    .deleteTask {
+     height: 25px;
+     width: 25px;
+     cursor: pointer; 
+}
+
+  .deleteTask:hover {
+    background-color: #f1f1f1;
+    opacity: 50%;
+  }
+
+  #addImgSB {
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+    grid-area: mL;
 }
 
 #addImgSB:hover {
   background-color: #f1f1f1;
   opacity: 20%;
 }
+
 
 /*log out*/
 
@@ -153,18 +221,14 @@ body {
 
 /*private lists box*/
 
-#containerL div {
-  background-color: #f1f1f1;
-  border-radius: 10px;
-  padding: 5px;
-  margin: 10px;
-  cursor: pointer;
-}
+  #containerL div {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 10px;
+    cursor: pointer;
+  }
 
-#containerL div:hover {
-  background-color: #f1f1f1;
-  opacity: 50%;
-}
 
 #containerL {
   border-style: solid;
@@ -187,6 +251,17 @@ body {
   opacity: 20%;
 }
 
+  #listName {
+    height: 25px;
+    width: 25px;
+    cursor: pointer; 
+}
+
+  #listName:hover {
+   background-color: #a71717;
+   opacity: 20%;
+  }
+  
 /*private lists box ENDS*/
 
 /*public lists box*/
@@ -199,11 +274,6 @@ body {
   cursor: pointer;
 }
 
-#containerR div:hover {
-  background-color: #f1f1f1;
-  opacity: 50%;
-}
-
 #containerR {
   border-style: solid;
   border-width: 0px;
@@ -213,17 +283,6 @@ body {
   margin: 10px;
   grid-area: cR;
   overflow-x: scroll;
-}
-
-#containerR.scroll {
-  margin: 4px, 4px;
-  padding: 4px;
-  background-color: green;
-  width: 500px;
-  height: 110px;
-  overflow-x: hidden;
-  overflow-x: auto;
-  text-align: justify;
 }
 
 #columnR {
