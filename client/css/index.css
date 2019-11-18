@@ -60,7 +60,7 @@
     grid-template-areas: "title title "
                          "hL hR"
                          "cL cR"
-                         "add add";
+                         "addI addI";
    
   }
   
@@ -72,7 +72,7 @@
     padding: 0 5px;
     }
 
-    /*publiclist placement*/
+/*publiclist placement*/
   #allListsContainer {
       height: 10px;
     }
@@ -84,7 +84,7 @@
       height: 40px;
     }
 
-/*oh hello placement*/ 
+/*Welcome back placement*/ 
 
   #listTitle {
     cursor: pointer;
@@ -123,6 +123,20 @@
     }
 
 /*Profile icon ENDS*/
+
+  #addImgSB {
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+    grid-area: mL;
+}
+
+#addImgSB:hover{
+          
+  background-color: #f1f1f1;
+  opacity: 20%;
+        
+  }
 
 /*log out*/
 
@@ -228,11 +242,11 @@
   }
 
  #columnR {
-  cursor: pointer;
-  grid-area: hR;
+    cursor: pointer;
+    grid-area: hR;
   }
 
-#columnR:hover {
+  #columnR:hover {
     background-color: #f1f1f1;
     opacity: 20%;
     }
@@ -241,7 +255,7 @@
 
 /*ADD list sidebar*/
 
-
+/*
   #createListSidebar {
     border-width: 0px;
     height: 25px; 
@@ -281,14 +295,31 @@
 
   /*ADD list home private and public ENDS*/
 
-  #myList {
+
+  
+
+/*addbutton in home*/
+#addImg {
+  height: 25px;
+  width: 25px;
+  margin-left: 280px;
+  cursor: pointer;  
+  grid-area: addI addI;
+}
+
+#addImg.hover {
+  background-color: #f1f1f1;
+  opacity: 50%;
+}
+
+/*List in sidebar*/
+
+
+
+#myList {
     cursor: pointer;
     grid-area: mL;
   }
-
- 
-
-
 
 #allLists {
   cursor: pointer;

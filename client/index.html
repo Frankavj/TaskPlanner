@@ -30,12 +30,13 @@
         <!-- To be used when we implement individual lists -->
         <h4 id="individual">Shared with me</h4>
         <div id="individualLists"></div>
-    </div>
 
+        <!-- All te stuff to create new lists -->
         <div id="newListSB">
             <img id="addImgSB" src="add.png">
             <input type="text" id="inpNameSB" style="display:none">
         </div>
+    </div>
 
         <button id="logout">Log Out</button>
 
@@ -224,7 +225,6 @@
     // GET private and public lists of user (homepage) ------------------------------------------------------
     showLists(leftContainer, "private");
     showLists(rightContainer, "public");
-
     // show the newlist button
     newList.style = "display:block";
 
