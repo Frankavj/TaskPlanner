@@ -96,6 +96,38 @@
     opacity: 20%;
   }
 
+#btnShare {
+  height: 25px;
+  width: 25px;
+  cursor: pointer; 
+}
+
+#btnShare:hover {
+  background-color: #f1f1f1;
+  opacity: 50%;
+}
+
+#btnAddPeople {
+  height: 25px;
+  width: 25px;
+  cursor: pointer; 
+}
+
+#btnAddPeople:hover {
+  background-color: #f1f1f1;
+  opacity: 50%;
+}
+
+#btnListDelete {
+  height: 25px;
+  width: 25px;
+  cursor: pointer; 
+}
+
+#btnListDelete:hover {
+  background-color: #f1f1f1;
+  opacity: 50%;
+}
 
 /*Profile icon*/
 
