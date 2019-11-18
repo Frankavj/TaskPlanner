@@ -1,5 +1,7 @@
 
-
+*{
+    font-family: Arial Rounded MT Bold;
+}
 
 body{
     min-height: 100vh;
@@ -11,17 +13,24 @@ body{
 }
 
 #addImg {
-    height: 100px;
-    width: 100px;
+    height: 160px;
+    width: 160px;
     display: block;
     margin: 0 auto;
     cursor: pointer;  
-
+    position: relative;
 }
 
-*{
-    font-family: Arial Rounded MT Bold;
+#addLine {
+    height: 160px;
+    width: 100px;
+    display: block;
+    margin: 0 auto;  
+    position: relative;
+    margin-top: 155px;
 }
+
+
 
 
 .container{
@@ -42,6 +51,8 @@ button{
     cursor: pointer;
     
 }
+
+
 
 
 .logout {
