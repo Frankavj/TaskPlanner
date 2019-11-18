@@ -13,16 +13,14 @@
    
     <button class="back" id="btnBack">«</button>
     <div class="container" id="container"></div>
-    <img id="addImg" src="../img/pic.png">
-    <img id="addLine" src="../img/lines.png">
 
-    
 </body>
 
 <script>
 
     let container = document.getElementById("container");
     let btnBack = document.getElementById('btnBack');
+    
 
     let url = "http://localhost:3000/users";
 
@@ -59,9 +57,17 @@
 
             container.innerHTML = ""; // delete previous content
 
+            // Add pretty lines
+            let addLine = document.createElement('img');
+            addLine.setAttribute("src", "../img/lines.png");
+            addLine.setAttribute("id", "addLine");
+            container.appendChild(addLine);
+
+            // Add username and email
             let div = document.createElement('div');
-            let html = `<h3>${user.username}</h3>
-                            <p>${user.email}</p>`;
+            let html = `<img id="addImg" src="../img/pic.png">
+                        <h3>${user.username}</h3>
+                        <p>${user.email}</p>`;
             div.innerHTML = html;
 
             // Change email button
