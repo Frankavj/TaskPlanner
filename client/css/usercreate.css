@@ -8,7 +8,8 @@
 
 body{
   min-height: 100vh;
-  background-image: url("../img/bakgrunn_forslag.jpg");
+  background: url("../img/bakgrunn_forslag.jpg") no-repeat center center fixed;
+  background-size: cover;
 }
 
 .login-form{

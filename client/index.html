@@ -17,22 +17,26 @@
     <div class="list">
         <img src="boy_2.png" id="myProfile">
         <h2 id="allLists">Public Lists</h2>
-        <div id="allListsContainer"></div>
 
-        <h2>My Lists</h2>
+        <div id="myList">
+            <h2>My Lists</h2>
 
+            <h4 id="private">Private</h4>
+            <div id="privateLists"></div>
 
-        <h4 id="private">Private</h4>
-        <div id="privateLists"></div>
+            <h4 id="public">Public</h4>
+            <div id="publicLists"></div>
 
-        <h4 id="public">Public</h4>
-        <div id="publicLists"></div>
+            <!-- To be used when we implement individual lists -->
+            <h4 id="individual">Shared with me</h4>
+            <div id="individualLists"></div>
 
-        <!-- To be used when we implement individual lists -->
-        <h4 id="individual">Shared with me</h4>
-        <div id="individualLists"></div>
-
-        <img src="add.png" id="createListSidebar">
+            <!-- All te stuff to create new lists -->
+            <div id="newListSB">
+                <img id="addImgSB" src="add.png">
+                <input type="text" id="inpNameSB" class="hidden">
+            </div>
+        </div>
 
         <button id="logout">Log Out</button>
 
@@ -50,18 +54,20 @@
         <!--style= "border-width: 1; border: solid; color: grey";-->
 
         <h3 id="columnL">Private Lists</h3>
-        <div id="containerL">
-            <img id="createList" src="add_home.png" />
-        </div>
+        <div id="containerL"></div>
 
         <h3 id="columnR">Public Lists</h3>
-        <div id="containerR">
-            <img id="createList" src="add_home.png" />
+        <div id="containerR"></div>
+
+        <div id="newList" class="hidden">
+            <p id="createTxt">Create new list</p>
+            <img id="addImg" src="add.png">
+            <input type="text" id="inpName" class="hidden">
         </div>
 
-        <button id="btnShare" style="display:none"></button>
-        <button id="btnAddPeople" style="display:none">Add people</button>
-        <button id="btnListDelete" style="display:none">Delete</button>
+        <img id="btnShare" class="hidden" src="add.png"></img>
+        <img id="btnAddPeople" class="hidden" src="add.png"></img>
+        <img id="btnListDelete" class="hidden" src="add.png"></img>
 
     </div>
     <!--list class ends-->
@@ -71,10 +77,27 @@
 
 <script>
 
-    let btnMyProfile = document.getElementById('myProfile');
-    let allLists = document.getElementById('allLists');
-    let allListsContainer = document.getElementById('allListsContainer');
+    let logindata = JSON.parse(sessionStorage.getItem("logindata"));
+    if (!logindata) {
+        window.location.href = "./userlogin.html";
+    }
+    let token = logindata.token;
 
+    // redirect to other pages ----------------------------------------------------------------------------
+    let btnMyProfile = document.getElementById('myProfile');
+    let btnLogout = document.getElementById('logout');
+
+    btnMyProfile.addEventListener('click', function () {
+        window.location.href = "./user.html";
+    });
+
+    btnLogout.addEventListener('click', function () {
+        sessionStorage.removeItem('logindata');
+        window.location.href = "./userlogin.html";
+    });
+
+
+    // sidebar expand/collapse -----------------------------------------------------------------------------
     let privateHeader = document.getElementById('private');
     let privateContainer = document.getElementById('privateLists');
     let publicHeader = document.getElementById('public');
@@ -82,47 +105,9 @@
     let individualHeader = document.getElementById('individual');
     let individualContainer = document.getElementById('individualLists');
 
-    let createListSidebar = document.getElementById('createListSidebar');
-    let btnLogout = document.getElementById('logout');
-
-    let title = document.getElementById('listTitle');
-
-    let leftHeader = document.getElementById('columnL');
-    let leftContainer = document.getElementById('containerL');
-    let rightHeader = document.getElementById('columnR');
-    let rightContainer = document.getElementById('containerR');
-    let createList = document.getElementById('createList');
-    let btnCreateTask = document.createElement('button');
-    btnCreateTask.innerHTML = "Add Task";
-
     let btnShare = document.getElementById('btnShare');
     let btnAddPeople = document.getElementById('btnAddPeople');
     let btnListDelete = document.getElementById('btnListDelete');
-
-    let logindata = JSON.parse(sessionStorage.getItem("logindata"));
-    if (!logindata) {
-        window.location.href = "./userlogin.html";
-    }
-    let token = logindata.token;
-
-    createListSidebar.addEventListener('click', function () {
-        window.location.href = "./listcreate.html";
-    });
-
-    createList.addEventListener('click', function () {
-        window.location.href = "./listcreate.html";
-    });
-
-    btnMyProfile.addEventListener('click', function () {
-        window.location.href = "./user.html";
-    });
-
-    allLists.addEventListener('click', function () {
-        showLists(leftContainer, "allpublic");
-        leftHeader.innerHTML = "Lists";
-        rightContainer.style = "display:none";
-        rightHeader.style = "display:none";
-    });
 
     privateHeader.addEventListener('click', function () {
         toggleLists(privateContainer, "private");
@@ -136,12 +121,6 @@
         toggleLists(individualContainer, "individual");
     });
 
-    btnLogout.addEventListener('click', function () {
-        sessionStorage.removeItem('logindata');
-        window.location.href = "./userlogin.html";
-    });
-
-    // show list in sidebar ---------------------------------------
     function toggleLists(container, shared) {
         if (container.innerHTML == "") {
             showLists(container, shared);
@@ -150,11 +129,113 @@
         }
     }
 
-    // show lists in any container --------------------------------
+
+    // POST list --------------------------------------------------------------------------------------------
+    // sidebar button ---------------------------------------
+    let newListSB = document.getElementById('newListSB');
+    let addImgSB = document.getElementById('addImgSB');
+    let inpNameSB = document.getElementById('inpNameSB');
+
+    newListSB.addEventListener('click', function () {
+        addImgSB.classList.add('hidden');
+        inpNameSB.classList.remove("hidden");
+        inpNameSB.value = "My new list";
+    });
+
+    inpNameSB.addEventListener('blur', function () {
+        addImgSB.classList.remove("hidden");
+        inpNameSB.classList.add("hidden");
+    });
+
+    inpNameSB.addEventListener('keydown', function () {
+        if (event.keyCode == 13 && inpNameSB.value) {
+            createList(inpNameSB.value);
+        }
+    });
+
+    // homepage button ---------------------------------------
+    let newList = document.getElementById('newList');
+    let addImg = document.getElementById('addImg');
+    let inpName = document.getElementById('inpName');
+    let createTxt = document.getElementById('createTxt');
+
+    newList.addEventListener('click', function () {
+        addImg.classList.add("hidden");;
+        createTxt.classList.add("hidden");;
+        inpName.classList.remove("hidden");;
+        inpName.value = "My new list";
+    });
+
+    inpName.addEventListener('blur', function () {
+        addImg.classList.remove("hidden");;
+        createTxt.classList.remove("hidden");;
+        inpName.classList.add("hidden");;
+    });
+
+    inpName.addEventListener('keydown', function () {
+        if (event.keyCode == 13 && inpName.value) {
+            createList(inpName.value);
+        }
+    });
+
+    // POST list -------------------------------------------
+    async function createList(name) {
+        let url = "http://localhost:3000/lists";
+
+        let updata = {
+            listname: name
+        }
+
+        let cfg = {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+                "authorisation": token
+            },
+            body: JSON.stringify(updata)
+        }
+
+        try {
+            var resp = await fetch(url, cfg);
+            var data = await resp.json();
+
+            window.location.reload();
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
+    // GET all public lists ---------------------------------------------------------------------------------
+    let allLists = document.getElementById('allLists');
+    let leftHeader = document.getElementById('columnL');
+    let leftContainer = document.getElementById('containerL');
+    let rightHeader = document.getElementById('columnR');
+    let rightContainer = document.getElementById('containerR');
+
+    allLists.addEventListener('click', function () {
+        // hide the newlist button
+        newList.classList.add("hidden");;
+
+        showLists(leftContainer, "allpublic");
+        leftHeader.innerHTML = "Lists";
+        rightContainer.classList.add("hidden");;
+        rightHeader.classList.add("hidden");;
+    });
+
+
+    // GET private and public lists of user (homepage) ------------------------------------------------------
+    showLists(leftContainer, "private");
+    showLists(rightContainer, "public");
+    // show the newlist button
+    newList.classList.remove("hidden");;
+
+
+    // GET list ---------------------------------------------------------------------------------------------
     async function showLists(container, shared) {
-        btnShare.style = "display:none";
-        btnAddPeople.style = "display:none";
-        btnListDelete.style = "display:none";
+        btnShare.classList.add("hidden");
+        btnAddPeople.classList.add("hidden");;
+        btnListDelete.classList.add("hidden");;
 
         try {
             let url = `http://localhost:3000/lists/${shared}`;
@@ -218,22 +299,60 @@
 
                 container.appendChild(div);
             }
+
         } catch (err) {
             console.log(err);
         }
     }
 
-    showLists(leftContainer, "private");
-    showLists(rightContainer, "public");
 
-    // open list by id (inclused showing tasks) -------------------
+    // Details list -----------------------------------------------------------------------------------------
+    let title = document.getElementById('listTitle');
+    let newTask = document.createElement('div');
+
+    let taskName = document.createElement('input');
+    taskName.classList.add("hidden");;
+    newTask.appendChild(taskName);
+
+    let taskAddImg = document.createElement('img');
+    taskAddImg.setAttribute('src', "add.png");
+    newTask.appendChild(taskAddImg);
+
+    let taskAddTxt = document.createElement('p');
+    taskAddTxt.innerHTML = "Add task";
+    newTask.appendChild(taskAddTxt);
+
+    // POST task
+    newTask.addEventListener('click', function () {
+        taskAddImg.classList.add("hidden");;
+        taskAddTxt.classList.add("hidden");;
+        taskName.classList.remove("hidden");;
+        taskName.value = "My new task";
+    });
+
+    taskName.addEventListener('blur', function () {
+        taskAddImg.classList.remove("hidden");;
+        taskAddTxt.classList.remove("hidden");;
+        taskName.classList.add("hidden");;
+    });
+
+    taskName.addEventListener('keydown', function () {
+        if (event.keyCode == 13 && taskName.value) {
+            createTask(taskName.value);
+        }
+    });
+
+
     async function openList() {
+
+        // hide the newlist button
+        newList.classList.add("hidden");
 
         let list = JSON.parse(localStorage.getItem('listinfo'));
         title.innerHTML = list.name;
 
-        rightContainer.style = "display:block";
-        rightHeader.style = "display:block";
+        rightContainer.classList.remove("hidden");;
+        rightHeader.classList.remove("hidden");;
 
         leftHeader.innerHTML = "Tasks";
         rightHeader.innerHTML = "Completed tasks";
@@ -241,34 +360,31 @@
         leftContainer.innerHTML = "";
         rightContainer.innerHTML = "";
 
+        // GET tasks 
         loadTasks();
-
-        btnCreateTask.addEventListener('click', function () {
-            ///TODO create new task
-        });
 
         // show share, addPeople and delete btns based on shared property of this list
         if (list.shared == 0 || list.shared == 2) {
             // private or individual
             // later: change img src, for now use btns
-            btnShare.style = "display:block";
+            btnShare.classList.remove("hidden");
             btnShare.innerHTML = "Share";
-            btnAddPeople.style = "display:block";
+            btnAddPeople.classList.remove("hidden");;
         } else if (list.shared == 1) {
             // later: change img src, for now use btns
-            btnShare.style = "display:block";
+            btnShare.classList.remove("hidden");
             btnShare.innerHTML = "Unshare";
-            btnAddPeople.style = "display:none";
+            btnAddPeople.classList.add("hidden");;
         }
-        btnListDelete.style = "display:block";
+        btnListDelete.classList.remove("hidden");;
     }
 
-    async function loadTasks() {
-        showTasks(rightContainer, 1);
-        await showTasks(leftContainer, 0);
-        leftContainer.appendChild(btnCreateTask);
-    }
+    document.addEventListener('newTaskClick', function () {
+        console.log("click");
+    });
 
+    // PUT list --------------------------------------------------------------------------------------------
+    // name ----------------------------------------------------
     title.addEventListener('keydown', function (evt) {
         if (event.keyCode == 13) {
             evt.preventDefault();
@@ -276,6 +392,7 @@
         }
     });
 
+    // shared --------------------------------------------------
     btnShare.addEventListener('click', function () {
         let list = JSON.parse(localStorage.getItem('listinfo'));
         if (list.shared == 1) {
@@ -289,16 +406,12 @@
         }
     });
 
+    // individual access ---------------------------------------
     btnAddPeople.addEventListener('click', function () {
         ///TODO give users individual access
     });
 
-    btnListDelete.addEventListener('click', function () {
-        let list = JSON.parse(localStorage.getItem('listinfo'));
-        deleteList(list.id);
-    });
-
-    // update list ------------------------------------------------
+    // PUT list ------------------------------------------------
     async function updateList(feature, value) {
 
         if (!value && value !== 0) {
@@ -355,7 +468,13 @@
         }
     }
 
-    // DELETE list ------------------------------------------------
+
+    // DELETE list -------------------------------------------------------------------------------------------
+    btnListDelete.addEventListener('click', function () {
+        let list = JSON.parse(localStorage.getItem('listinfo'));
+        deleteList(list.id);
+    });
+
     async function deleteList(id) {
 
         let url = "http://localhost:3000/lists";
@@ -378,7 +497,48 @@
         }
     }
 
-    // GET tasks ------------------------------------------------
+    // POST tasks --------------------------------------------------------------------------------------------
+    async function createTask(name) {
+        console.log("POST");
+        let url = "http://localhost:3000/tasks";
+
+        let list = JSON.parse(localStorage.getItem('listinfo'));
+
+        let updata = {
+            name: name,
+            list: list.id,
+        }
+
+        let cfg = {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+                "authorisation": token
+            },
+            body: JSON.stringify(updata)
+        }
+
+        try {
+            var resp = await fetch(url, cfg);
+            var data = await resp.json();
+            // reload the tasks of the current list
+            loadTasks();
+            taskAddImg.classList.remove("hidden");;
+            taskAddTxt.classList.remove("hidden");;
+            taskName.classList.add("hidden");;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
+    // GET tasks ---------------------------------------------------------------------------------------------
+    async function loadTasks() {
+        showTasks(rightContainer, 1);
+        await showTasks(leftContainer, 0);
+        leftContainer.appendChild(newTask);
+    }
+
     async function showTasks(container, completed) {
 
         let list = JSON.parse(localStorage.getItem('listinfo'));
@@ -408,15 +568,15 @@
 
                 let div = document.createElement('div');
 
-                ///TODO replace by img
-                let checkbox = document.createElement('button');
+                // PUT task
+                let checkbox = document.createElement('img');
                 if (!completed) {
-                    checkbox.innerHTML = "Check";
+                    checkbox.setAttribute("src", "add.png"); // img: empty checkbox
                     checkbox.addEventListener('click', function () {
                         updateTask(value.id, "completed", 1);
                     });
                 } else {
-                    checkbox.innerHTML = "Uncheck";
+                    checkbox.setAttribute("src", "add.png"); // img: checked box
                     checkbox.addEventListener('click', function () {
                         updateTask(value.id, "completed", 0);
                     });
@@ -426,17 +586,17 @@
                 let taskName = document.createElement('p');
                 taskName.innerHTML = value.name;
                 taskName.contentEditable = true;
-                taskName.addEventListener('keydown', function(evt) {
-                    if(event.keyCode == 13) {
+                taskName.addEventListener('keydown', function (evt) {
+                    if (event.keyCode == 13) {
                         evt.preventDefault();
                         updateTask(value.id, "name", taskName.innerHTML);
                     }
                 });
                 div.appendChild(taskName);
 
-                ///TODO replace by img
-                let btnTaskDelete = document.createElement('button');
-                btnTaskDelete.innerHTML = "Delete";
+                // DELETE task
+                let btnTaskDelete = document.createElement('img');
+                btnTaskDelete.setAttribute("src", "add.png");
                 btnTaskDelete.addEventListener('click', function () {
                     deleteTask(value.id);
                 });
@@ -449,7 +609,8 @@
         }
     }
 
-    // PUT tasks ------------------------------------------------
+
+    // PUT tasks ----------------------------------------------------------------------------------------------
     async function updateTask(taskid, feature, value) {
 
         if (!value && value !== 0) {
@@ -493,7 +654,8 @@
         }
     }
 
-    // DELETE tasks ------------------------------------------------
+
+    // DELETE tasks ------------------------------------------------------------------------------------------
     async function deleteTask(id) {
 
         let url = "http://localhost:3000/tasks";
