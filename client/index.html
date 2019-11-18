@@ -17,26 +17,26 @@
     <div class="list">
         <img src="boy_2.png" id="myProfile">
         <h2 id="allLists">Public Lists</h2>
-  
-    <div id="myList"> 
-        <h2>My Lists</h2>
-        
-        <h4 id="private">Private</h4>
-        <div id="privateLists"></div>
 
-        <h4 id="public">Public</h4>
-        <div id="publicLists"></div>
+        <div id="myList">
+            <h2>My Lists</h2>
 
-        <!-- To be used when we implement individual lists -->
-        <h4 id="individual">Shared with me</h4>
-        <div id="individualLists"></div>
+            <h4 id="private">Private</h4>
+            <div id="privateLists"></div>
 
-        <!-- All te stuff to create new lists -->
-        <div id="newListSB">
-            <img id="addImgSB" src="add.png">
-            <input type="text" id="inpNameSB" style="display:none">
+            <h4 id="public">Public</h4>
+            <div id="publicLists"></div>
+
+            <!-- To be used when we implement individual lists -->
+            <h4 id="individual">Shared with me</h4>
+            <div id="individualLists"></div>
+
+            <!-- All te stuff to create new lists -->
+            <div id="newListSB">
+                <img id="addImgSB" src="add.png">
+                <input type="text" id="inpNameSB" class="hidden">
+            </div>
         </div>
-    </div>
 
         <button id="logout">Log Out</button>
 
@@ -59,15 +59,15 @@
         <h3 id="columnR">Public Lists</h3>
         <div id="containerR"></div>
 
-        <div id="newList" style="display:none">
+        <div id="newList" class="hidden">
             <p id="createTxt">Create new list</p>
             <img id="addImg" src="add.png">
-            <input type="text" id="inpName" style="display:none">
+            <input type="text" id="inpName" class="hidden">
         </div>
 
-        <button id="btnShare" style="display:none"></button>
-        <button id="btnAddPeople" style="display:none">Add people</button>
-        <button id="btnListDelete" style="display:none">Delete</button>
+        <img id="btnShare" class="hidden" src="add.png"></img>
+        <img id="btnAddPeople" class="hidden" src="add.png"></img>
+        <img id="btnListDelete" class="hidden" src="add.png"></img>
 
     </div>
     <!--list class ends-->
@@ -137,14 +137,14 @@
     let inpNameSB = document.getElementById('inpNameSB');
 
     newListSB.addEventListener('click', function () {
-        addImgSB.style = "display:none";
-        inpNameSB.style = "display:block;border:1px solid red";
+        addImgSB.classList.add('hidden');
+        inpNameSB.classList.remove("hidden");
         inpNameSB.value = "My new list";
     });
 
     inpNameSB.addEventListener('blur', function () {
-        addImgSB.style = "display:block";
-        inpNameSB.style = "display:none";
+        addImgSB.classList.remove("hidden");
+        inpNameSB.classList.add("hidden");
     });
 
     inpNameSB.addEventListener('keydown', function () {
@@ -160,16 +160,16 @@
     let createTxt = document.getElementById('createTxt');
 
     newList.addEventListener('click', function () {
-        addImg.style = "display:none";
-        createTxt.style = "display:none";
-        inpName.style = "display:block;border:1px solid red";
+        addImg.classList.add("hidden");;
+        createTxt.classList.add("hidden");;
+        inpName.classList.remove("hidden");;
         inpName.value = "My new list";
     });
 
     inpName.addEventListener('blur', function () {
-        addImg.style = "display:block";
-        createTxt.style = "display:block";
-        inpName.style = "display:none";
+        addImg.classList.remove("hidden");;
+        createTxt.classList.remove("hidden");;
+        inpName.classList.add("hidden");;
     });
 
     inpName.addEventListener('keydown', function () {
@@ -180,7 +180,6 @@
 
     // POST list -------------------------------------------
     async function createList(name) {
-        console.log("new list " + name);
         let url = "http://localhost:3000/lists";
 
         let updata = {
@@ -216,12 +215,12 @@
 
     allLists.addEventListener('click', function () {
         // hide the newlist button
-        newList.style = "display:none";
+        newList.classList.add("hidden");;
 
         showLists(leftContainer, "allpublic");
         leftHeader.innerHTML = "Lists";
-        rightContainer.style = "display:none";
-        rightHeader.style = "display:none";
+        rightContainer.classList.add("hidden");;
+        rightHeader.classList.add("hidden");;
     });
 
 
@@ -229,14 +228,14 @@
     showLists(leftContainer, "private");
     showLists(rightContainer, "public");
     // show the newlist button
-    newList.style = "display:block";
+    newList.classList.remove("hidden");;
 
 
     // GET list ---------------------------------------------------------------------------------------------
     async function showLists(container, shared) {
-        btnShare.style = "display:none";
-        btnAddPeople.style = "display:none";
-        btnListDelete.style = "display:none";
+        btnShare.classList.add("hidden");
+        btnAddPeople.classList.add("hidden");;
+        btnListDelete.classList.add("hidden");;
 
         try {
             let url = `http://localhost:3000/lists/${shared}`;
@@ -312,7 +311,7 @@
     let newTask = document.createElement('div');
 
     let taskName = document.createElement('input');
-    taskName.style = "display:none";
+    taskName.classList.add("hidden");;
     newTask.appendChild(taskName);
 
     let taskAddImg = document.createElement('img');
@@ -325,16 +324,16 @@
 
     // POST task
     newTask.addEventListener('click', function () {
-        taskAddImg.style = "display:none";
-        taskAddTxt.style = "display:none";
-        taskName.style = "display:block;border:1px solid red";
+        taskAddImg.classList.add("hidden");;
+        taskAddTxt.classList.add("hidden");;
+        taskName.classList.remove("hidden");;
         taskName.value = "My new task";
     });
 
     taskName.addEventListener('blur', function () {
-        taskAddImg.style = "display:block";
-        taskAddTxt.style = "display:block";
-        taskName.style = "display:none";
+        taskAddImg.classList.remove("hidden");;
+        taskAddTxt.classList.remove("hidden");;
+        taskName.classList.add("hidden");;
     });
 
     taskName.addEventListener('keydown', function () {
@@ -347,13 +346,13 @@
     async function openList() {
 
         // hide the newlist button
-        newList.style = "display:none";
+        newList.classList.add("hidden");
 
         let list = JSON.parse(localStorage.getItem('listinfo'));
         title.innerHTML = list.name;
 
-        rightContainer.style = "display:block";
-        rightHeader.style = "display:block";
+        rightContainer.classList.remove("hidden");;
+        rightHeader.classList.remove("hidden");;
 
         leftHeader.innerHTML = "Tasks";
         rightHeader.innerHTML = "Completed tasks";
@@ -368,16 +367,16 @@
         if (list.shared == 0 || list.shared == 2) {
             // private or individual
             // later: change img src, for now use btns
-            btnShare.style = "display:block";
+            btnShare.classList.remove("hidden");
             btnShare.innerHTML = "Share";
-            btnAddPeople.style = "display:block";
+            btnAddPeople.classList.remove("hidden");;
         } else if (list.shared == 1) {
             // later: change img src, for now use btns
-            btnShare.style = "display:block";
+            btnShare.classList.remove("hidden");
             btnShare.innerHTML = "Unshare";
-            btnAddPeople.style = "display:none";
+            btnAddPeople.classList.add("hidden");;
         }
-        btnListDelete.style = "display:block";
+        btnListDelete.classList.remove("hidden");;
     }
 
     document.addEventListener('newTaskClick', function () {
@@ -524,9 +523,9 @@
             var data = await resp.json();
             // reload the tasks of the current list
             loadTasks();
-            taskAddImg.style = "display:block";
-            taskAddTxt.style = "display:block";
-            taskName.style = "display:none";
+            taskAddImg.classList.remove("hidden");;
+            taskAddTxt.classList.remove("hidden");;
+            taskName.classList.add("hidden");;
         } catch (err) {
             console.log(err);
         }
@@ -570,15 +569,14 @@
                 let div = document.createElement('div');
 
                 // PUT task
-                ///TODO replace by img
-                let checkbox = document.createElement('button');
+                let checkbox = document.createElement('img');
                 if (!completed) {
-                    checkbox.innerHTML = "Check";
+                    checkbox.setAttribute("src", "add.png"); // img: empty checkbox
                     checkbox.addEventListener('click', function () {
                         updateTask(value.id, "completed", 1);
                     });
                 } else {
-                    checkbox.innerHTML = "Uncheck";
+                    checkbox.setAttribute("src", "add.png"); // img: checked box
                     checkbox.addEventListener('click', function () {
                         updateTask(value.id, "completed", 0);
                     });
@@ -597,9 +595,8 @@
                 div.appendChild(taskName);
 
                 // DELETE task
-                ///TODO replace by img
-                let btnTaskDelete = document.createElement('button');
-                btnTaskDelete.innerHTML = "Delete";
+                let btnTaskDelete = document.createElement('img');
+                btnTaskDelete.setAttribute("src", "add.png");
                 btnTaskDelete.addEventListener('click', function () {
                     deleteTask(value.id);
                 });

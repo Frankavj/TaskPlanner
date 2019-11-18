@@ -362,3 +362,6 @@
   opacity: 40%;
 }
 
+.hidden {
+  display: none;
+}
