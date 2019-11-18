@@ -7,7 +7,7 @@
 }
 
 body {
-  min-height: 100vh;
+  height: 100vh;
   background: url("../img/bakgrunn_forslag.jpg") no-repeat center center fixed;
   background-size: cover;
   padding-left: 300px;
@@ -15,6 +15,14 @@ body {
   display: grid;
   justify-items: center;
   align-items: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+input {
+  font-size: medium;
 }
 
 /*sidebar class*/
@@ -29,9 +37,10 @@ body {
   float: left;
   margin-top: 0px;
   text-align: left;
+  align-items: center;
   position: fixed;
   display: grid;
-  grid-template-rows: 50px 40px 30px 20px minmax(auto, min-content) 20px minmax(auto, min-content) 20px minmax(auto, min-content) auto 30px;
+  grid-template-rows: 50px 50px 30px 20px minmax(auto, min-content) 20px minmax(auto, min-content) 20px minmax(auto, min-content) auto 30px;
   grid-template-areas: "img" "pL" "myLists" "private" "privateLists" "public" "publicLists" "individual" "individualLists" "new" "lO";
 }
 
@@ -48,17 +57,31 @@ body {
 
 /*homepage*/
 
+.main {
+  width: 90%;
+  height: 90%;
+  display: grid;
+  grid-template-rows: 50px auto;
+  grid-template-areas: "title" "home";
+  align-items: center;
+}
+
 .home {
-  width: 80%;
-  height: 65%;
+  grid-area: home;
+  align-items: center;
   background: #f1f1f1;
-  padding: 40px 40px;
-  border-radius: 10px;
-  float: right;
+  padding: 10px;
+  opacity: 90%;
+  border-radius: 5px;
+  height: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 50px 25px 1fr 50px;
-  grid-template-areas: "title title " "hL hR" "cL cR" "addI addI";
+  grid-template-rows: 45px 1fr 50px;
+  grid-template-areas: "hL hR" "cL cR" "footerL footerR";
+}
+
+.showAllLists {
+  grid-template-areas: "hL hR" "cL cL" "footerL footerR" !important;
 }
 
 .home input {
@@ -85,11 +108,24 @@ body {
   overflow-x: scroll;
 }
 
+/* New list button in the sidebar */
+#addImgSB {
+  height: 25px;
+  cursor: pointer;
+  float: right;
+}
+
+#addImgSB:hover {
+  background-color: #f1f1f1;
+  opacity: 20%;
+}
+
 /*Welcome back placement*/
 
 #listTitle {
   cursor: pointer;
   grid-area: title;
+  padding-left: 20px;
 }
 
 #listTitle:hover {
@@ -97,13 +133,16 @@ body {
   opacity: 20%;
 }
 
+.editList {
+  grid-area: footerR;
+}
+
 #btnShare {
   height: 25px;
-  width: 25px;
   cursor: pointer;
-  float: left;
-  grid-area: addI;
-  }
+  float: right;
+  margin: 10px;
+}
 
 #btnShare:hover {
   background-color: #f1f1f1;
@@ -112,10 +151,9 @@ body {
 
 #btnAddPeople {
   height: 25px;
-  width: 25px;
   cursor: pointer;
-  float: left;
-  grid-area: addI;
+  float: right;
+  margin: 10px;
 }
 
 #btnAddPeople:hover {
@@ -125,10 +163,9 @@ body {
 
 #btnListDelete {
   height: 25px;
-  width: 25px;
   cursor: pointer;
-  float: left;
-  grid-area: addI;
+  float: right;
+  margin: 10px;
 }
 
 #btnListDelete:hover {
@@ -138,20 +175,12 @@ body {
 
 /*Profile icon*/
 
-#myprofile img {
-  height: 60px;
-  width: 60px;
-}
-
 #myProfile {
-  left: 0;
-  bottom: 0;
-  height: 40px;
-  width: 40px;
-  margin-top: 0px;
-  border-width: 30px;
+  align-items: center;
   cursor: pointer;
   grid-area: img;
+  display: grid;
+  grid-template-columns: 30px auto;
 }
 
 #myProfile:hover {
@@ -159,15 +188,26 @@ body {
   opacity: 20%;
 }
 
+#myProfile>img {
+  width: 30px;
+}
+
+#myProfile>p {
+  padding-left: 10px;
+}
+
 /*Profile icon ENDS*/
 
-/*btn delete...*/
+/* List detail display*/
+.task {
+  display: grid;
+  grid-template-columns: 25px auto 25px;
+  align-items: center;
+}
 
 .checkbox {
-  height: 25px;
   width: 25px;
   cursor: pointer;
-  margin-left: 1%;
 }
 
 .checkbox:hover {
@@ -176,11 +216,7 @@ body {
 }
 
 .taskName {
-  height: 25px;
-  width: 25px;
   cursor: pointer;
-  display: inline;
-
 }
 
 .taskName:hover {
@@ -189,10 +225,8 @@ body {
 }
 
 .deleteTask {
-  height: 25;
   width: 25px;
   cursor: pointer;
-  float: right;
 }
 
 .deleteTask:hover {
@@ -200,25 +234,25 @@ body {
   opacity: 50%;
 }
 
-#addImgSB {
-  height: 25px;
-  width: 25px;
-  cursor: pointer;
-  grid-area: mL;
-  float: right;
+.newTask {
+  display: grid;
+  grid-template-columns: 25px auto;
+  align-items: center;
+  width: 50%;
+  background-color: #BEC5BE !important;
 }
 
-#addImgSB:hover {
-  background-color: #f1f1f1;
-  opacity: 20%;
+.newTask:hover {
+  opacity: 50%;
+}
+
+.newTaskInp {
+  grid-template-columns: auto 1px !important;
 }
 
 .addImgTask {
-  height: 25px;
-  width: 25px;
+  height: 20px;
   cursor: pointer;
-  margin-left: 90%;
-  grid-area: mL;
 }
 
 #addImgTask:hover {
@@ -226,6 +260,14 @@ body {
   opacity: 20%;
 }
 
+.sharedListDiv {
+  display: grid;
+  grid-template-columns: auto min-content;
+}
+
+.sharedListDiv>p {
+  white-space: nowrap;
+}
 
 /*log out*/
 
@@ -240,6 +282,7 @@ body {
   cursor: pointer;
   transition: .5s;
   grid-area: lO;
+  padding:10px;
 }
 
 #logout:hover {
@@ -248,36 +291,52 @@ body {
 
 /*log out ENDS*/
 
-/*private lists box*/
-
-#containerL div {
-  background-color: #f1f1f1;
-  border-radius: 10px;
-  padding: 5px;
+/* general list box style */
+.container {
+  background-color: #BEC5BE;
+  border-radius: 5px;
+  padding: 10px;
   margin: 10px;
+  overflow-x: scroll;
+  height: 100%
+}
+
+.container>div {
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px 5px 10px 5px;
   cursor: pointer;
 }
 
+.column {
+  cursor: pointer;
+  padding-left: 30px;
+}
+
+/*left lists box*/
+
 #containerL {
-  border-style: solid;
-  border-width: 0px;
-  background-color: #BEC5BE;
-  border-radius: 10px;
-  padding: 10px;
-  margin: 10px;
   grid-area: cL;
-  overflow-x: scroll;
 }
 
 #columnL {
-  cursor: pointer;
   grid-area: hL;
 }
 
-#columnL:hover {
-  background-color: #f1f1f1;
-  opacity: 20%;
+/*left lists box ENDS*/
+
+/*right lists box*/
+
+#containerR {
+  grid-area: cR;
 }
+
+#columnR {
+  grid-area: hR;
+}
+
+/*right lists box ENDS*/
 
 #listName {
   height: 25px;
@@ -290,96 +349,38 @@ body {
   opacity: 20%;
 }
 
-/*private lists box ENDS*/
-
-/*public lists box*/
-
-#containerR div {
-  background-color: #f1f1f1;
-  border-radius: 10px;
-  padding: 5px;
-  margin: 10px;
-  cursor: pointer;
-}
-
-#containerR {
-  border-style: solid;
-  border-width: 0px;
+#newList {
+  grid-area: footerL;
+  height: 30px;
   background-color: #BEC5BE;
-  border-radius: 10px;
-  padding: 10px;
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
   margin: 10px;
-  grid-area: cR;
-  overflow-x: scroll;
+  align-items: center;
+  display: grid;
+  grid-template-columns: auto 20px;
 }
 
-#columnR {
+#newList:hover {
   cursor: pointer;
-  grid-area: hR;
 }
 
-#columnR:hover {
-  background-color: #f1f1f1;
-  opacity: 20%;
+#newList:hover {
+  opacity: 50%;
 }
-
-/*public lists box ENDS*/
-
-/*ADD list sidebar*/
-
-/*
-  #createListSidebar {
-    border-width: 0px;
-    height: 25px; 
-    width: 25px;
-    background-color: #f1f1f1;
-    color: black;
-    cursor: pointer;
-    margin-top: 100px;
-    margin-left: 200px;
-    grid-area: mL;
-  }
-
-  #createListSidebar:hover{
-          
-    background-color: #f1f1f1;
-    opacity: 20%;
-        
-    }
-/*ADD list sidebar ENDS*/
-
-/*ADD list home private and public*/
-
-/* #createList{
-    border-width: 0px;
-    width: 25px;
-    height: 25px;
-    background-color: #BEC5BE;
-    color: black;
-    cursor: pointer;
-    grid-area: add;
-  }
-
-  #createList:hover{
-    background-color: #BEC5BE;
-    opacity: 20%;
-  }
-
-  /*ADD list home private and public ENDS*/
-
-/*addbutton in home*/
 
 #addImg {
-  height: 25px;
-  width: 25px;
-  margin-left: 350px;
-  cursor: pointer;
-  grid-area: addI;
+  height: 20px;
 }
 
 #addImg.hover {
   background-color: #f1f1f1;
   opacity: 50%;
+}
+
+.inputName {
+  border-width: 1px;
 }
 
 /*List in sidebar*/
@@ -461,6 +462,3 @@ body {
   opacity: 20%;
 }
 
-.hidden {
-  display: none;
-}

@@ -15,12 +15,16 @@
 
 
     <div class="list">
-        <img src="/img/boy_2.png" id="myProfile">
+        <div id="myProfile">
+            <img src="/img/boy_2.png">
+            <p id="myName"></p>
+        </div>
+
         <h2 id="allLists">All Lists</h2>
 
         <h2 id="myLists">My Lists</h2>
 
-        <h4 id="private" class="subheading" >Private</h4>
+        <h4 id="private" class="subheading">Private</h4>
         <div id="privateLists" class="subsubheading"></div>
 
         <h4 id="public" class="subheading">Public</h4>
@@ -33,7 +37,7 @@
         <!-- All te stuff to create new lists -->
         <div id="newListSB">
             <img id="addImgSB" src="/img/add.png">
-            <input type="text" id="inpNameSB" class="hidden">
+            <input type="text" id="inpNameSB" class="hidden" placeholder="My new list">
         </div>
 
         <button id="logout">Log Out</button>
@@ -45,28 +49,30 @@
 
     <!-- Not in sidebar -->
 
-    <div class="home">
-
+    <div class="main">
         <h2 id="listTitle" contenteditable="true">Welcome back!</h2>
 
-        <!--style= "border-width: 1; border: solid; color: grey";-->
+        <div class="home" id="contentBox">
 
-        <h3 id="columnL">Private Lists</h3>
-        <div id="containerL"></div>
+            <h3 id="columnL" class="column">Private Lists</h3>
+            <div id="containerL" class="container"></div>
 
-        <h3 id="columnR">Public Lists</h3>
-        <div id="containerR"></div>
+            <h3 id="columnR" class="column">Public Lists</h3>
+            <div id="containerR" class="container"></div>
 
-        <div id="newList" class="hidden">
-            <p id="createTxt">Create new list</p>
-            <img id="addImg" src="/img/add.png">
-            <input type="text" id="inpName" class="hidden">
+            <div id="newList" class="hidden">
+                <p id="createTxt">Create new list</p>
+                <img id="addImg" src="/img/add_home.png">
+                <input type="text" id="inpName" class="hidden" placeholder="My new list">
+            </div>
+
+            <div class="editList">
+                <img id="btnListDelete" class="hidden" src="/img/trash.png"></img>
+                <img id="btnShare" class="hidden" src="/img/share.png"></img>
+                <img id="btnAddPeople" class="hidden" src="/img/share_with_friend.png"></img>
+            </div>
+
         </div>
-
-        <img id="btnShare" class="hidden" src="/img/share.png"></img>
-        <img id="btnAddPeople" class="hidden" src="/img/share_with_friend.png"></img>
-        <img id="btnListDelete" class="hidden" src="/img/trash.png"></img>
-
     </div>
     <!--list class ends-->
 
@@ -80,6 +86,10 @@
         window.location.href = "./userlogin.html";
     }
     let token = logindata.token;
+
+    // Show correct username on sidebar
+    let myName = document.getElementById("myName");
+    myName.innerHTML = logindata.username;
 
     // redirect to other pages ----------------------------------------------------------------------------
     let btnMyProfile = document.getElementById('myProfile');
@@ -96,6 +106,8 @@
 
 
     // sidebar expand/collapse -----------------------------------------------------------------------------
+    let contentBox = document.getElementById("contentBox");
+
     let privateHeader = document.getElementById('private');
     let privateContainer = document.getElementById('privateLists');
     let publicHeader = document.getElementById('public');
@@ -137,7 +149,6 @@
     newListSB.addEventListener('click', function () {
         addImgSB.classList.add('hidden');
         inpNameSB.classList.remove("hidden");
-        inpNameSB.value = "My new list";
     });
 
     inpNameSB.addEventListener('blur', function () {
@@ -161,7 +172,6 @@
         addImg.classList.add("hidden");;
         createTxt.classList.add("hidden");;
         inpName.classList.remove("hidden");;
-        inpName.value = "My new list";
     });
 
     inpName.addEventListener('blur', function () {
@@ -231,9 +241,12 @@
 
     // GET list ---------------------------------------------------------------------------------------------
     async function showLists(container, shared) {
-        btnShare.classList.add("hidden");
-        btnAddPeople.classList.add("hidden");;
-        btnListDelete.classList.add("hidden");;
+        if (!shared.localeCompare("allpublic")) {
+            btnShare.classList.add("hidden");
+            btnAddPeople.classList.add("hidden");
+            btnListDelete.classList.add("hidden");
+            contentBox.classList.add("showAllLists");
+        }
 
         try {
             let url = `http://localhost:3000/lists/${shared}`;
@@ -288,6 +301,8 @@
                         throw (user);
                     }
 
+                    div.classList.add("sharedListDiv");
+
                     let owner = document.createElement('p');
                     owner.innerHTML = `Shared by ${user.username}`;
 
@@ -307,14 +322,16 @@
     // Details list -----------------------------------------------------------------------------------------
     let title = document.getElementById('listTitle');
     let newTask = document.createElement('div');
+    newTask.setAttribute('class', "newTask");
 
     let taskName = document.createElement('input');
-    taskName.classList.add("hidden");;
+    taskName.classList.add("hidden");
+    taskName.setAttribute("placeholder", "My new task");
     newTask.appendChild(taskName);
 
     let taskAddImg = document.createElement('img');
     taskAddImg.setAttribute('class', "addImgTask");
-    taskAddImg.setAttribute('src', "/img/add.png");
+    taskAddImg.setAttribute('src', "/img/add_home.png");
     newTask.appendChild(taskAddImg);
 
     let taskAddTxt = document.createElement('p');
@@ -323,16 +340,17 @@
 
     // POST task
     newTask.addEventListener('click', function () {
-        taskAddImg.classList.add("hidden");;
-        taskAddTxt.classList.add("hidden");;
-        taskName.classList.remove("hidden");;
-        taskName.value = "My new task";
+        taskAddImg.classList.add("hidden");
+        taskAddTxt.classList.add("hidden");
+        taskName.classList.remove("hidden");
+        newTask.classList.add("newTaskInp");
     });
 
     taskName.addEventListener('blur', function () {
-        taskAddImg.classList.remove("hidden");;
-        taskAddTxt.classList.remove("hidden");;
-        taskName.classList.add("hidden");;
+        taskAddImg.classList.remove("hidden");
+        taskAddTxt.classList.remove("hidden");
+        taskName.classList.add("hidden");
+        newTask.classList.remove("newTaskInp");
     });
 
     taskName.addEventListener('keydown', function () {
@@ -343,6 +361,7 @@
 
 
     async function openList() {
+        contentBox.classList.remove("showAllLists");
 
         // hide the newlist button
         newList.classList.add("hidden");
@@ -350,8 +369,8 @@
         let list = JSON.parse(localStorage.getItem('listinfo'));
         title.innerHTML = list.name;
 
-        rightContainer.classList.remove("hidden");;
-        rightHeader.classList.remove("hidden");;
+        rightContainer.classList.remove("hidden");
+        rightHeader.classList.remove("hidden");
 
         leftHeader.innerHTML = "Tasks";
         rightHeader.innerHTML = "Completed tasks";
@@ -367,14 +386,14 @@
             // private or individual
             btnShare.classList.remove("hidden");
             btnShare.setAttribute("src", "/img/share.png")
-            btnAddPeople.classList.remove("hidden");;
+            btnAddPeople.classList.remove("hidden");
         } else if (list.shared == 1) {
             // public
             btnShare.classList.remove("hidden");
-            btnShare.setAttribute("src", "/img/unshare.png")
-            btnAddPeople.classList.add("hidden");;
+            btnShare.setAttribute("src", "/img/unshare.png");
+            btnAddPeople.classList.add("hidden");
         }
-        btnListDelete.classList.remove("hidden");;
+        btnListDelete.classList.remove("hidden");
     }
 
     document.addEventListener('newTaskClick', function () {
@@ -521,9 +540,10 @@
             var data = await resp.json();
             // reload the tasks of the current list
             loadTasks();
-            taskAddImg.classList.remove("hidden");;
-            taskAddTxt.classList.remove("hidden");;
-            taskName.classList.add("hidden");;
+            taskAddImg.classList.remove("hidden");
+            taskAddTxt.classList.remove("hidden");
+            taskName.classList.add("hidden");
+            newTask.classList.remove("newTaskInp");
         } catch (err) {
             console.log(err);
         }
@@ -565,6 +585,7 @@
             for (let value of data) {
 
                 let div = document.createElement('div');
+                div.setAttribute('class', 'task');
 
                 // PUT task
                 let checkbox = document.createElement('img');
