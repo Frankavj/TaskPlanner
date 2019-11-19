@@ -194,6 +194,9 @@
 
     // POST list -------------------------------------------
     async function createList(name) {
+        inpNameSB.value = "";
+        inpName.value = "";
+
         let url = "http://localhost:3000/lists";
 
         let updata = {
@@ -531,7 +534,8 @@
 
     // POST tasks --------------------------------------------------------------------------------------------
     async function createTask(name) {
-        console.log("POST");
+        taskName.value = "";
+
         let url = "http://localhost:3000/tasks";
 
         let list = JSON.parse(localStorage.getItem('listinfo'));
