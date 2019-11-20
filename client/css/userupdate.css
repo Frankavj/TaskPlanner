@@ -19,29 +19,27 @@
     background: #ffffff;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0,0, 0.19);
     border-color: grey;
-    height: 70%;
+    height: 40%;
     border-radius: 10px;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
     display: grid;
-    grid-template-rows: 20% 40% 20% 1fr;
-    grid-template-areas: "createtxt" "user" "cU" "btnA";
+    grid-template-rows: 40% 10% 20%;
+    grid-template-areas: "createtxt" "user" "cU";
+    padding: 5%;
   }
   
   .login-form h1{
-    padding-top: 20%;
+    margin-top: 10%;
     text-align: center;
-    margin-bottom: 60px;
     grid-area: createtxt;
   }
   
   .txtb{
     border-bottom: 2px solid #adadad;
     position: relative;
-    margin: 30px 0;
-    padding: 5%;
     grid-area: user;
   }
   
@@ -52,7 +50,7 @@
     width: 100%;
     outline: none;
     background: none;
-    padding: 0 5px;
+    padding: 5%;
     height: 40px;
   }
   
@@ -90,16 +88,11 @@
     cursor: pointer;
     transition: .5s;
     grid-area: cU;
+    margin-top: 10%;
   }
   
   #btnCreate:hover{
     background-position: right;
   }
   
-  .bottom-text{
-    text-align: center;
-    padding: 10%;
-    font-size: 13px;
-    grid-area: btnA;
-  }
   
