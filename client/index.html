@@ -36,9 +36,11 @@
         <h4 id="public" class="subheading">Public</h4>
         <div id="publicLists" class="subsubheading"></div>
 
-        <!-- To be used when we implement individual lists -->
-        <h4 id="individual" class="subheading">Shared with me</h4>
+        <h4 id="individual" class="subheading">Shared by me</h4>
         <div id="individualLists" class="subsubheading"></div>
+
+        <h4 id="shared" class="subheading">Shared with me</h4>
+        <div id="sharedLists" class="subsubheading"></div>
 
         <!-- All te stuff to create new lists -->
         <div id="newListSB">
@@ -120,6 +122,8 @@
     let publicContainer = document.getElementById('publicLists');
     let individualHeader = document.getElementById('individual');
     let individualContainer = document.getElementById('individualLists');
+    let sharedHeader = document.getElementById('shared');
+    let sharedContainer = document.getElementById('sharedLists');
 
     let btnShare = document.getElementById('btnShare');
     let btnAddPeople = document.getElementById('btnAddPeople');
@@ -135,6 +139,10 @@
 
     individualHeader.addEventListener('click', function () {
         toggleLists(individualContainer, "individual");
+    });
+
+    sharedHeader.addEventListener('click', function () {
+        toggleLists(sharedContainer, "shared");
     });
 
     function toggleLists(container, shared) {
@@ -404,18 +412,29 @@
         loadTasks();
 
         // show share, addPeople and delete btns based on shared property of this list
-        if (list.shared == 0 || list.shared == 2) {
-            // private or individual
-            btnShare.classList.remove("hidden");
-            btnShare.setAttribute("src", "/img/share.png")
-            btnAddPeople.classList.remove("hidden");
-        } else if (list.shared == 1) {
-            // public
-            btnShare.classList.remove("hidden");
-            btnShare.setAttribute("src", "/img/unshare.png");
+        if (list.owner == logindata.userid) {
+            // my list
+            if (list.shared == 1) {
+                // public
+                btnShare.classList.remove("hidden");
+                btnShare.setAttribute("src", "/img/unshare.png");
+                btnAddPeople.classList.add("hidden");
+            } else {
+                // private or individual
+                btnShare.classList.remove("hidden");
+                btnShare.setAttribute("src", "/img/share.png")
+                btnAddPeople.classList.remove("hidden");
+            }
+            btnListDelete.classList.remove("hidden");
+        } else {
+            btnShare.classList.add("hidden");
             btnAddPeople.classList.add("hidden");
+            if(list.shared == 1) {
+                // public list, cannot delete
+                btnListDelete.classList.add("hidden");
+            }
         }
-        btnListDelete.classList.remove("hidden");
+        
     }
 
     // PUT list --------------------------------------------------------------------------------------------
@@ -507,7 +526,14 @@
     // DELETE list -------------------------------------------------------------------------------------------
     btnListDelete.addEventListener('click', function () {
         let list = JSON.parse(localStorage.getItem('listinfo'));
-        deleteList(list.id);
+        if (list.owner == logindata.userid) {
+            deleteList(list.id);
+        } else {
+            // not my list: don't delete just remove me from individual_access
+            let index = list.individual_access.indexOf(logindata.userid);
+            list.individual_access.splice(index, 1);
+            updateList("individual_access", list.individual_access);
+        }
     });
 
     async function deleteList(id) {

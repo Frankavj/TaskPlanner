@@ -41,8 +41,8 @@ input {
   align-items: center;
   position: fixed;
   display: grid;
-  grid-template-rows: 60px 60px 40px 20px minmax(auto, min-content) 20px minmax(auto, min-content) 20px minmax(auto, min-content) auto 30px;
-  grid-template-areas: "img" "pL" "myLists" "private" "privateLists" "public" "publicLists" "individual" "individualLists" "new" "lO";
+  grid-template-rows: 60px 60px 40px 20px minmax(auto, min-content) 20px minmax(auto, min-content) 20px minmax(auto, min-content) 20px minmax(auto, min-content) auto 30px;
+  grid-template-areas: "img" "pL" "myLists" "private" "privateLists" "public" "publicLists" "individual" "individualLists" "shared" "sharedLists" "new" "lO";
 }
 
 .list input {
@@ -454,6 +454,22 @@ input {
 
 #individualLists {
   grid-area: individualLists;
+  height: 100%;
+  overflow-x: scroll;
+}
+
+#shared {
+  cursor: pointer;
+  grid-area: shared;
+}
+
+#shared:hover {
+  background-color: var(--offwhite);
+  opacity: 50%;
+}
+
+#sharedLists {
+  grid-area: sharedLists;
   height: 100%;
   overflow-x: scroll;
 }
