@@ -20,7 +20,7 @@ body{
   background: #ffffff;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0,0, 0.19);
   border-color: grey;
-  height: 70%;
+  height: 60%;
   border-radius: 10px;
   position: absolute;
   left: 50%;
@@ -29,6 +29,8 @@ body{
   display: grid;
   grid-template-rows: 20% 40% 20% 1fr;
   grid-template-areas: "logintxt" "user" "btnL" "btnA";
+  grid-column-gap: 100px;
+  padding: 5%;
 
 }
 
