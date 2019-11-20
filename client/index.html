@@ -74,6 +74,11 @@
                 <input type="text" id="inpName" class="hidden" placeholder="My new list">
             </div>
 
+            <div id="sharedBy" class="hidden">
+                <p id="sharedByTxt"></p>
+                <img id="sharedByImg">
+            </div>
+
             <div class="editList">
                 <img id="btnListDelete" class="hidden" src="/img/trash.png"></img>
                 <img id="btnShare" class="hidden" src="/img/share.png"></img>
@@ -128,6 +133,10 @@
     let btnShare = document.getElementById('btnShare');
     let btnAddPeople = document.getElementById('btnAddPeople');
     let btnListDelete = document.getElementById('btnListDelete');
+
+    let sharedBy = document.getElementById('sharedBy');
+    let sharedByTxt = document.getElementById('sharedByTxt');
+    let sharedByImg = document.getElementById('sharedByImg');
 
     privateHeader.addEventListener('click', function () {
         toggleLists(privateContainer, "private");
@@ -263,6 +272,7 @@
             btnAddPeople.classList.add("hidden");
             btnListDelete.classList.add("hidden");
             contentBox.classList.add("showAllLists");
+            sharedBy.classList.add('hidden');
         }
 
         try {
@@ -313,29 +323,20 @@
 
                 if (!shared.localeCompare("allpublic")) {
                     // get the name of the owner and desplay it
-                    url = `http://localhost:3000/users/${value.owner}`;
-
-                    cfg = {
-                        method: "GET",
-                        headers: { "authorisation": token }
-                    }
-
-                    var resp = await fetch(url, cfg);
-                    var user = await resp.json();
-
-                    if (resp.status == 403) {
-                        // If user hasn't logged in, go to the login page
-                        window.location.href = "./userlogin.html";
-                        return;
-                    } else if (resp.status > 202) {
-                        throw (user);
-                    }
+                    user = await getUserById(value.owner);
 
                     div.classList.add("sharedListDiv");
                     div.classList.add("whitebox");
 
-                    let owner = document.createElement('p');
-                    owner.innerHTML = `Shared by ${user.username}`;
+                    let owner = document.createElement('div');
+
+                    let ownerName = document.createElement('p');
+                    ownerName.innerHTML = `Shared by ${user.username}`;
+                    owner.appendChild(ownerName);
+
+                    let ownerImg = document.createElement('img');
+                    ownerImg.setAttribute('src', 'img/boy_1.png');
+                    owner.appendChild(ownerImg);
 
                     div.appendChild(owner);
 
@@ -426,15 +427,22 @@
                 btnAddPeople.classList.remove("hidden");
             }
             btnListDelete.classList.remove("hidden");
+            sharedBy.classList.add('hidden');
         } else {
+            sharedBy.classList.remove('hidden');
+            // get owner name and profile picture
+            let owner = await getUserById(list.owner);
+            sharedByTxt.innerHTML = `Shared by ${owner.username}`;
+            sharedByImg.setAttribute('src', '/img/boy_1.png');
+
             btnShare.classList.add("hidden");
             btnAddPeople.classList.add("hidden");
-            if(list.shared == 1) {
+            if (list.shared == 1) {
                 // public list, cannot delete
                 btnListDelete.classList.add("hidden");
             }
         }
-        
+
     }
 
     // PUT list --------------------------------------------------------------------------------------------
@@ -843,6 +851,29 @@
         } catch (err) {
             console.log(err);
         }
+    }
+
+    // GET user ----------------------------------------------------------------------------------------------
+    async function getUserById(id) {
+        url = `http://localhost:3000/users/${id}`;
+
+        cfg = {
+            method: "GET",
+            headers: { "authorisation": token }
+        }
+
+        var resp = await fetch(url, cfg);
+        var user = await resp.json();
+
+        if (resp.status == 403) {
+            // If user hasn't logged in, go to the login page
+            window.location.href = "./userlogin.html";
+            return;
+        } else if (resp.status > 202) {
+            throw (user);
+        }
+
+        return user;
     }
 
 </script>
