@@ -89,6 +89,10 @@ router.put('/', async function (req, res, next) {
                 sql = sql + ` completed = $2`;
                 values.push(updata.value);
             }
+            // change deadline
+            if (!updata.update.localeCompare("deadline")) {
+                ///TODO Thomas
+            }
 
             sql = sql + ` WHERE id = $1`;
 

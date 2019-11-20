@@ -481,3 +481,23 @@ input {
 .listName:hover {
   opacity: 50%;
 }
+
+.taskview {
+  display: grid;
+  grid-template-rows: 50px auto;
+  align-items: center;
+}
+
+.bell {
+  height: 40px;
+}
+
+.deadline {
+  display: grid;
+  grid-template-columns: 40px auto;
+  align-items: center;
+}
+
+.notes {
+  height: 100%;
+}
