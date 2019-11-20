@@ -10,21 +10,23 @@
 
 <body>
 
-        <form action="index.html" class="login-form">
-                <h1>Create user</h1>
+    <form id="form" class="login-form">
+        <h1>Create user</h1>
 
-    <div>
+        <div>
             <div class="txtb">
-        <input type="username" id="inpUsername" placeholder="Username">
-        <input type="email" id="inpEmail" placeholder="E-mail">
-        <input type="password" id="inpPassword" placeholder="Password">
-    </div>
-        
-    <button id="btnCreate">Create user</button>
-    
-    <div class="bottom-text">
-            Already have an account? <a href="./userlogin.html">Sign in</a>
+                <input type="username" id="inpUsername" placeholder="Username">
+                <input type="email" id="inpEmail" placeholder="E-mail">
+                <input type="password" id="inpPassword" placeholder="Password">
             </div>
+
+            <button id="btnCreate" type="submit">Create user</button>
+
+            <div class="bottom-text">
+                Already have an account? <a href="./userlogin.html">Sign in</a>
+            </div>
+        </div>
+    </form>
 
 </body>
 
@@ -32,15 +34,16 @@
 
     // ---------------------------------------  
 
-    let inpUsername = document.getElementById('inpUsername')
+    let inpUsername = document.getElementById('inpUsername');
     let inpEmail = document.getElementById('inpEmail');
     let inpPassword = document.getElementById('inpPassword');
     let btnCreate = document.getElementById('btnCreate');
-    let txtResult = document.getElementById('txtResult');
 
+    let form = document.getElementById('form');
 
-
-    btnCreate.addEventListener('click', async function (evt) {
+    form.addEventListener('submit', async function (evt) {
+        evt.preventDefault();
+        console.log("create user " + inpUsername.value);
 
         let url = "http://localhost:3000/users";
 
@@ -59,7 +62,8 @@
         try {
             var resp = await fetch(url, cfg);
             var data = await resp.json();
-            txtResult.innerHTML = data.msg;
+            alert("Account succesfully created!");
+            window.location.href = "./userlogin.html";
         } catch (err) {
             console.log(err);
         }

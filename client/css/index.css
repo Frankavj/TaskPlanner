@@ -4,7 +4,7 @@
   text-decoration: none;
   font-family: Arial Rounded MT Bold;
   box-sizing: border-box;
-  --offwhite: #f1f1f1;
+  --offwhite: #ffffff;
   --grey: rgb(218, 218, 218);
 }
 
@@ -41,7 +41,7 @@ input {
   align-items: center;
   position: fixed;
   display: grid;
-  grid-template-rows: 50px 50px 30px 20px minmax(auto, min-content) 20px minmax(auto, min-content) 20px minmax(auto, min-content) auto 30px;
+  grid-template-rows: 60px 60px 40px 20px minmax(auto, min-content) 20px minmax(auto, min-content) 20px minmax(auto, min-content) auto 30px;
   grid-template-areas: "img" "pL" "myLists" "private" "privateLists" "public" "publicLists" "individual" "individualLists" "new" "lO";
 }
 
@@ -480,4 +480,24 @@ input {
 
 .listName:hover {
   opacity: 50%;
+}
+
+.taskview {
+  display: grid;
+  grid-template-rows: 50px auto;
+  align-items: center;
+}
+
+.bell {
+  height: 40px;
+}
+
+.deadline {
+  display: grid;
+  grid-template-columns: 40px auto;
+  align-items: center;
+}
+
+.notes {
+  height: 100%;
 }

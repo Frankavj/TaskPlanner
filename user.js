@@ -35,6 +35,7 @@ router.use('/', function (req, res, next) {
 
 // endpoint - users POST ---------------------------------
 router.post("/", async function (req, res, next) {
+    console.log("POST");
     let updata = req.body;
 
     // hash the pwd before it is stored in the db
@@ -131,7 +132,7 @@ router.put('/', async function (req, res, next) {
 
                     try {
                         await pool.query(sql, values);
-                        res.status(200).json({msg: "Update OK"});
+                        res.status(200).json({ msg: "Update OK" });
                     } catch (err) {
                         res.status(500).json(err);
                     }
@@ -165,6 +166,7 @@ router.delete('/', async function (req, res, next) {
             throw "Delete failed"
         }
     } catch (err) {
+        console.log(err);
         res.status(500).json({ error: err }); //send error response 
     }
 

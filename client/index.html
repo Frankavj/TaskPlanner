@@ -194,6 +194,9 @@
 
     // POST list -------------------------------------------
     async function createList(name) {
+        inpNameSB.value = "";
+        inpName.value = "";
+
         let url = "http://localhost:3000/lists";
 
         let updata = {
@@ -381,6 +384,8 @@
 
     async function openList() {
         contentBox.classList.remove("showAllLists");
+        rightHeader.contentEditable = false;
+        rightContainer.classList.remove('taskview');
 
         // hide the newlist button
         newList.classList.add("hidden");
@@ -531,7 +536,8 @@
 
     // POST tasks --------------------------------------------------------------------------------------------
     async function createTask(name) {
-        console.log("POST");
+        taskName.value = "";
+
         let url = "http://localhost:3000/tasks";
 
         let list = JSON.parse(localStorage.getItem('listinfo'));
@@ -625,12 +631,9 @@
                 let taskName = document.createElement('p');
                 taskName.setAttribute("class", "taskName");
                 taskName.innerHTML = value.name;
-                taskName.contentEditable = true;
-                taskName.addEventListener('keydown', function (evt) {
-                    if (event.keyCode == 13) {
-                        evt.preventDefault();
-                        updateTask(value.id, "name", taskName.innerHTML);
-                    }
+                taskName.addEventListener('click', function (evt) {
+                    localStorage.setItem("taskinfo", JSON.stringify(value));
+                    toggleTask();
                 });
                 whitebox.appendChild(taskName);
 
@@ -650,9 +653,62 @@
         }
     }
 
+    // Open task ----------------------------------------------------------------------------------------------
+    function toggleTask() {
+        if (rightHeader.isContentEditable) {
+            loadTasks();
+        } else {
+            openTask();
+        }
+    }
+
+    function openTask() {
+        let task = JSON.parse(localStorage.getItem('taskinfo'));
+        rightContainer.innerHTML = ""; // remove previous content
+        rightHeader.innerHTML = task.name;
+        rightContainer.classList.add('taskview');
+
+        // task name
+        rightHeader.contentEditable = true;
+        rightHeader.addEventListener('keydown', function (evt) {
+            if (event.keyCode == 13) {
+                evt.preventDefault();
+                updateTask(task.id, "name", rightHeader.innerHTML);
+            }
+        });
+
+        // deadline
+        let deadlineDiv = document.createElement('div');
+        deadlineDiv.setAttribute("class", "deadline");
+        deadlineDiv.addEventListener('click', function() {
+            /// TODO Thomas
+            // allow users to choose deadline, send to updateTask()
+            // params for updateTask: task.id, "deadline", *the new deadline value*
+        });
+
+        let deadlineImg = document.createElement('img');
+        deadlineImg.setAttribute('src', '/img/appointment-reminders.png');
+        deadlineImg.setAttribute('class', 'bell');
+        deadlineDiv.appendChild(deadlineImg);
+
+        let deadlineTxt = document.createElement('p');
+        deadlineTxt.innerHTML = "Due date: ";
+        deadlineDiv.appendChild(deadlineTxt);
+
+        rightContainer.appendChild(deadlineDiv);
+
+        // notes
+        let notesDiv = document.createElement('div');
+        notesDiv.setAttribute("class", "whitebox notes");
+        notesDiv.innerHTML ="Notes";
+        rightContainer.appendChild(notesDiv);
+
+    }
+
 
     // PUT tasks ----------------------------------------------------------------------------------------------
     async function updateTask(taskid, feature, value) {
+        console.log("update " + taskid + ": " + feature + ", " + value);
 
         if (!value && value !== 0) {
             return;
@@ -688,7 +744,17 @@
             }
 
             // Everything OK: reload
-            loadTasks();
+            if (!feature.localeCompare('completed')) {
+                loadTasks();
+            } else {
+                let taskinfo = JSON.parse(localStorage.getItem("taskinfo"));
+                taskinfo[feature] = value;
+                localStorage.setItem("taskinfo", JSON.stringify(taskinfo));
+                await showTasks(leftContainer, 0);
+                leftContainer.appendChild(newTask);
+                openTask();
+            }
+
 
         } catch (err) {
             console.log(err);

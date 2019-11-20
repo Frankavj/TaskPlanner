@@ -34,16 +34,17 @@
         window.location.href = "./index.html";
     });
 
+    let logindata = JSON.parse(sessionStorage.getItem("logindata"));
+    if (!logindata) {
+        window.location.href = "./userlogin.html";
+    }
+    let token = logindata.token;
+
+
     // ---------------------------------------
     async function showUser() {
         // now shows all users - will be just the one that's logged in once we have authentication
         try {
-            let logindata = JSON.parse(sessionStorage.getItem("logindata"));
-            if (!logindata) {
-                window.location.href = "./userlogin.html";
-                return;
-            }
-            let token = logindata.token;
 
             let cfg = {
                 method: "GET",
@@ -113,7 +114,9 @@
             let btnDelete = document.createElement('button');
             btnDelete.innerHTML = "Delete account";
             btnDelete.addEventListener('click', function (evt) {
-                deleteUser(user.id);
+                if (confirm("Are you sure you want to delete your account?")) {
+                    deleteUser(user.id);
+                }
             });
             container.appendChild(btnDelete);
             btnDelete.setAttribute("class", "btnDelete");
@@ -140,13 +143,17 @@
         let updata = { userid: id };
         let cfg = {
             method: "DELETE",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json"
+                , "authorisation": token
+            },
             body: JSON.stringify(updata)
         }
 
         try {
-            await fetch(url, cfg);
-            showUser();
+            let resp = await fetch(url, cfg);
+            var data = await resp.json();
+            window.location.href = "./userlogin.html";
         }
         catch (err) {
             console.log(err);
