@@ -65,6 +65,7 @@ router.get('/:listid/:completed', async function (req, res, next) {
 
 // endpoint - tasks PUT --------------------------------- 
 router.put('/', async function (req, res, next) {
+    console.log("UPDATE");
 
     let updata = req.body;
 
@@ -93,6 +94,12 @@ router.put('/', async function (req, res, next) {
             if (!updata.update.localeCompare("deadline")) {
                 ///TODO Thomas
             }
+            // change notes
+            if (!updata.update.localeCompare("notes")) {
+                console.log("NOTES");
+                sql = sql + ` notes = $2`;
+                values.push(updata.value);
+            }
 
             sql = sql + ` WHERE id = $1`;
 
@@ -104,6 +111,7 @@ router.put('/', async function (req, res, next) {
             }
         }
     } catch (err) {
+        console.log(err);
         res.status(500).json(err); //send error response 
     }
 

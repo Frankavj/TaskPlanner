@@ -324,6 +324,7 @@
                     }
 
                     div.classList.add("sharedListDiv");
+                    div.classList.add("whitebox");
 
                     let owner = document.createElement('p');
                     owner.innerHTML = `Shared by ${user.username}`;
@@ -681,8 +682,8 @@
 
         // deadline
         let deadlineDiv = document.createElement('div');
-        deadlineDiv.setAttribute("class", "deadline");
-        deadlineDiv.addEventListener('click', function() {
+        deadlineDiv.setAttribute("class", "deadline whitebox");
+        deadlineDiv.addEventListener('click', function () {
             /// TODO Thomas
             // allow users to choose deadline, send to updateTask()
             // params for updateTask: task.id, "deadline", *the new deadline value*
@@ -694,7 +695,7 @@
         deadlineDiv.appendChild(deadlineImg);
 
         let deadlineTxt = document.createElement('p');
-        if(task.deadline) {
+        if (task.deadline) {
             deadlineTxt.innerHTML = "Due date: " + task.deadline;
         } else {
             deadlineTxt.innerHTML = "No due date set";
@@ -704,17 +705,34 @@
         rightContainer.appendChild(deadlineDiv);
 
         // notes
-        let notesTitle = document.createElement('div');
-        notesTitle.setAttribute("class", "notesTitle");
-        notesTitle.innerHTML = "Notes:";
-        rightContainer.appendChild(notesTitle);
+        let notesDiv = document.createElement('div');
+        notesDiv.setAttribute("class", "notesDiv");
 
-        let notes = document.createElement('div');
-        notes.setAttribute("class", "notes");
+        let notesTitle = document.createElement('p');
+        notesTitle.innerHTML = "Notes:";
+        notesDiv.appendChild(notesTitle);
+
+        let notesbtn = document.createElement('img');
+        notesbtn.setAttribute('src', '/img/icon-edit.png');
+        notesDiv.appendChild(notesbtn);
+
+        rightContainer.appendChild(notesDiv);
+
+        let notes = document.createElement('p');
+        notes.setAttribute("class", "notes whitebox");
         notes.innerHTML = task.notes;
         rightContainer.appendChild(notes);
-        notes.addEventListener('click', function() {
-            //TODO
+
+        // PUT notes
+        notesbtn.addEventListener('click', function () {
+            if (notesbtn.src.includes("edit")) {
+                notesbtn.src = '/img/check.png';
+                notes.contentEditable = true;
+            } else {
+                notesbtn.src = '/img/icon-edit.png';
+                notes.contentEditable = false;
+                updateTask(task.id, "notes", notes.innerHTML);
+            }
         });
 
     }
@@ -764,8 +782,10 @@
                 let taskinfo = JSON.parse(localStorage.getItem("taskinfo"));
                 taskinfo[feature] = value;
                 localStorage.setItem("taskinfo", JSON.stringify(taskinfo));
-                await showTasks(leftContainer, 0);
-                leftContainer.appendChild(newTask);
+                if (!feature.localeCompare('name')) {
+                    await showTasks(leftContainer, 0);
+                    leftContainer.appendChild(newTask);
+                }
                 openTask();
             }
 

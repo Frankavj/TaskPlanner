@@ -227,7 +227,6 @@ input {
   background-color: var(--offwhite);
   border-radius: 5px;
   padding: 5px;
-  cursor: pointer;
 }
 
 .checkbox {
@@ -328,11 +327,9 @@ input {
 }
 
 .container>div {
-  background-color: var(--offwhite);
   border-radius: 5px;
   padding: 5px;
   margin: 5px 5px 10px 5px;
-  cursor: pointer;
 }
 
 .column {
@@ -496,15 +493,23 @@ input {
   display: grid;
   grid-template-columns: 40px auto;
   align-items: center;
+  cursor: pointer;
 }
 
-.notesTitle {
-  background-color: var(--grey) !important;
+.notesDiv {
+  display: grid;
+  grid-template-columns: auto 20px;
+  align-items: center;
+}
+
+.notesDiv>img {
+  height: 20px;
+  cursor: pointer;
 }
 
 .notes {
   height: calc(100% - 10px);
-  margin-top: 10px !important;
+  margin: 5px 5px 10px 5px;
 }
 
 /* 600px */
@@ -514,4 +519,4 @@ input {
   width: 600px;
   height: 7%;
   
-}
+  }
