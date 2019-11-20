@@ -396,9 +396,6 @@
         rightContainer.classList.remove("hidden");
         rightHeader.classList.remove("hidden");
 
-        leftHeader.innerHTML = "Tasks";
-        rightHeader.innerHTML = "Completed tasks";
-
         leftContainer.innerHTML = "";
         rightContainer.innerHTML = "";
 
@@ -574,6 +571,10 @@
     // GET tasks ---------------------------------------------------------------------------------------------
     async function loadTasks() {
         showTasks(rightContainer, 1);
+        rightContainer.classList.remove('taskview');
+        rightHeader.contentEditable = false;
+        leftHeader.innerHTML = "Tasks";
+        rightHeader.innerHTML = "Completed tasks";
         await showTasks(leftContainer, 0);
         leftContainer.appendChild(newTask);
     }
@@ -655,7 +656,8 @@
 
     // Open task ----------------------------------------------------------------------------------------------
     function toggleTask() {
-        if (rightHeader.isContentEditable) {
+        let task = JSON.parse(localStorage.getItem('taskinfo'));
+        if (!rightHeader.innerHTML.localeCompare(task.name)) {
             loadTasks();
         } else {
             openTask();
@@ -692,16 +694,28 @@
         deadlineDiv.appendChild(deadlineImg);
 
         let deadlineTxt = document.createElement('p');
-        deadlineTxt.innerHTML = "Due date: ";
+        if(task.deadline) {
+            deadlineTxt.innerHTML = "Due date: " + task.deadline;
+        } else {
+            deadlineTxt.innerHTML = "No due date set";
+        }
         deadlineDiv.appendChild(deadlineTxt);
 
         rightContainer.appendChild(deadlineDiv);
 
         // notes
-        let notesDiv = document.createElement('div');
-        notesDiv.setAttribute("class", "whitebox notes");
-        notesDiv.innerHTML ="Notes";
-        rightContainer.appendChild(notesDiv);
+        let notesTitle = document.createElement('div');
+        notesTitle.setAttribute("class", "notesTitle");
+        notesTitle.innerHTML = "Notes:";
+        rightContainer.appendChild(notesTitle);
+
+        let notes = document.createElement('div');
+        notes.setAttribute("class", "notes");
+        notes.innerHTML = task.notes;
+        rightContainer.appendChild(notes);
+        notes.addEventListener('click', function() {
+            //TODO
+        });
 
     }
 

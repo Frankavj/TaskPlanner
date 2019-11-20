@@ -484,12 +484,12 @@ input {
 
 .taskview {
   display: grid;
-  grid-template-rows: 50px auto;
+  grid-template-rows: 60px 20px auto;
   align-items: center;
 }
 
 .bell {
-  height: 40px;
+  height: 35px;
 }
 
 .deadline {
@@ -498,6 +498,11 @@ input {
   align-items: center;
 }
 
+.notesTitle {
+  background-color: var(--grey) !important;
+}
+
 .notes {
-  height: 100%;
+  height: calc(100% - 10px);
+  margin-top: 10px !important;
 }
