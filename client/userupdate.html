@@ -5,24 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Createlist</title>
-    <link rel="stylesheet" href="./css/userupdate.css">
+    <link rel="stylesheet" href="./css/userlogin.css">
 </head>
 
 <body>
 
-    <form id="updateForm" class="login-form">
-        
-        <div>
-            <h1 id="title"></h1>
+    <button class="back" id="btnBack">«</button>
+    <form id="updateForm" class="form">
+        <h1 id="title"></h1>
 
-            <div id="container" class="txtb">
-                <input type="password" id="inpOldPass" placeholder="Old Password*">
-            </div>
-        
-              
+        <div id="container" class="txtb">
+            <input type="password" id="inpOldPass" placeholder="Old Password*">
+        </div>
 
         <button id="btnCreate" type="submit">Change</button>
-        </div>
     </form>
 
 </body>
@@ -33,6 +29,11 @@
     let container = document.getElementById("container");
     let oldPass = document.getElementById("inpOldPass");
     let updateForm = document.getElementById("updateForm");
+    let btnBack = document.getElementById('btnBack');
+
+    btnBack.addEventListener('click', function () {
+        window.location.href = "./user.html";
+    });
 
     let uname;
     let email;
@@ -46,7 +47,7 @@
 
     let update = localStorage.getItem('update');
 
-    if(!update.localeCompare('email')) {
+    if (!update.localeCompare('email')) {
         title.innerHTML = "Update Email";
 
         email = document.createElement('input');
@@ -55,7 +56,7 @@
         container.insertBefore(email, oldPass);
     }
 
-    if(!update.localeCompare('username')) {
+    if (!update.localeCompare('username')) {
         title.innerHTML = "Update Username";
 
         uname = document.createElement('input');
@@ -64,7 +65,7 @@
         container.insertBefore(uname, oldPass);
     }
 
-    if(!update.localeCompare('password')) {
+    if (!update.localeCompare('password')) {
         title.innerHTML = "Reset Password";
 
         newPass = document.createElement('input');
@@ -96,18 +97,18 @@
             oldpass: oldPass.value
         }
 
-        if(email) {
+        if (email) {
             updata["value"] = email.value;
-        } else if(uname) {
+        } else if (uname) {
             updata["value"] = uname.value;
-        } else if(newPass) {
+        } else if (newPass) {
             updata["value"] = newPass.value;
         }
 
         let cfg = {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "authorisation": token
             },
             body: JSON.stringify(updata)

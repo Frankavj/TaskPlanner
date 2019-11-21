@@ -12,50 +12,62 @@ body{
   display: grid;
   justify-items: center;
   align-items: center;
-
 }
 
-.login-form{
-  width: 28%;
+.back {
+  width: 50px;
+  height: 10px;
+  background: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: .5s;
+  position: fixed;
+  top: 40px;
+  left: 50px;
+  font-size: 30px;
+  padding-bottom: 40px;
+  color: black;
+}
+
+.back:hover {
+  background-position: left;
+}
+
+.form{
+  width: 30%;
+  height: 90%;
+  max-height: 420px;
   background: #ffffff;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0,0, 0.19);
-  border-color: grey;
-  height: 40%;
-  border-radius: 10px;
+  border-radius: 5px;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%,-50%);
   display: grid;
-  grid-template-rows: 20% 40% 20% 1fr;
-  grid-template-areas: "logintxt" "user" "btnL" "btnA";
-  grid-column-gap: 100px;
+  grid-template-rows: 80px auto 40px 40px;
   padding: 5%;
-
+  justify-items: center;
 }
 
-
-.login-form h1{
-  margin-top: 10%;
+.form>h1 {
   text-align: center;
-  grid-area: logintxt;
+  margin: 0;
 }
 
-.txtb{
+.txtb {
   border-bottom: 2px solid #adadad;
-  position: relative;
-  grid-area: user;
+  align-items: center;
+  display: grid;
+  width: 100%;
 }
 
-.txtb input{
+.txtb>input {
   font-size: 15px;
   color: #333;
   border: none;
-  width: 100%;
-  outline: none;
   background: none;
-  height: 40px;
-  padding: 5%;
+  text-align: center;
 }
 
 .txtb span::before{
@@ -79,28 +91,23 @@ body{
 }
 
 
-#btn{
-  display: block;
+button{
   width: 100%;
   height: 40px;
   border: none;
   background: linear-gradient(120deg,#f4e0cd,#bbd2c5,#9c9fa1);
   background-size: 200%;
   color: #fff;
-  outline: none;
   cursor: pointer;
   transition: .5s;
-  grid-area: btnL;
-  margin-top: 10%;
+  margin-top: 10px;
 }
 
-#btn:hover{
+button:hover{
   background-position: right;
 }
 
 .bottom-text{
-  text-align: center;
-  padding: 10%;
+  margin-top: 15px;
   font-size: 13px;
-  grid-area: btnA;
 }
