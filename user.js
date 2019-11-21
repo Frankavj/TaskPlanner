@@ -174,3 +174,6 @@ router.delete('/', async function (req, res, next) {
 
 // export module ------------------------------------------
 module.exports = router;
+
+//avatar--------------------------------------------------
+

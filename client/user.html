@@ -16,12 +16,13 @@
         <div class="container" id="container"></div>
     </div>
 
+
+
+
 </body>
 
 <script>
 
-    let container = document.getElementById("container");
-    let btnBack = document.getElementById('btnBack');
 
     // Get line img
     let line = document.createElement('img');
@@ -41,6 +42,7 @@
     let token = logindata.token;
 
 
+    showUser();
     // ---------------------------------------
     async function showUser() {
         // now shows all users - will be just the one that's logged in once we have authentication
@@ -161,7 +163,14 @@
 
     }
 
-    showUser();
+    btnModal.addEventListener("click", function () {
+        modal.style.display = "block";
+    })
+
+    close.addEventListener("click", function() {
+        window.location.href = "user.html";
+
+    })
 
 </script>
 
