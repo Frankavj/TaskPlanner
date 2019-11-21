@@ -17,6 +17,7 @@ body {
   display: grid;
   justify-items: center;
   align-items: center;
+  overflow-y: hidden;
 }
 
 .hidden {
@@ -70,9 +71,9 @@ input {
 
 .main {
   width: 90%;
-  height: 90%;
+  height: 90vh;
   display: grid;
-  grid-template-rows: 50px auto;
+  grid-template-rows: 50px calc(100% - 50px);
   grid-template-areas: "title" "home";
   align-items: center;
 }
@@ -335,7 +336,7 @@ input {
   border-radius: 5px;
   padding: 10px;
   margin: 10px;
-  overflow-x: scroll;
+  overflow-y: scroll;
   height: 100%
 }
 
@@ -452,7 +453,7 @@ input {
 #privateLists {
   height: 100%;
   grid-area: privateLists;
-  overflow-x: scroll;
+  overflow-y: scroll;
 }
 
 #public {
@@ -468,7 +469,7 @@ input {
 #publicLists {
   height: 100%;
   grid-area: publicLists;
-  overflow-x: scroll;
+  overflow-y: scroll;
 }
 
 #individual {
@@ -484,7 +485,7 @@ input {
 #individualLists {
   grid-area: individualLists;
   height: 100%;
-  overflow-x: scroll;
+  overflow-y: scroll;
 }
 
 #shared {
@@ -500,7 +501,7 @@ input {
 #sharedLists {
   grid-area: sharedLists;
   height: 100%;
-  overflow-x: scroll;
+  overflow-y: scroll;
 }
 
 #newListSB {
