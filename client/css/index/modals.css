@@ -1,8 +1,9 @@
 .modal {
-    display: none; 
+    display: none;
     position: fixed;
     z-index: 1;
-    padding-top: 100px;
+    padding-top: 5%;
+    padding-bottom: 5%;
     left: 0;
     top: 0;
     width: 100%;
@@ -10,6 +11,8 @@
     overflow: auto;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.4);
+    padding-top: calc(50vh - 150px);
+    padding-bottom: calc(50vh - 150px);
 }
 
 .modal-content {
@@ -25,6 +28,9 @@
     animation-name: animatetop;
     animation-duration: 0.4s;
     border-radius: 5px;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 50px minmax(calc(100% - 50px), min-content);
 }
 
 .close {
@@ -54,17 +60,88 @@
     display: grid
 }
 
-.modal-body>div {
+.showPeopleBody {
+    grid-template-rows: 40px minmax(auto, min-content);
+}
+
+.theySharedWith {
     display: grid;
     align-items: center;
-    grid-template-columns: 40px auto;;
+    grid-template-columns: 40px auto;
     margin: 5px;
 }
 
-.modal-body>div>img {
-    width: 40px;
+.theySharedWith>img {
+    width: 35px;
     justify-self: right;
-    margin: 5px;
+    margin: 10px;
+}
+
+.addPeopleBody {
+    grid-template-rows: 40px 20px minmax(auto, min-content);
+}
+
+.search {
+    display: grid;
+    grid-template-columns: 1fr 20px 1fr 25px;
+    align-items: center;
+    justify-items: center;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.search>img {
+    width: 20px;
+}
+
+.search>input {
+    border-radius: 5px;
+    border-width: 0.5px;
+    padding: 2px;
+    margin: 2px;
+}
+
+#have_accessTitle {
+    display: none;
+}
+
+#have_access {
+    display: none;
+    overflow-y: scroll;
+}
+
+.iSharedWith {
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto 25px;
+    margin-top: 5px;
+}
+
+.iSharedWith>img {
+    width: 20px;
+    justify-self: center;
+}
+
+.iSharedWith>div {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 40px auto;
+}
+
+.iSharedWith>div>img {
+    width: 24px;
+    justify-self: center;
+}
+
+.iSharedWith>div>p {
+    padding-left: 5px;
+    font-size: 14px;
+}
+
+.greybox {
+    background-color: var(--grey);
+    border-radius: 10px;
+    padding: 2px;
 }
 
 @-webkit-keyframes animatetop {

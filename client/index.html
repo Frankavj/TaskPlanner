@@ -92,7 +92,29 @@
                 <h2>Users with access to this list</h2>
                 <span class="close">&times;</span>
             </div>
-            <div class="modal-body"></div>
+            <div class="modal-body showPeopleBody"></div>
+        </div>
+
+    </div>
+
+    <!-- See who has access to a list shared with you -->
+    <div id="shareModal" class="modal">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Share list with users</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body addPeopleBody">
+                <div id="search" class="search">
+                    <input id="searchUname" type="text" placeholder="Username">
+                    <p>or</p>
+                    <input id="searchEmail" type="email" placeholder="Email">
+                    <img id="btnSearch" src="/img/search.png">
+                </div>
+                <p id="have_accessTitle">Users with access to this list</p>
+                <div id="have_access"></div>
+            </div>
         </div>
 
     </div>
