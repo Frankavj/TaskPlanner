@@ -1,6 +1,6 @@
 // Imports ----------------------------------------------------------------------------------------------
-import {createTask, loadTasks} from './task.js'; 
-import {getUserById} from './user.js'; 
+import { createTask, loadTasks } from './task.js';
+import { getUserById } from './user.js';
 
 // Logindata --------------------------------------------------------------------------------------------
 let logindata = JSON.parse(sessionStorage.getItem("logindata"));
@@ -19,9 +19,11 @@ addImgSB.addEventListener('click', function () {
     inpNameSB.classList.remove("hidden");
 });
 
-inpNameSB.addEventListener('blur', function () {
-    addImgSB.classList.remove("hidden");
-    inpNameSB.classList.add("hidden");
+window.addEventListener('click', function () {
+    if (event.target != inpNameSB && event.target != addImgSB) {
+        addImgSB.classList.remove("hidden");
+        inpNameSB.classList.add("hidden");
+    }
 });
 
 inpNameSB.addEventListener('keydown', function () {
@@ -37,15 +39,17 @@ let inpName = document.getElementById('inpName');
 let createTxt = document.getElementById('createTxt');
 
 newList.addEventListener('click', function () {
-    addImg.classList.add("hidden");;
-    createTxt.classList.add("hidden");;
-    inpName.classList.remove("hidden");;
+    addImg.classList.add("hidden");
+    createTxt.classList.add("hidden");
+    inpName.classList.remove("hidden");
 });
 
-inpName.addEventListener('blur', function () {
-    addImg.classList.remove("hidden");;
-    createTxt.classList.remove("hidden");;
-    inpName.classList.add("hidden");;
+window.addEventListener('click', function () {
+    if (event.target != inpName && event.target != createTxt && event.target != addImg) {
+        addImg.classList.remove("hidden");
+        createTxt.classList.remove("hidden");
+        inpName.classList.add("hidden");
+    }
 });
 
 inpName.addEventListener('keydown', function () {

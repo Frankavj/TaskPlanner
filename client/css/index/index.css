@@ -10,10 +10,9 @@
 
 body {
   height: 100vh;
-  background: url("../img/bakgrunn_forslag.jpg") no-repeat center center fixed;
+  background: url("../../img/bakgrunn_forslag.jpg") no-repeat center center fixed;
   background-size: cover;
-  padding-left: 300px;
-  /* 300px: width of sidebar */
+  padding-left: 300px; /* 300px: width of sidebar */
   display: grid;
   justify-items: center;
   align-items: center;
