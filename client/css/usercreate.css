@@ -12,47 +12,42 @@ body{
   display: grid;
   justify-items: center;
   align-items: center;
-  display: flex;
 }
 
 .login-form{
-  width: 28%;
+  width: 30%;
+  height: 90%;
+  max-height: 450px;
   background: #ffffff;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0,0, 0.19);
-  border-color: grey;
-  height: 40%;
   border-radius: 10px;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%,-50%);
   display: grid;
-  grid-template-rows: 20% 40% 20% 1fr;
-  grid-template-areas: "createtxt" "user" "cU" "btnA";
+  grid-template-rows: 80px auto 40px 40px;
   padding: 5%;
+  justify-items: center;
 }
 
 .login-form h1{
-margin-top: 10%;
   text-align: center;
-  grid-area: createtxt;
 }
 
 .txtb{
   border-bottom: 2px solid #adadad;
-  position: relative;
-  grid-area: user;
+  align-items: center;
+  display: grid;
+  width: 100%;
 }
 
 .txtb input{
   font-size: 15px;
   color: #333;
   border: none;
-  width: 100%;
-  outline: none;
   background: none;
-  height: 40px;
-  padding: 5%;
+  text-align: center;
 }
 
 .txtb span::before{
@@ -83,7 +78,6 @@ margin-top: 10%;
 }
 
 #btnCreate {
-  display: block;
   width: 100%;
   height: 40px;
   border: none;
@@ -93,8 +87,7 @@ margin-top: 10%;
   outline: none;
   cursor: pointer;
   transition: .5s;
-  grid-area: cU;
-  margin-top: 10%;
+  margin-top: 10px;
 }
 
 #btnCreate:hover{
@@ -102,8 +95,6 @@ margin-top: 10%;
 }
 
 .bottom-text{
-  text-align: center;
-  padding: 10%;
+  margin-top: 15px;
   font-size: 13px;
-  grid-area: btnA;
 }

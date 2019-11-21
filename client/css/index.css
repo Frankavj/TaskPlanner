@@ -41,8 +41,8 @@ input {
   align-items: center;
   position: fixed;
   display: grid;
-  grid-template-rows: 60px 60px 40px 20px minmax(auto, min-content) 20px minmax(auto, min-content) 20px minmax(auto, min-content) auto 30px;
-  grid-template-areas: "img" "pL" "myLists" "private" "privateLists" "public" "publicLists" "individual" "individualLists" "new" "lO";
+  grid-template-rows: 60px 60px 40px 20px minmax(auto, min-content) 20px minmax(auto, min-content) 20px minmax(auto, min-content) 20px minmax(auto, min-content) auto 30px;
+  grid-template-areas: "img" "pL" "myLists" "private" "privateLists" "public" "publicLists" "individual" "individualLists" "shared" "sharedLists" "new" "lO";
 }
 
 .list input {
@@ -58,12 +58,12 @@ input {
 
 .listSB {
   display: grid;
-  grid-template-columns: 40px auto;
+  grid-template-columns: 50px auto;
   align-items: center;
 }
 
 .listSB>img {
-  width: 40px;
+  width: 50px;
 }
 
 /*homepage*/
@@ -124,8 +124,8 @@ input {
 }
 
 #inpNameSB {
-  float:right;
-  width:50%;
+  float: right;
+  width: 50%;
 }
 
 /*Welcome back placement*/
@@ -188,7 +188,9 @@ input {
   cursor: pointer;
   grid-area: img;
   display: grid;
-  grid-template-columns: 30px auto;
+  grid-template-columns: 40px auto;
+  height: 100%;
+  border-bottom: 1px solid var(--grey);
 }
 
 #myProfile:hover {
@@ -197,8 +199,8 @@ input {
 }
 
 #myProfile>img {
-  width: 25px;
-  margin-left:5px;
+  width: 40px;
+  margin-left: 5px;
 }
 
 #myProfile>p {
@@ -251,7 +253,7 @@ input {
 .deleteTask {
   height: 25px;
   cursor: pointer;
-  margin-left:10px;
+  margin-left: 10px;
 }
 
 .deleteTask:hover {
@@ -289,8 +291,19 @@ input {
   grid-template-columns: auto min-content;
 }
 
-.sharedListDiv>p {
+.sharedListDiv>div {
+  display: grid;
+  grid-template-columns: min-content auto;
+}
+
+.sharedListDiv>div>p {
   white-space: nowrap;
+}
+
+.sharedListDiv>div>img {
+  height: 20px;
+  margin-left: 15px;
+  margin-right: 10px;
 }
 
 /*log out*/
@@ -395,6 +408,22 @@ input {
   border-width: 1px;
 }
 
+#sharedBy {
+  grid-area: footerL;
+  display: grid;
+  grid-template-columns: min-content auto;
+  align-items: center;
+}
+
+#sharedBy>img {
+  width: 20px;
+}
+
+#sharedBy>p {
+  white-space: nowrap;
+  padding: 10px;
+}
+
 /*List in sidebar*/
 
 #allLists {
@@ -454,6 +483,22 @@ input {
 
 #individualLists {
   grid-area: individualLists;
+  height: 100%;
+  overflow-x: scroll;
+}
+
+#shared {
+  cursor: pointer;
+  grid-area: shared;
+}
+
+#shared:hover {
+  background-color: var(--offwhite);
+  opacity: 50%;
+}
+
+#sharedLists {
+  grid-area: sharedLists;
   height: 100%;
   overflow-x: scroll;
 }

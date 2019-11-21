@@ -11,7 +11,7 @@
 
 <body>
 
-    <form id="loginForm" class="login-form">
+    <form id="loginForm" class="form">
 
         <h1>Login</h1>
 
@@ -64,6 +64,9 @@
             window.location.href = "./index.html";
         } catch (err) {
             console.log(err);
+            if (err.msg) {
+                alert(err.msg);
+            }
         }
     });
 

@@ -93,6 +93,21 @@ router.get('/individual', async function (req, res, next) {
 
 });
 
+// endpoint - lists GET individual ------------------------
+router.get('/shared', async function (req, res, next) {
+
+    let sql = "SELECT * FROM lists WHERE shared=$1 AND $2 = ANY (individual_access)";
+    let values = [2, logindata.userid];
+
+    try {
+        let result = await pool.query(sql, values);
+        res.status(200).json(result.rows); //send response    
+    } catch (err) {
+        res.status(500).json(err); //send response    
+    }
+
+});
+
 // endpoint - lists GET allpublic -------------------------
 router.get('/allpublic', async function (req, res, next) {
 
@@ -120,7 +135,7 @@ router.put('/', async function (req, res, next) {
         let result = await pool.query(sql, values);
 
         if (result.rows.length == 0) {
-            res.status(400).json({ msg: "List doesn't exist" }); //send response 
+            res.status(400).json({ msg: "List doesn't exist or you are not the owner" }); //send response 
         } else {
             sql = "UPDATE lists SET";
 
@@ -135,10 +150,14 @@ router.put('/', async function (req, res, next) {
                 values.push(updata.value);
             }
             // change individual access
-            if (!updata.update.localeCompare("individual_access") && value.localeCompare("NULL")) {
+            if (!updata.update.localeCompare("individual_access")) {
                 sql = sql + ` individual_access = $2`;
-                values.push(updata.value);
-            }
+                if(updata.value.length > 0) {
+                    values.push(updata.value);
+                } else {
+                    values.push(null);
+                }
+            } 
 
             sql = sql + ` WHERE id = $1`;
 
@@ -160,8 +179,8 @@ router.delete('/', async function (req, res, next) {
 
     let updata = req.body;
 
-    let sql = 'DELETE FROM lists WHERE id = $1 RETURNING *'
-    let values = [updata.listid];
+    let sql = 'DELETE FROM lists WHERE id = $1 AND owner = $2 RETURNING *'
+    let values = [updata.listid, logindata.userid];
 
     try {
         let result = await pool.query(sql, values);

@@ -35,11 +35,10 @@ router.use('/', function (req, res, next) {
 
 // endpoint - users POST ---------------------------------
 router.post("/", async function (req, res, next) {
-    console.log("POST");
     let updata = req.body;
 
     // hash the pwd before it is stored in the db
-    let hash = crypto.createHash('sha256').update(updata.password).digest('hex');
+    let hash = updata.password ? crypto.createHash('sha256').update(updata.password).digest('hex') : null;
 
     let sql = "INSERT INTO users (id, username, email, pwdhash) VALUES(DEFAULT, $1, $2, $3) RETURNING *";
     let values = [updata.username, updata.email, hash];
@@ -53,7 +52,7 @@ router.post("/", async function (req, res, next) {
             throw "User creation failed.";
         }
     } catch (err) {
-        res.status(500).json({ error: err });
+        res.status(500).json(err);
     }
 });
 
@@ -166,7 +165,6 @@ router.delete('/', async function (req, res, next) {
             throw "Delete failed"
         }
     } catch (err) {
-        console.log(err);
         res.status(500).json({ error: err }); //send error response 
     }
 

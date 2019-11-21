@@ -11,21 +11,19 @@
 <body>
 
     <form id="form" class="login-form">
-        <div>
         <h1>Create user</h1>
 
-        
-            <div class="txtb">
-                <input type="username" id="inpUsername" placeholder="Username">
-                <input type="email" id="inpEmail" placeholder="E-mail">
-                <input type="password" id="inpPassword" placeholder="Password">
-            </div>
 
-            <button id="btnCreate" type="submit">Create user</button>
+        <div class="txtb">
+            <input type="username" id="inpUsername" placeholder="Username">
+            <input type="email" id="inpEmail" placeholder="E-mail">
+            <input type="password" id="inpPassword" placeholder="Password">
+        </div>
 
-            <div class="bottom-text">
-                Already have an account? <a href="./userlogin.html">Sign in</a>
-            </div>
+        <button id="btnCreate" type="submit">Create user</button>
+
+        <div class="bottom-text">
+            Already have an account? <a href="./userlogin.html">Sign in</a>
         </div>
     </form>
 
@@ -44,14 +42,13 @@
 
     form.addEventListener('submit', async function (evt) {
         evt.preventDefault();
-        console.log("create user " + inpUsername.value);
 
         let url = "http://localhost:3000/users";
 
         let updata = {
-            username: inpUsername.value,
-            email: inpEmail.value,
-            password: inpPassword.value
+            username: (inpUsername.value == '') ? null : inpUsername.value,
+            email: (inpEmail.value == '') ? null : inpEmail.value,
+            password: (inpPassword.value == '') ? null : inpPassword.value
         }
 
         let cfg = {
@@ -63,8 +60,22 @@
         try {
             var resp = await fetch(url, cfg);
             var data = await resp.json();
-            alert("Account succesfully created!");
-            window.location.href = "./userlogin.html";
+
+            if (resp.status == 200) {
+                alert("Account succesfully created!");
+                window.location.href = "./userlogin.html";
+            } else if (resp.status == 500 && data.detail.includes("null")) {
+                alert("Please fill out all the fields");
+            } else if (resp.status == 500 && data.detail.includes("already")) {
+                if(data.detail.includes("username") && data.detail.includes("email")) {
+                    alert("Username and email already taken.");
+                } else if (data.detail.includes("username")) {
+                    alert("Username already taken.");
+                } else {
+                    alert("Email already taken.");
+                }
+            }
+
         } catch (err) {
             console.log(err);
         }
