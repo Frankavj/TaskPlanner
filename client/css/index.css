@@ -146,38 +146,14 @@ input {
   grid-area: footerR;
 }
 
-#btnShare {
+.bottombtn {
   height: 25px;
   cursor: pointer;
   float: right;
   margin: 10px;
 }
 
-#btnShare:hover {
-  background-color: var(--offwhite);
-  opacity: 50%;
-}
-
-#btnAddPeople {
-  height: 25px;
-  cursor: pointer;
-  float: right;
-  margin: 10px;
-}
-
-#btnAddPeople:hover {
-  background-color: var(--offwhite);
-  opacity: 50%;
-}
-
-#btnListDelete {
-  height: 25px;
-  cursor: pointer;
-  float: right;
-  margin: 10px;
-}
-
-#btnListDelete:hover {
+.bottombtn:hover {
   background-color: var(--offwhite);
   opacity: 50%;
 }
