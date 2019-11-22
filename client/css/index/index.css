@@ -538,6 +538,49 @@ input {
   .list {
   background: var(--offwhite);
   width: 600px;
-  height: 7%;
+  height: 6%;
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 0px 0px 0px 0px;
+  grid-template-areas: "img" "allLists" "myLists"  "lO";
   
+}  }
+
+@media only screen and (max-width: 600px) {  
+  .listSB>img {
+    width: 0px;
   }
+}  
+
+@media only screen and (max-width: 600px) {
+  .listSB {
+    display: grid;
+    grid-template-columns: none;
+    align-items: center;
+    margin-top: 50px;
+    margin-left: 0px;
+    white-space: nowrap;
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .main {
+    width: 190%;
+    height: 90vh;
+    display: grid;
+    grid-template-rows: 75px calc(100% - 50px);
+    grid-template-areas: "title" "home";
+    align-items: center;
+    position: relative;
+    right: 150px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #newListSB {
+    grid-area: none;
+    height: 0%;
+  }
+}
