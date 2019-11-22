@@ -1,4 +1,5 @@
 // Imports ----------------------------------------------------------------------------------------------
+import { updateList, openList } from './list.js';
 
 // Logindata --------------------------------------------------------------------------------------------
 let logindata = JSON.parse(sessionStorage.getItem("logindata"));
@@ -8,8 +9,8 @@ if (!logindata) {
 let token = logindata.token;
 
 // GET user ----------------------------------------------------------------------------------------------
-export async function getUserById(id) {
-    let url = `http://localhost:3000/users/${id}`;
+export async function getUserBy(property, value) {
+    let url = `http://localhost:3000/users/${property}/${value}`;
 
     let cfg = {
         method: "GET",
@@ -44,24 +45,39 @@ sharedWith.addEventListener('click', async function () {
     accessModalBody.innerHTML = "" // remove previous content
 
     for (let id of list.individual_access) {
-        let user = await getUserById(id);
+        let user = await getUserBy("id", id);
 
-        if (user.id != logindata.userid) {
-            let div = document.createElement('div');
-            div.setAttribute('class', 'theySharedWith');
+        let div = document.createElement('div');
+        div.setAttribute('class', 'sharedWith');
 
-            let img = document.createElement('img');
-            img.setAttribute('src', "../img/boy_1.png"); //TODO
-            div.appendChild(img);
+        let greybox = document.createElement('div');
+        greybox.setAttribute('class', 'greybox');
 
-            let name = document.createElement('p');
-            name.innerHTML = user.username;
-            div.appendChild(name);
+        let img = document.createElement('img');
+        img.setAttribute('src', "../img/boy_1.png"); //TODO
+        greybox.appendChild(img);
 
+        let name = document.createElement('p');
+        name.innerHTML = user.id == logindata.userid ? "me" : user.username;
+        greybox.appendChild(name);
+
+        div.appendChild(greybox);
+
+        if (user.id == logindata.userid) {
+            let removeAccessBtn = document.createElement('img');
+            removeAccessBtn.setAttribute('src', '../img/trash.png');
+            removeAccessBtn.addEventListener('click', function () {
+                removeAccess(id);
+                shareModal.style.display = "none";
+            });
+            div.appendChild(removeAccessBtn);
+            accessModalBody.prepend(div);
+        } else {
+            let removeAccessDiv = document.createElement('div');
+            div.appendChild(removeAccessDiv);
             accessModalBody.appendChild(div);
         }
     }
-
 });
 
 accessModalSpan.addEventListener('click', function () {
@@ -76,11 +92,7 @@ window.addEventListener('click', function () {
 
 // Show users with access - shared by me --------------------------------------------------------------------
 let shareModal = document.getElementById("shareModal");
-let shareModalBody = document.getElementsByClassName("modal-body")[1];
 let shareModalSpan = document.getElementsByClassName("close")[1];
-let searchUname = document.getElementById("searchUname");
-let searchEmail = document.getElementById("searchEmail");
-let btnSearch = document.getElementById("btnSearch");
 let have_accessTitle = document.getElementById("have_accessTitle");
 let have_access = document.getElementById("have_access");
 let share = document.getElementById("btnAddPeople");
@@ -97,11 +109,11 @@ share.addEventListener('click', async function () {
         have_access.innerHTML = ""; // remove previous content
 
         for (let id of list.individual_access) {
-            let user = await getUserById(id);
+            let user = await getUserBy("id", id);
 
             if (user.id != logindata.userid) {
                 let div = document.createElement('div');
-                div.setAttribute('class', 'iSharedWith')
+                div.setAttribute('class', 'sharedWith')
 
                 let greybox = document.createElement('div');
                 greybox.setAttribute('class', 'greybox');
@@ -118,6 +130,10 @@ share.addEventListener('click', async function () {
 
                 let removeUser = document.createElement('img');
                 removeUser.setAttribute('src', '../img/trash.png');
+                removeUser.addEventListener('click', function () {
+                    removeAccess(id);
+                    shareModal.style.display = "none";
+                });
 
                 div.appendChild(removeUser);
 
@@ -138,5 +154,64 @@ shareModalSpan.addEventListener('click', function () {
 window.addEventListener('click', function () {
     if (event.target == shareModal) {
         shareModal.style.display = "none";
+    }
+});
+
+// Remove access by id --------------------------------------------------------------------------------------
+async function removeAccess(id) {
+    let list = JSON.parse(localStorage.getItem('listinfo'));
+    let index = list.individual_access.indexOf(id);
+    list.individual_access.splice(index, 1);
+
+    localStorage.setItem("listinfo", JSON.stringify(list));
+    await updateList("individual_access", list.individual_access);
+    if(list.individual_access.length > 0) {
+        openList();
+    } else {
+        window.location.reload();
+    }
+    
+}
+
+// Add access by id -----------------------------------------------------------------------------------
+function addAccess(id) {
+    let list = JSON.parse(localStorage.getItem('listinfo'));
+    if (id != logindata.userid) {
+        if (list.individual_access && !list.individual_access.includes(id)) {
+            list.individual_access.push(id);
+        } else {
+            list.individual_access = [id];
+        }
+        localStorage.setItem("listinfo", JSON.stringify(list));
+        updateList("individual_access", list.individual_access);
+        openList();
+    }
+}
+
+// Give user access -----------------------------------------------------------------------------------------
+let searchUname = document.getElementById("searchUname");
+let searchEmail = document.getElementById("searchEmail");
+let btnSearch = document.getElementById("btnSearch");
+
+btnSearch.addEventListener('click', async function () {
+    try {
+        if (searchUname.value) {
+            let res = await getUserBy("username", searchUname.value);
+            if (confirm(`Share with ${res.username}?`)) {
+                addAccess(res.id);
+                shareModal.style.display = "none";
+            }
+        } else if (searchEmail.value) {
+            let res = await getUserBy("email", searchEmail.value);
+            if (confirm(`Share with ${res.username}?`)) {
+                addAccess(res.id);
+                shareModal.style.display = "none";
+            }
+        }
+    } catch (err) {
+        console.log(err);
+        if (err.msg) {
+            alert(err.msg);
+        }
     }
 });
