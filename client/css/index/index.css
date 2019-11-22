@@ -541,8 +541,8 @@ input {
   height: 6%;
   align-items: center;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 0px 0px 0px 0px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: ;
   grid-template-areas: "img" "allLists" "myLists"  "lO";
   
 }  }
@@ -582,5 +582,53 @@ input {
   #newListSB {
     grid-area: none;
     height: 0%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #myLists {
+    display: none; 
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .dropdown {
+    
+    position: relative;
+    right: 20px;
+    top: 60px;
+    grid-area: myLists;
+  }
+}
+
+/* Remove old mylist ++*/
+
+@media only screen and (max-width: 600px) {
+  #individual {
+    display: none; 
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #shared {
+    display: none; 
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #private {
+    display: none; 
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #public {
+    display: none; 
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #newListSB {
+    display: none; 
   }
 }
