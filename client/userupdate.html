@@ -125,6 +125,14 @@
             } else if (resp.status > 202) {
                 throw (data);
             }
+
+            if(email) {
+                logindata.email = email.value;
+            } 
+            if(uname) {
+                logindata.username = uname.value;
+            }
+            sessionStorage.setItem("logindata", JSON.stringify(logindata));
             window.location.href = "./user.html";
 
         } catch (err) {

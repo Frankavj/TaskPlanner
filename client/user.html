@@ -12,7 +12,7 @@
 
     <button class="back" id="btnBack">«</button>
     <div class="main">
-        <img id="avatar" src="../img/boy_2.png">
+        <img id="avatar">
         <div class="container" id="container"></div>
     </div>
 
@@ -24,14 +24,15 @@
 
         <!-- Modal content -->
         <div class="modal-content">
-            
-            <img id="avatar_1" src="../img/boy_1.png">
-            <img id="avatar_2" src="../img/boy_2.png">
-            <img id="avatar_3" src="../img/boy_3.png">
-            <img id="avatar_4" src="../img/girl_1.png">
-            <img id="avatar_5" src="../img/girl_2.png">
-            <img id="avatar_6" src="../img/girl_3.png">
+
             <span id="close">&times;</span>
+            <img id="avatar_1" src="../img/avatar_1.png">
+            <img id="avatar_2" src="../img/avatar_2.png">
+            <img id="avatar_3" src="../img/avatar_3.png">
+            <img id="avatar_4" src="../img/avatar_4.png">
+            <img id="avatar_5" src="../img/avatar_5.png">
+            <img id="avatar_6" src="../img/avatar_6.png">
+
         </div>
 
     </div>
@@ -87,6 +88,10 @@
             }
 
             container.innerHTML = ""; // delete previous content
+
+            // Show user's avatar
+            let avatar = document.getElementById('avatar');
+            avatar.setAttribute('src', `../img/avatar_${user.avatar}.png`);
 
             // Add username and email
             let profileDiv = document.createElement('div');
@@ -218,10 +223,11 @@
     async function changeAvatar(evt) {
 
         let url = "http://localhost:3000/users/avatar";
+        let new_avatar = evt.target.id.split("_")[1];
 
         let updata = {
             update: "avatar",
-            value: evt.target.id.split("_")[1]
+            value: new_avatar
         }
 
         let cfg = {
@@ -236,6 +242,8 @@
         try {
 
             var resp = await fetch(url, cfg);
+
+            console.log(resp);
             var data = await resp.json();
 
             if (resp.status == 403) {
@@ -244,7 +252,10 @@
             } else if (resp.status > 202) {
                 throw (data);
             }
-            window.location.href = "./user.html";
+
+            logindata.avatar = new_avatar;
+            sessionStorage.setItem("logindata", JSON.stringify(logindata));
+            window.location.reload();
 
         } catch (err) {
             console.log(err);
