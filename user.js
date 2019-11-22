@@ -126,6 +126,11 @@ router.put('/', async function (req, res, next) {
                         sql = sql + ` pwdhash = $2`;
                         values.push(hash);
                     }
+                    // change avatar
+                    if (!updata.update.localeCompare("avatar")) {
+                        sql = sql + ` avatar = $2`;
+                        values.push(updata.value);
+                    }
 
                     sql = sql + ` WHERE id = $1`;
 
@@ -139,6 +144,35 @@ router.put('/', async function (req, res, next) {
                 }
             } else {
                 res.status(400).json({ msg: "Wrong password" });
+            }
+        }
+    } catch (err) {
+        res.status(500).json(err); //send error response 
+    }
+
+});
+
+// endpoint - users PUT avatar ---------------------------- 
+router.put('/avatar', async function (req, res, next) {
+    let updata = req.body;
+
+    let sql = 'SELECT * FROM users WHERE id = $1';
+    let values = [logindata.userid];
+
+    try {
+        let result = await pool.query(sql, values);
+
+        if (result.rows.length == 0) {
+            res.status(400).json({ msg: "User doesn't exist" }); //send response 
+        } else {
+            sql = "UPDATE users SET avatar = $2 WHERE id = $1";
+            values.push(updata.value);
+
+            try {
+                await pool.query(sql, values);
+                res.status(200).json({ msg: "Update OK" });
+            } catch (err) {
+                res.status(500).json(err);
             }
         }
     } catch (err) {
@@ -172,6 +206,4 @@ router.delete('/', async function (req, res, next) {
 
 // export module ------------------------------------------
 module.exports = router;
-
-//avatar--------------------------------------------------
 
