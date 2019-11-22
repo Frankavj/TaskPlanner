@@ -90,7 +90,8 @@ router.put('/', async function (req, res, next) {
             }
             // change deadline
             if (!updata.update.localeCompare("deadline")) {
-                ///TODO Thomas
+                sql = sql + ` deadline = $2`;
+                values.push(updata.value);
             }
             // change notes
             if (!updata.update.localeCompare("notes")) {

@@ -72,56 +72,14 @@ router.get('/', async function (req, res, next) {
 });
 
 // endpoint - users GET by id --------------------------- 
-router.get('/id/:id', async function (req, res, next) {
+router.get('/:id', async function (req, res, next) {
 
     let sql = "SELECT * FROM users WHERE id=$1";
     let values = [req.params.id];
 
     try {
         let result = await pool.query(sql, values);
-        if (result.rows.length == 0) {
-            res.status(400).json({ msg: "User doesn't exist" }); //send response 
-        } else {
-            res.status(200).json(result.rows[0]); //send response    
-        }
-    } catch (err) {
-        res.status(500).json(err); //send response    
-    }
-
-});
-
-// endpoint - users GET by username --------------------- 
-router.get('/username/:username', async function (req, res, next) {
-
-    let sql = "SELECT * FROM users WHERE username=$1";
-    let values = [req.params.username];
-
-    try {
-        let result = await pool.query(sql, values);
-        if (result.rows.length == 0) {
-            res.status(400).json({ msg: "User doesn't exist" }); //send response 
-        } else {
-            res.status(200).json(result.rows[0]); //send response    
-        }
-    } catch (err) {
-        res.status(500).json(err); //send response    
-    }
-
-});
-
-// endpoint - users GET by email ------------------------ 
-router.get('/email/:email', async function (req, res, next) {
-
-    let sql = "SELECT * FROM users WHERE email=$1";
-    let values = [req.params.email];
-
-    try {
-        let result = await pool.query(sql, values);
-        if (result.rows.length == 0) {
-            res.status(400).json({ msg: "User doesn't exist" }); //send response 
-        } else {
-            res.status(200).json(result.rows[0]); //send response    
-        }
+        res.status(200).json(result.rows[0]); //send response    
     } catch (err) {
         res.status(500).json(err); //send response    
     }

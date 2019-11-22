@@ -54,7 +54,7 @@ sharedWith.addEventListener('click', async function () {
         greybox.setAttribute('class', 'greybox');
 
         let img = document.createElement('img');
-        img.setAttribute('src', "../img/boy_1.png"); //TODO
+        img.setAttribute('src', `../img/avatar_${user.avatar}.png`); 
         greybox.appendChild(img);
 
         let name = document.createElement('p');
@@ -119,7 +119,7 @@ share.addEventListener('click', async function () {
                 greybox.setAttribute('class', 'greybox');
 
                 let img = document.createElement('img');
-                img.setAttribute('src', "../img/boy_1.png"); //TODO
+                img.setAttribute('src', `../img/avatar_${user.avatar}.png`); //TODO
                 greybox.appendChild(img);
 
                 let name = document.createElement('p');
