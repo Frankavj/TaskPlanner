@@ -2,10 +2,10 @@ const express = require('express');
 const cors = require('cors'); //when the clients aren't on the server
 const app = express(); //server-app
 
-let auth = require('./auth.js');
-let user = require('./user.js');
-let list = require('./list.js');
-let task = require('./task.js');
+let auth = require('./modules/auth.js');
+let user = require('./modules/user.js');
+let list = require('./modules/list.js');
+let task = require('./modules/task.js');
 
 // middleware ------------------------------------
 app.use(cors()); //allow all CORS requests

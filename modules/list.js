@@ -32,8 +32,8 @@ router.use('/', function (req, res, next) {
 router.post("/", async function (req, res, next) {
     let updata = req.body;
 
-    let sql = "INSERT INTO lists (id, name, shared, owner) VALUES(DEFAULT, $1, $2, $3) RETURNING *";
-    let values = [updata.listname, 0, logindata.userid];
+    let sql = "INSERT INTO lists (id, name, shared, owner) VALUES(DEFAULT, $1, DEFAULT, $2) RETURNING *";
+    let values = [updata.listname, logindata.userid];
 
     try {
         let result = await pool.query(sql, values);
@@ -51,8 +51,8 @@ router.post("/", async function (req, res, next) {
 // endpoint - lists GET private ---------------------------
 router.get('/private', async function (req, res, next) {
 
-    let sql = "SELECT * FROM lists WHERE owner=$1 AND shared=$2";
-    let values = [logindata.userid, 0];
+    let sql = "SELECT * FROM lists WHERE owner=$1 AND shared=$2 AND individual_access IS NULL";
+    let values = [logindata.userid, false];
 
     try {
         let result = await pool.query(sql, values);
@@ -67,7 +67,7 @@ router.get('/private', async function (req, res, next) {
 router.get('/public', async function (req, res, next) {
 
     let sql = "SELECT * FROM lists WHERE owner=$1 AND shared=$2";
-    let values = [logindata.userid, 1];
+    let values = [logindata.userid, true];
 
     try {
         let result = await pool.query(sql, values);
@@ -81,8 +81,8 @@ router.get('/public', async function (req, res, next) {
 // endpoint - lists GET individual ------------------------
 router.get('/individual', async function (req, res, next) {
 
-    let sql = "SELECT * FROM lists WHERE owner=$1 AND shared=$2";
-    let values = [logindata.userid, 2];
+    let sql = "SELECT * FROM lists WHERE owner=$1 AND shared=$2 AND individual_access IS NOT NULL";
+    let values = [logindata.userid, false];
 
     try {
         let result = await pool.query(sql, values);
@@ -97,7 +97,7 @@ router.get('/individual', async function (req, res, next) {
 router.get('/shared', async function (req, res, next) {
 
     let sql = "SELECT * FROM lists WHERE shared=$1 AND $2 = ANY (individual_access)";
-    let values = [2, logindata.userid];
+    let values = [false, logindata.userid];
 
     try {
         let result = await pool.query(sql, values);
@@ -112,7 +112,7 @@ router.get('/shared', async function (req, res, next) {
 router.get('/allpublic', async function (req, res, next) {
 
     let sql = "SELECT * FROM lists WHERE shared=$1";
-    let values = [1];
+    let values = [true];
 
     try {
         let result = await pool.query(sql, values);
@@ -151,13 +151,15 @@ router.put('/', async function (req, res, next) {
             }
             // change individual access
             if (!updata.update.localeCompare("individual_access")) {
-                sql = sql + ` individual_access = $2`;
-                if(updata.value.length > 0) {
-                    values.push(updata.value);
+                if (updata.value && updata.value.length > 0) {
+                        // private -> individual or just more/less people
+                        sql = sql + ` individual_access = $2`;
+                        values.push(updata.value);
                 } else {
-                    values.push(null);
+                    // individual -> private/public
+                    sql = sql + ` individual_access = NULL`;
                 }
-            } 
+            }
 
             sql = sql + ` WHERE id = $1`;
 
