@@ -30,7 +30,7 @@
     border-radius: 5px;
     height: 100%;
     display: grid;
-    grid-template-rows: 50px minmax(calc(100% - 50px), min-content);
+    grid-template-rows: 50px minmax(auto, min-content);
 }
 
 .close {
@@ -56,29 +56,16 @@
 
 .modal-body {
     padding: 10px;
-    justify-content: center;
-    display: grid
 }
 
 .showPeopleBody {
-    grid-template-rows: 40px minmax(auto, min-content);
-}
-
-.theySharedWith {
-    display: grid;
-    align-items: center;
-    grid-template-columns: 40px auto;
-    margin: 5px;
-}
-
-.theySharedWith>img {
-    width: 35px;
-    justify-self: right;
-    margin: 10px;
+    overflow-y: scroll;
 }
 
 .addPeopleBody {
     grid-template-rows: 40px 20px minmax(auto, min-content);
+    justify-content: center;
+    display: grid;
 }
 
 .search {
@@ -92,6 +79,7 @@
 
 .search>img {
     width: 20px;
+    cursor: pointer;
 }
 
 .search>input {
@@ -110,30 +98,31 @@
     overflow-y: scroll;
 }
 
-.iSharedWith {
+.sharedWith {
     display: grid;
     align-items: center;
     grid-template-columns: auto 25px;
     margin-top: 5px;
 }
 
-.iSharedWith>img {
+.sharedWith>img {
     width: 20px;
     justify-self: center;
+    cursor: pointer;
 }
 
-.iSharedWith>div {
+.sharedWith>div {
     display: grid;
     align-items: center;
     grid-template-columns: 40px auto;
 }
 
-.iSharedWith>div>img {
+.greybox>img {
     width: 24px;
     justify-self: center;
 }
 
-.iSharedWith>div>p {
+.greybox>p {
     padding-left: 5px;
     font-size: 14px;
 }

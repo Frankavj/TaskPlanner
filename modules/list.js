@@ -151,15 +151,15 @@ router.put('/', async function (req, res, next) {
             }
             // change individual access
             if (!updata.update.localeCompare("individual_access")) {
-                if(updata.value) {
-                    // private -> individual or just more/less people
-                    sql = sql + ` individual_access = $2`;
-                    values.push(updata.value);
+                if (updata.value && updata.value.length > 0) {
+                        // private -> individual or just more/less people
+                        sql = sql + ` individual_access = $2`;
+                        values.push(updata.value);
                 } else {
-                    // individual -> public
+                    // individual -> private/public
                     sql = sql + ` individual_access = NULL`;
                 }
-            } 
+            }
 
             sql = sql + ` WHERE id = $1`;
 

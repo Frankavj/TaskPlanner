@@ -1,6 +1,6 @@
 // Imports ----------------------------------------------------------------------------------------------
 import { createTask, loadTasks } from './task.js';
-import { getUserById } from './user.js';
+import { getUserBy } from './user.js';
 
 // Logindata --------------------------------------------------------------------------------------------
 let logindata = JSON.parse(sessionStorage.getItem("logindata"));
@@ -182,7 +182,7 @@ export async function showLists(container, shared) {
 
             if (!shared.localeCompare("allpublic")) {
                 // get the name of the owner and desplay it
-                let user = await getUserById(value.owner);
+                let user = await getUserBy("id", value.owner);
 
                 div.classList.add("sharedListDiv");
                 div.classList.add("whitebox");
@@ -213,7 +213,7 @@ export async function showLists(container, shared) {
 // Open list -----------------------------------------------------------------------------------------
 let title = document.getElementById('listTitle');
 
-async function openList() {
+export async function openList() {
     contentBox.classList.remove("showAllLists");
     rightHeader.contentEditable = false;
     rightContainer.classList.remove('taskview');
@@ -253,19 +253,16 @@ async function openList() {
     } else {
         btnSharedWith.classList.add("hidden");
         sharedBy.classList.remove('hidden');
-        btnListDelete.classList.remove("hidden");
+        btnListDelete.classList.add("hidden");
 
         // get owner name and profile picture
-        let owner = await getUserById(list.owner);
+        let owner = await getUserBy("id", list.owner);
         sharedByTxt.innerHTML = `Shared by ${owner.username}`;
         sharedByImg.setAttribute('src', '/img/boy_1.png');
 
         btnShare.classList.add("hidden");
         btnAddPeople.classList.add("hidden");
-        if (list.shared) {
-            // public list, cannot delete
-            btnListDelete.classList.add("hidden");
-        } else {
+        if (!list.shared) {
             // individual list
             btnSharedWith.classList.remove("hidden");
         }
@@ -304,7 +301,7 @@ btnAddPeople.addEventListener('click', function () {
 });
 
 // PUT list ------------------------------------------------
-async function updateList(feature, value) {
+export async function updateList(feature, value) {
 
     let list = JSON.parse(localStorage.getItem('listinfo'));
 
@@ -347,7 +344,7 @@ async function updateList(feature, value) {
             localStorage.setItem('listinfo', JSON.stringify(list));
 
             openList();
-        } else {
+        } else if (feature.localeCompare("individual_access")) {
             window.location.reload();
         }
 
@@ -360,14 +357,7 @@ async function updateList(feature, value) {
 // DELETE list -------------------------------------------------------------------------------------------
 btnListDelete.addEventListener('click', function () {
     let list = JSON.parse(localStorage.getItem('listinfo'));
-    if (list.owner == logindata.userid) {
-        deleteList(list.id);
-    } else {
-        // not my list: don't delete just remove me from individual_access
-        let index = list.individual_access.indexOf(logindata.userid);
-        list.individual_access.splice(index, 1);
-        updateList("individual_access", list.individual_access);
-    }
+    deleteList(list.id);
 });
 
 async function deleteList(id) {
