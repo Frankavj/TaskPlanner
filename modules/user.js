@@ -102,7 +102,7 @@ router.get('/username/:username', async function (req, res, next) {
             res.status(400).json({ msg: "User doesn't exist" }); //send response 
         } else {
             res.status(200).json(result.rows[0]); //send response    
-        }    
+        }
     } catch (err) {
         res.status(500).json(err); //send response    
     }
@@ -121,7 +121,7 @@ router.get('/email/:email', async function (req, res, next) {
             res.status(400).json({ msg: "User doesn't exist" }); //send response 
         } else {
             res.status(200).json(result.rows[0]); //send response    
-        }    
+        }
     } catch (err) {
         res.status(500).json(err); //send response    
     }

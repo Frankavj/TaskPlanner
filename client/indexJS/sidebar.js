@@ -7,8 +7,10 @@ if (!logindata) {
     window.location.href = "./userlogin.html";
 }
 
-// Show correct username on sidebar ---------------------------------------------------------------------
+// Show correct avatar and username on sidebar ---------------------------------------------------------------------
+let myAvatar = document.getElementById("myAvatar");
 let myName = document.getElementById("myName");
+myAvatar.setAttribute('src', `../img/avatar_${logindata.avatar}.png`);
 myName.innerHTML = logindata.username;
 
 // redirect to other pages ------------------------------------------------------------------------------

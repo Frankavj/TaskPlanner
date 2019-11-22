@@ -198,7 +198,7 @@ export async function showLists(container, shared) {
                 owner.appendChild(ownerName);
 
                 let ownerImg = document.createElement('img');
-                ownerImg.setAttribute('src', 'img/boy_1.png');
+                ownerImg.setAttribute('src', `img/avatar_${user.avatar}.png`);
                 owner.appendChild(ownerImg);
 
                 div.appendChild(owner);
