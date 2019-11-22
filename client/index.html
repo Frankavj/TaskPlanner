@@ -5,15 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My document</title>
-    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/index/index.css">
+    <link rel="stylesheet" href="../css/index/modals.css">
 </head>
 
 <body>
-
-
-    <!-- In sidebar -->
-
-
+    <!-- Sidebar -->
     <div class="list">
         <div id="myProfile">
             <img src="/img/boy_2.png">
@@ -31,18 +28,17 @@
         </div>
 
         <h4 id="private" class="subheading">Private</h4>
-        <div id="privateLists" class="subsubheading"></div>
+        <div id="privateLists" class="subsubheading hidden"></div>
 
         <h4 id="public" class="subheading">Public</h4>
-        <div id="publicLists" class="subsubheading"></div>
+        <div id="publicLists" class="subsubheading hidden"></div>
 
         <h4 id="individual" class="subheading">Shared by me</h4>
-        <div id="individualLists" class="subsubheading"></div>
+        <div id="individualLists" class="subsubheading hidden"></div>
 
         <h4 id="shared" class="subheading">Shared with me</h4>
-        <div id="sharedLists" class="subsubheading"></div>
+        <div id="sharedLists" class="subsubheading hidden"></div>
 
-        <!-- All te stuff to create new lists -->
         <div id="newListSB">
             <img id="addImgSB" src="/img/add.png">
             <input type="text" id="inpNameSB" class="hidden" placeholder="My new list">
@@ -50,13 +46,9 @@
 
         <button id="logout">Log Out</button>
 
-        <!--list class ends-->
     </div>
 
-
-
-    <!-- Not in sidebar -->
-
+    <!-- Main part of the page -->
     <div class="main">
         <h2 id="listTitle" contenteditable="true">Welcome back!</h2>
 
@@ -68,814 +60,71 @@
             <h3 id="columnR" class="column">Public Lists</h3>
             <div id="containerR" class="container"></div>
 
+            <!-- Create list -->
             <div id="newList" class="hidden">
                 <p id="createTxt">Create new list</p>
                 <img id="addImg" src="/img/add_home.png">
                 <input type="text" id="inpName" class="hidden" placeholder="My new list">
             </div>
 
+            <!-- See who shared the list -->
             <div id="sharedBy" class="hidden">
                 <p id="sharedByTxt"></p>
                 <img id="sharedByImg">
             </div>
 
+            <!-- Buttons to edit list -->
             <div class="editList">
-                <img id="btnListDelete" class="hidden" src="/img/trash.png"></img>
-                <img id="btnShare" class="hidden" src="/img/share.png"></img>
-                <img id="btnAddPeople" class="hidden" src="/img/share_with_friend.png"></img>
+                <img id="btnListDelete" class="hidden bottombtn" src="/img/trash.png"></img>
+                <img id="btnShare" class="hidden bottombtn" src="/img/share.png"></img>
+                <img id="btnAddPeople" class="hidden bottombtn" src="/img/share_with_friend.png"></img>
+                <img id="sharedWith" class="hidden bottombtn" src="/img/group.png">
             </div>
 
         </div>
     </div>
-    <!--list class ends-->
+
+    <!-- See who has access to a list shared with you -->
+    <div id="accessModal" class="modal">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Users with access to this list</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body showPeopleBody"></div>
+        </div>
+
+    </div>
+
+    <!-- See who has access to a list shared with you -->
+    <div id="shareModal" class="modal">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Share list with users</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body addPeopleBody">
+                <div id="search" class="search">
+                    <input id="searchUname" type="text" placeholder="Username">
+                    <p>or</p>
+                    <input id="searchEmail" type="email" placeholder="Email">
+                    <img id="btnSearch" src="/img/search.png">
+                </div>
+                <p id="have_accessTitle">Users with access to this list</p>
+                <div id="have_access"></div>
+            </div>
+        </div>
+
+    </div>
 
 
 </body>
 
-<script>
-
-    let logindata = JSON.parse(sessionStorage.getItem("logindata"));
-    if (!logindata) {
-        window.location.href = "./userlogin.html";
-    }
-    let token = logindata.token;
-
-    // Show correct username on sidebar
-    let myName = document.getElementById("myName");
-    myName.innerHTML = logindata.username;
-
-    // redirect to other pages ----------------------------------------------------------------------------
-    let btnMyProfile = document.getElementById('myProfile');
-    let btnLogout = document.getElementById('logout');
-
-    btnMyProfile.addEventListener('click', function () {
-        window.location.href = "./user.html";
-    });
-
-    btnLogout.addEventListener('click', function () {
-        sessionStorage.removeItem('logindata');
-        window.location.href = "./userlogin.html";
-    });
-
-
-    // sidebar expand/collapse -----------------------------------------------------------------------------
-    let contentBox = document.getElementById("contentBox");
-
-    let privateHeader = document.getElementById('private');
-    let privateContainer = document.getElementById('privateLists');
-    let publicHeader = document.getElementById('public');
-    let publicContainer = document.getElementById('publicLists');
-    let individualHeader = document.getElementById('individual');
-    let individualContainer = document.getElementById('individualLists');
-    let sharedHeader = document.getElementById('shared');
-    let sharedContainer = document.getElementById('sharedLists');
-
-    let btnShare = document.getElementById('btnShare');
-    let btnAddPeople = document.getElementById('btnAddPeople');
-    let btnListDelete = document.getElementById('btnListDelete');
-
-    let sharedBy = document.getElementById('sharedBy');
-    let sharedByTxt = document.getElementById('sharedByTxt');
-    let sharedByImg = document.getElementById('sharedByImg');
-
-    privateHeader.addEventListener('click', function () {
-        toggleLists(privateContainer, "private");
-    });
-
-    publicHeader.addEventListener('click', function () {
-        toggleLists(publicContainer, "public");
-    });
-
-    individualHeader.addEventListener('click', function () {
-        toggleLists(individualContainer, "individual");
-    });
-
-    sharedHeader.addEventListener('click', function () {
-        toggleLists(sharedContainer, "shared");
-    });
-
-    function toggleLists(container, shared) {
-        if (container.innerHTML == "") {
-            showLists(container, shared);
-        } else {
-            container.innerHTML = "";
-        }
-    }
-
-
-    // POST list --------------------------------------------------------------------------------------------
-    // sidebar button ---------------------------------------
-    let newListSB = document.getElementById('newListSB');
-    let addImgSB = document.getElementById('addImgSB');
-    let inpNameSB = document.getElementById('inpNameSB');
-
-    addImgSB.addEventListener('click', function () {
-        addImgSB.classList.add('hidden');
-        inpNameSB.classList.remove("hidden");
-    });
-
-    inpNameSB.addEventListener('blur', function () {
-        addImgSB.classList.remove("hidden");
-        inpNameSB.classList.add("hidden");
-    });
-
-    inpNameSB.addEventListener('keydown', function () {
-        if (event.keyCode == 13 && inpNameSB.value) {
-            createList(inpNameSB.value);
-        }
-    });
-
-    // homepage button ---------------------------------------
-    let newList = document.getElementById('newList');
-    let addImg = document.getElementById('addImg');
-    let inpName = document.getElementById('inpName');
-    let createTxt = document.getElementById('createTxt');
-
-    newList.addEventListener('click', function () {
-        addImg.classList.add("hidden");;
-        createTxt.classList.add("hidden");;
-        inpName.classList.remove("hidden");;
-    });
-
-    inpName.addEventListener('blur', function () {
-        addImg.classList.remove("hidden");;
-        createTxt.classList.remove("hidden");;
-        inpName.classList.add("hidden");;
-    });
-
-    inpName.addEventListener('keydown', function () {
-        if (event.keyCode == 13 && inpName.value) {
-            createList(inpName.value);
-        }
-    });
-
-    // POST list -------------------------------------------
-    async function createList(name) {
-        inpNameSB.value = "";
-        inpName.value = "";
-
-        let url = "http://localhost:3000/lists";
-
-        let updata = {
-            listname: name
-        }
-
-        let cfg = {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json",
-                "authorisation": token
-            },
-            body: JSON.stringify(updata)
-        }
-
-        try {
-            var resp = await fetch(url, cfg);
-            var data = await resp.json();
-
-            window.location.reload();
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-
-    // GET all public lists ---------------------------------------------------------------------------------
-    let allLists = document.getElementById('allLists');
-    let leftHeader = document.getElementById('columnL');
-    let leftContainer = document.getElementById('containerL');
-    let rightHeader = document.getElementById('columnR');
-    let rightContainer = document.getElementById('containerR');
-
-    allLists.addEventListener('click', function () {
-        // hide the newlist button
-        newList.classList.add("hidden");;
-
-        showLists(leftContainer, "allpublic");
-        leftHeader.innerHTML = "Lists";
-        rightContainer.classList.add("hidden");;
-        rightHeader.classList.add("hidden");;
-    });
-
-
-    // GET private and public lists of user (homepage) ------------------------------------------------------
-    showLists(leftContainer, "private");
-    showLists(rightContainer, "public");
-    // show the newlist button
-    newList.classList.remove("hidden");;
-
-
-    // GET list ---------------------------------------------------------------------------------------------
-    async function showLists(container, shared) {
-        if (!shared.localeCompare("allpublic")) {
-            btnShare.classList.add("hidden");
-            btnAddPeople.classList.add("hidden");
-            btnListDelete.classList.add("hidden");
-            contentBox.classList.add("showAllLists");
-            sharedBy.classList.add('hidden');
-        }
-
-        try {
-            let url = `http://localhost:3000/lists/${shared}`;
-
-            let cfg = {
-                method: "GET",
-                headers: { "authorisation": token }
-            };
-
-            var resp = await fetch(url, cfg);
-            var data = await resp.json();
-
-            if (resp.status == 403) {
-                //If user hasn't logged in, go to the login page
-                window.location.href = "./userlogin.html";
-                return;
-            } else if (resp.status > 202) {
-                throw (data);
-            }
-
-            container.innerHTML = ""; // delete previous content
-
-            for (let value of data) {
-
-                let div = document.createElement('div');
-                let name = document.createElement('p');
-                name.classList.add('class', "listName");
-                name.innerHTML = value.name;
-                div.appendChild(name);
-
-                if ((container.id == "containerR" || container.id == "containerL") && shared.localeCompare("allpublic")) {
-                    div.setAttribute('class', "deleteable");
-                    name.classList.add('class', "whitebox");
-                    let delList = document.createElement('img');
-                    delList.setAttribute('src', "/img/trash.png");
-                    delList.setAttribute('class', 'deleteTask');
-                    delList.addEventListener('click', function () {
-                        deleteList(value.id);
-                    });
-                    div.appendChild(delList);
-                }
-
-                div.addEventListener('click', function (evt) {
-                    localStorage.setItem('listinfo', JSON.stringify(value));
-                    openList();
-                });
-
-                if (!shared.localeCompare("allpublic")) {
-                    // get the name of the owner and desplay it
-                    user = await getUserById(value.owner);
-
-                    div.classList.add("sharedListDiv");
-                    div.classList.add("whitebox");
-
-                    let owner = document.createElement('div');
-
-                    let ownerName = document.createElement('p');
-                    ownerName.innerHTML = `Shared by ${user.username}`;
-                    owner.appendChild(ownerName);
-
-                    let ownerImg = document.createElement('img');
-                    ownerImg.setAttribute('src', 'img/boy_1.png');
-                    owner.appendChild(ownerImg);
-
-                    div.appendChild(owner);
-
-                }
-
-                container.appendChild(div);
-            }
-
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-
-    // Open list -----------------------------------------------------------------------------------------
-    let title = document.getElementById('listTitle');
-    let newTask = document.createElement('div');
-    newTask.setAttribute('class', "newTask");
-
-    let taskName = document.createElement('input');
-    taskName.classList.add("hidden");
-    taskName.setAttribute("placeholder", "My new task");
-    newTask.appendChild(taskName);
-
-    let taskAddImg = document.createElement('img');
-    taskAddImg.setAttribute('class', "addImgTask");
-    taskAddImg.setAttribute('src', "/img/add_home.png");
-    newTask.appendChild(taskAddImg);
-
-    let taskAddTxt = document.createElement('p');
-    taskAddTxt.innerHTML = "Add task";
-    newTask.appendChild(taskAddTxt);
-
-    // POST task
-    newTask.addEventListener('click', function () {
-        taskAddImg.classList.add("hidden");
-        taskAddTxt.classList.add("hidden");
-        taskName.classList.remove("hidden");
-        newTask.classList.add("newTaskInp");
-    });
-
-    taskName.addEventListener('blur', function () {
-        taskAddImg.classList.remove("hidden");
-        taskAddTxt.classList.remove("hidden");
-        taskName.classList.add("hidden");
-        newTask.classList.remove("newTaskInp");
-    });
-
-    taskName.addEventListener('keydown', function () {
-        if (event.keyCode == 13 && taskName.value) {
-            createTask(taskName.value);
-        }
-    });
-
-
-    async function openList() {
-        contentBox.classList.remove("showAllLists");
-        rightHeader.contentEditable = false;
-        rightContainer.classList.remove('taskview');
-
-        // hide the newlist button
-        newList.classList.add("hidden");
-
-        let list = JSON.parse(localStorage.getItem('listinfo'));
-        title.innerHTML = list.name;
-
-        rightContainer.classList.remove("hidden");
-        rightHeader.classList.remove("hidden");
-
-        leftContainer.innerHTML = "";
-        rightContainer.innerHTML = "";
-
-        // GET tasks 
-        loadTasks();
-
-        // show share, addPeople and delete btns based on shared property of this list
-        if (list.owner == logindata.userid) {
-            // my list
-            if (list.shared == 1) {
-                // public
-                btnShare.classList.remove("hidden");
-                btnShare.setAttribute("src", "/img/unshare.png");
-                btnAddPeople.classList.add("hidden");
-            } else {
-                // private or individual
-                btnShare.classList.remove("hidden");
-                btnShare.setAttribute("src", "/img/share.png")
-                btnAddPeople.classList.remove("hidden");
-            }
-            btnListDelete.classList.remove("hidden");
-            sharedBy.classList.add('hidden');
-        } else {
-            sharedBy.classList.remove('hidden');
-            // get owner name and profile picture
-            let owner = await getUserById(list.owner);
-            sharedByTxt.innerHTML = `Shared by ${owner.username}`;
-            sharedByImg.setAttribute('src', '/img/boy_1.png');
-
-            btnShare.classList.add("hidden");
-            btnAddPeople.classList.add("hidden");
-            if (list.shared == 1) {
-                // public list, cannot delete
-                btnListDelete.classList.add("hidden");
-            }
-        }
-
-    }
-
-    // PUT list --------------------------------------------------------------------------------------------
-    // name ----------------------------------------------------
-    title.addEventListener('keydown', function (evt) {
-        if (event.keyCode == 13) {
-            evt.preventDefault();
-            updateList("name", title.innerHTML);
-        }
-    });
-
-    // shared --------------------------------------------------
-    btnShare.addEventListener('click', function () {
-        let list = JSON.parse(localStorage.getItem('listinfo'));
-        if (list.shared == 1) {
-            //public
-            updateList("shared", 0);
-        } else {
-            //private or individual
-            updateList("shared", 1);
-            //public lists don't have individual access
-            updateList("individual_access", "NULL");
-        }
-    });
-
-    // individual access ---------------------------------------
-    btnAddPeople.addEventListener('click', function () {
-        ///TODO give users individual access
-    });
-
-    // PUT list ------------------------------------------------
-    async function updateList(feature, value) {
-
-        if (!value && value !== 0) {
-            return;
-        }
-
-        let list = JSON.parse(localStorage.getItem('listinfo'));
-
-        let url = `http://localhost:3000/lists`;
-
-        let updata = {
-            update: feature,
-            value: value,
-            listid: list.id
-        }
-
-        let cfg = {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "authorisation": token
-            },
-            body: JSON.stringify(updata)
-        }
-
-        try {
-
-            var resp = await fetch(url, cfg);
-            var data = await resp.json();
-
-            if (resp.status == 403) {
-                window.location.href = "./userlogin.html";
-                return;
-            } else if (resp.status > 202) {
-                throw (data);
-            }
-
-            // Everything OK: reload list
-            if (!feature.localeCompare("name")) {
-                privateContainer.innerHTML = "";
-                publicContainer.innerHTML = "";
-                individualContainer.innerHTML = "";
-
-                list.name = value;
-                localStorage.setItem('listinfo', JSON.stringify(list));
-
-                openList();
-            } else {
-                window.location.reload();
-            }
-
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-
-    // DELETE list -------------------------------------------------------------------------------------------
-    btnListDelete.addEventListener('click', function () {
-        let list = JSON.parse(localStorage.getItem('listinfo'));
-        if (list.owner == logindata.userid) {
-            deleteList(list.id);
-        } else {
-            // not my list: don't delete just remove me from individual_access
-            let index = list.individual_access.indexOf(logindata.userid);
-            list.individual_access.splice(index, 1);
-            updateList("individual_access", list.individual_access);
-        }
-    });
-
-    async function deleteList(id) {
-
-        let url = "http://localhost:3000/lists";
-
-        let updata = { listid: id };
-        let cfg = {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                "authorisation": token
-            },
-            body: JSON.stringify(updata)
-        }
-
-        try {
-            await fetch(url, cfg);
-            window.location.reload();
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    // POST tasks --------------------------------------------------------------------------------------------
-    async function createTask(name) {
-        taskName.value = "";
-
-        let url = "http://localhost:3000/tasks";
-
-        let list = JSON.parse(localStorage.getItem('listinfo'));
-
-        let updata = {
-            name: name,
-            list: list.id,
-        }
-
-        let cfg = {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json",
-                "authorisation": token
-            },
-            body: JSON.stringify(updata)
-        }
-
-        try {
-            var resp = await fetch(url, cfg);
-            var data = await resp.json();
-            // reload the tasks of the current list
-            loadTasks();
-            taskAddImg.classList.remove("hidden");
-            taskAddTxt.classList.remove("hidden");
-            taskName.classList.add("hidden");
-            newTask.classList.remove("newTaskInp");
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-
-    // GET tasks ---------------------------------------------------------------------------------------------
-    async function loadTasks() {
-        showTasks(rightContainer, 1);
-        rightContainer.classList.remove('taskview');
-        rightHeader.contentEditable = false;
-        leftHeader.innerHTML = "Tasks";
-        rightHeader.innerHTML = "Completed tasks";
-        await showTasks(leftContainer, 0);
-        leftContainer.appendChild(newTask);
-    }
-
-    async function showTasks(container, completed) {
-
-        let list = JSON.parse(localStorage.getItem('listinfo'));
-
-        try {
-            let url = `http://localhost:3000/tasks/${list.id}/${completed}`;
-
-            let cfg = {
-                method: "GET",
-                headers: { "authorisation": token }
-            };
-
-            var resp = await fetch(url, cfg);
-            var data = await resp.json();
-
-            if (resp.status == 403) {
-                //If user hasn't logged in, go to the login page
-                window.location.href = "./userlogin.html";
-                return;
-            } else if (resp.status > 202) {
-                throw (data);
-            }
-
-            container.innerHTML = ""; // delete previous content
-
-            for (let value of data) {
-
-                let div = document.createElement('div');
-                div.setAttribute('class', 'deleteable');
-
-                let whitebox = document.createElement('div');
-                whitebox.setAttribute('class', 'task whitebox');
-                div.appendChild(whitebox);
-
-                // PUT task
-                let checkbox = document.createElement('img');
-                checkbox.setAttribute("class", "checkbox");
-                if (!completed) {
-                    checkbox.setAttribute("src", "/img/unchecked_check.png"); // img: empty checkbox
-                    checkbox.addEventListener('click', function () {
-                        updateTask(value.id, "completed", 1);
-                    });
-                } else {
-                    checkbox.setAttribute("src", "/img/check.png"); // img: checked box
-                    checkbox.addEventListener('click', function () {
-                        updateTask(value.id, "completed", 0);
-                    });
-                }
-                whitebox.appendChild(checkbox);
-
-                let taskName = document.createElement('p');
-                taskName.setAttribute("class", "taskName");
-                taskName.innerHTML = value.name;
-                taskName.addEventListener('click', function (evt) {
-                    localStorage.setItem("taskinfo", JSON.stringify(value));
-                    toggleTask();
-                });
-                whitebox.appendChild(taskName);
-
-                // DELETE task
-                let btnTaskDelete = document.createElement('img');
-                btnTaskDelete.setAttribute("class", "deleteTask");
-                btnTaskDelete.setAttribute("src", "/img/trash.png");
-                btnTaskDelete.addEventListener('click', function () {
-                    deleteTask(value.id);
-                });
-                div.appendChild(btnTaskDelete);
-
-                container.appendChild(div);
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    // Open task ----------------------------------------------------------------------------------------------
-    function toggleTask() {
-        let task = JSON.parse(localStorage.getItem('taskinfo'));
-        if (!rightHeader.innerHTML.localeCompare(task.name)) {
-            loadTasks();
-        } else {
-            openTask();
-        }
-    }
-
-    function openTask() {
-        let task = JSON.parse(localStorage.getItem('taskinfo'));
-        rightContainer.innerHTML = ""; // remove previous content
-        rightHeader.innerHTML = task.name;
-        rightContainer.classList.add('taskview');
-
-        // task name
-        rightHeader.contentEditable = true;
-        rightHeader.addEventListener('keydown', function (evt) {
-            if (event.keyCode == 13) {
-                evt.preventDefault();
-                updateTask(task.id, "name", rightHeader.innerHTML);
-            }
-        });
-
-        // deadline
-        let deadlineDiv = document.createElement('div');
-        deadlineDiv.setAttribute("class", "deadline whitebox");
-        deadlineDiv.addEventListener('click', function () {
-            /// TODO Thomas
-            // allow users to choose deadline, send to updateTask()
-            // params for updateTask: task.id, "deadline", *the new deadline value*
-        });
-
-        let deadlineImg = document.createElement('img');
-        deadlineImg.setAttribute('src', '/img/appointment-reminders.png');
-        deadlineImg.setAttribute('class', 'bell');
-        deadlineDiv.appendChild(deadlineImg);
-
-        let deadlineTxt = document.createElement('p');
-        if (task.deadline) {
-            deadlineTxt.innerHTML = "Due date: " + task.deadline;
-        } else {
-            deadlineTxt.innerHTML = "No due date set";
-        }
-        deadlineDiv.appendChild(deadlineTxt);
-
-        rightContainer.appendChild(deadlineDiv);
-
-        // notes
-        let notesDiv = document.createElement('div');
-        notesDiv.setAttribute("class", "notesDiv");
-
-        let notesTitle = document.createElement('p');
-        notesTitle.innerHTML = "Notes:";
-        notesDiv.appendChild(notesTitle);
-
-        let notesbtn = document.createElement('img');
-        notesbtn.setAttribute('src', '/img/icon-edit.png');
-        notesDiv.appendChild(notesbtn);
-
-        rightContainer.appendChild(notesDiv);
-
-        let notes = document.createElement('p');
-        notes.setAttribute("class", "notes whitebox");
-        notes.innerHTML = task.notes;
-        rightContainer.appendChild(notes);
-
-        // PUT notes
-        notesbtn.addEventListener('click', function () {
-            if (notesbtn.src.includes("edit")) {
-                notesbtn.src = '/img/check.png';
-                notes.contentEditable = true;
-            } else {
-                notesbtn.src = '/img/icon-edit.png';
-                notes.contentEditable = false;
-                updateTask(task.id, "notes", notes.innerHTML);
-            }
-        });
-
-    }
-
-
-    // PUT tasks ----------------------------------------------------------------------------------------------
-    async function updateTask(taskid, feature, value) {
-        console.log("update " + taskid + ": " + feature + ", " + value);
-
-        if (!value && value !== 0) {
-            return;
-        }
-
-        let url = `http://localhost:3000/tasks/`;
-
-        let updata = {
-            update: feature,
-            value: value,
-            taskid: taskid
-        }
-
-        let cfg = {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "authorisation": token
-            },
-            body: JSON.stringify(updata)
-        }
-
-        try {
-
-            var resp = await fetch(url, cfg);
-            var data = await resp.json();
-
-            if (resp.status == 403) {
-                window.location.href = "./userlogin.html";
-                return;
-            } else if (resp.status > 202) {
-                throw (data);
-            }
-
-            // Everything OK: reload
-            if (!feature.localeCompare('completed')) {
-                loadTasks();
-            } else {
-                let taskinfo = JSON.parse(localStorage.getItem("taskinfo"));
-                taskinfo[feature] = value;
-                localStorage.setItem("taskinfo", JSON.stringify(taskinfo));
-                if (!feature.localeCompare('name')) {
-                    await showTasks(leftContainer, 0);
-                    leftContainer.appendChild(newTask);
-                }
-                openTask();
-            }
-
-
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-
-    // DELETE tasks ------------------------------------------------------------------------------------------
-    async function deleteTask(id) {
-
-        let url = "http://localhost:3000/tasks";
-
-        let updata = { taskid: id };
-        let cfg = {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                "authorisation": token
-            },
-            body: JSON.stringify(updata)
-        }
-
-        try {
-            await fetch(url, cfg);
-            loadTasks();
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    // GET user ----------------------------------------------------------------------------------------------
-    async function getUserById(id) {
-        url = `http://localhost:3000/users/${id}`;
-
-        cfg = {
-            method: "GET",
-            headers: { "authorisation": token }
-        }
-
-        var resp = await fetch(url, cfg);
-        var user = await resp.json();
-
-        if (resp.status == 403) {
-            // If user hasn't logged in, go to the login page
-            window.location.href = "./userlogin.html";
-            return;
-        } else if (resp.status > 202) {
-            throw (user);
-        }
-
-        return user;
-    }
-
-</script>
+<script type="module" src="indexJS/list.js"></script>
+<script type="module" src="indexJS/sidebar.js"></script>
+<script type="module" src="indexJS/task.js"></script>
+<script type="module" src="indexJS/user.js"></script>
 
 </html>
