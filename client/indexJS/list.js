@@ -1,5 +1,5 @@
 // Imports ----------------------------------------------------------------------------------------------
-import { createTask, loadTasks } from './task.js';
+import { loadTasks } from './task.js';
 import { getUserBy } from './user.js';
 
 // Logindata --------------------------------------------------------------------------------------------

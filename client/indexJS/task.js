@@ -1,6 +1,3 @@
-// Imports ----------------------------------------------------------------------------------------------
-// import {showLists} from './indexList.js.js';
-
 // Logindata --------------------------------------------------------------------------------------------
 let logindata = JSON.parse(sessionStorage.getItem("logindata"));
 if (!logindata) {

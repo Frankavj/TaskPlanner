@@ -3,3 +3,4 @@ node_modules/
 
 # Don't track content of these files
 .DS_Store
+/dbURI.js
