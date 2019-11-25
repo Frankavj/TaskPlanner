@@ -26,7 +26,6 @@ btnLogout.addEventListener('click', function () {
     window.location.href = "./userlogin.html";
 });
 
-
 // sidebar expand/collapse ------------------------------------------------------------------------------
 let privateHeader = document.getElementById('private');
 let privateContainer = document.getElementById('privateLists');

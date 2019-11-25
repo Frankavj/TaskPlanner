@@ -48,6 +48,21 @@ router.post("/", async function (req, res, next) {
     }
 });
 
+// endpoint - lists GET all -------------------------------
+router.get('/', async function (req, res, next) {
+
+    let sql = "SELECT * FROM lists WHERE owner=$1";
+    let values = [logindata.userid];
+
+    try {
+        let result = await pool.query(sql, values);
+        res.status(200).json(result.rows); //send response    
+    } catch (err) {
+        res.status(500).json(err); //send response    
+    }
+
+});
+
 // endpoint - lists GET private ---------------------------
 router.get('/private', async function (req, res, next) {
 
