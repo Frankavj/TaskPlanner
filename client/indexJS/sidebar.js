@@ -61,14 +61,3 @@ async function toggleLists(container, shared) {
         container.classList.add("hidden");
     }
 }
-
-let privateDrop= document.getElementById("privateDrop");
-let dropdownPrivate = document.getElementById("dropdownPrivate");
-
-privateDrop.addEventListener('click', function () {
-    dropdownPrivate.classList.toggle("hidden")
-    toggleLists(dropdownPrivate, "private");
-});
-
-
-

@@ -1,3 +1,7 @@
+* {
+    --offwhite: #ffffff;
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -38,7 +42,6 @@
     font-size: 28px;
     font-weight: bold;
     margin-right: 80px;
-
 }
 
 .close:hover, .close:focus {
@@ -132,6 +135,36 @@
     background-color: var(--grey);
     border-radius: 10px;
     padding: 2px;
+}
+
+/* Avatar picker modal */
+
+.avatars {
+    grid-template-rows: 10px minmax(auto, min-content) !important;
+    width: 80%;
+    height: min-content;
+}
+
+.avatar-header>span {
+    margin-right: 10px !important;
+    float: right;
+}
+
+.avatar-body {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.avatar-body>img {
+    width: 100%;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.avatar-body>img:hover {
+    opacity: 70%;
+    background-repeat: no-repeat;
 }
 
 @-webkit-keyframes animatetop {
