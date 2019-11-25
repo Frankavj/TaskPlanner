@@ -10,7 +10,7 @@ let token = logindata.token;
 
 // GET user ----------------------------------------------------------------------------------------------
 export async function getUserBy(property, value) {
-    let url = `http://localhost:3000/users/${property}/${value}`;
+    let url = `./users/${property}/${value}`;
 
     let cfg = {
         method: "GET",
@@ -193,7 +193,20 @@ let searchUname = document.getElementById("searchUname");
 let searchEmail = document.getElementById("searchEmail");
 let btnSearch = document.getElementById("btnSearch");
 
-btnSearch.addEventListener('click', async function () {
+searchUname.addEventListener("keydown", function() {
+    if(event.keyCode == 13) {
+        search();
+    }
+});
+searchEmail.addEventListener("keydown", function() {
+    if(event.keyCode == 13) {
+        search();
+    }
+});
+btnSearch.addEventListener('click', search);
+    
+
+async function search() {
     try {
         if (searchUname.value) {
             let res = await getUserBy("username", searchUname.value);
@@ -214,4 +227,4 @@ btnSearch.addEventListener('click', async function () {
             alert(err.msg);
         }
     }
-});
+}

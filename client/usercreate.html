@@ -43,7 +43,7 @@
     form.addEventListener('submit', async function (evt) {
         evt.preventDefault();
 
-        let url = "http://localhost:3000/users";
+        let url = "./users";
 
         let updata = {
             username: (inpUsername.value == '') ? null : inpUsername.value,

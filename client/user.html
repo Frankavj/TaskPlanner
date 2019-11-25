@@ -50,7 +50,7 @@
     line.setAttribute("src", "../img/line.png");
     line.setAttribute("class", "line");
 
-    let url = "http://localhost:3000/users";
+    let url = "./users";
 
     btnBack.addEventListener('click', function () {
         window.location.href = "./index.html";
@@ -220,7 +220,7 @@
 
     async function changeAvatar(evt) {
 
-        let url = "http://localhost:3000/users/avatar";
+        let url = "./users/avatar";
         let new_avatar = evt.target.id.split("_")[1];
 
         let updata = {

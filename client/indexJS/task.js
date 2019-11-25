@@ -65,7 +65,7 @@ export async function createTask(name) {
 
     taskName.value = "";
 
-    let url = "http://localhost:3000/tasks";
+    let url = "./tasks";
 
     let list = JSON.parse(localStorage.getItem('listinfo'));
 
@@ -114,7 +114,7 @@ async function showTasks(container, completed) {
     let list = JSON.parse(localStorage.getItem('listinfo'));
 
     try {
-        let url = `http://localhost:3000/tasks/${list.id}/${completed}`;
+        let url = `./tasks/${list.id}/${completed}`;
 
         let cfg = {
             method: "GET",
@@ -275,7 +275,7 @@ async function updateTask(taskid, feature, value) {
         return;
     }
 
-    let url = `http://localhost:3000/tasks/`;
+    let url = `./tasks/`;
 
     let updata = {
         update: feature,
@@ -328,7 +328,7 @@ async function updateTask(taskid, feature, value) {
 // DELETE tasks ------------------------------------------------------------------------------------------
 async function deleteTask(id) {
 
-    let url = "http://localhost:3000/tasks";
+    let url = "./tasks";
 
     let updata = { taskid: id };
     let cfg = {

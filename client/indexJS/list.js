@@ -63,7 +63,7 @@ async function createList(name) {
     inpNameSB.value = "";
     inpName.value = "";
 
-    let url = "http://localhost:3000/lists";
+    let url = "./lists";
 
     let updata = {
         listname: name
@@ -133,7 +133,7 @@ export async function showLists(container, shared) {
     }
 
     try {
-        let url = `http://localhost:3000/lists/${shared}`;
+        let url = `./lists/${shared}`;
 
         let cfg = {
             method: "GET",
@@ -258,7 +258,7 @@ export async function openList() {
         // get owner name and profile picture
         let owner = await getUserBy("id", list.owner);
         sharedByTxt.innerHTML = `Shared by ${owner.username}`;
-        sharedByImg.setAttribute('src', '/img/boy_1.png');
+        sharedByImg.setAttribute('src', `../img/avatar_${owner.avatar}.png`);
 
         btnShare.classList.add("hidden");
         btnAddPeople.classList.add("hidden");
@@ -305,7 +305,7 @@ export async function updateList(feature, value) {
 
     let list = JSON.parse(localStorage.getItem('listinfo'));
 
-    let url = `http://localhost:3000/lists`;
+    let url = `./lists`;
 
     let updata = {
         update: feature,
@@ -362,7 +362,7 @@ btnListDelete.addEventListener('click', function () {
 
 async function deleteList(id) {
 
-    let url = "http://localhost:3000/lists";
+    let url = "./lists";
 
     let updata = { listid: id };
     let cfg = {
