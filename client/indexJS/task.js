@@ -1,6 +1,3 @@
-// Imports ----------------------------------------------------------------------------------------------
-// import {showLists} from './indexList.js.js';
-
 // Logindata --------------------------------------------------------------------------------------------
 let logindata = JSON.parse(sessionStorage.getItem("logindata"));
 if (!logindata) {
@@ -65,7 +62,7 @@ export async function createTask(name) {
 
     taskName.value = "";
 
-    let url = "http://localhost:3000/tasks";
+    let url = "./tasks";
 
     let list = JSON.parse(localStorage.getItem('listinfo'));
 
@@ -114,7 +111,7 @@ async function showTasks(container, completed) {
     let list = JSON.parse(localStorage.getItem('listinfo'));
 
     try {
-        let url = `http://localhost:3000/tasks/${list.id}/${completed}`;
+        let url = `./tasks/${list.id}/${completed}`;
 
         let cfg = {
             method: "GET",
@@ -209,30 +206,6 @@ function openTask() {
         }
     });
 
-    // deadline
-    let deadlineDiv = document.createElement('div');
-    deadlineDiv.setAttribute("class", "deadline whitebox");
-    deadlineDiv.addEventListener('click', function () {
-        /// TODO Thomas
-        // allow users to choose deadline, send to updateTask()
-        // params for updateTask: task.id, "deadline", *the new deadline value*
-    });
-
-    let deadlineImg = document.createElement('img');
-    deadlineImg.setAttribute('src', '/img/appointment-reminders.png');
-    deadlineImg.setAttribute('class', 'bell');
-    deadlineDiv.appendChild(deadlineImg);
-
-    let deadlineTxt = document.createElement('p');
-    if (task.deadline) {
-        deadlineTxt.innerHTML = "Due date: " + task.deadline;
-    } else {
-        deadlineTxt.innerHTML = "No due date set";
-    }
-    deadlineDiv.appendChild(deadlineTxt);
-
-    rightContainer.appendChild(deadlineDiv);
-
     // notes
     let notesDiv = document.createElement('div');
     notesDiv.setAttribute("class", "notesDiv");
@@ -275,7 +248,7 @@ async function updateTask(taskid, feature, value) {
         return;
     }
 
-    let url = `http://localhost:3000/tasks/`;
+    let url = `./tasks/`;
 
     let updata = {
         update: feature,
@@ -328,7 +301,7 @@ async function updateTask(taskid, feature, value) {
 // DELETE tasks ------------------------------------------------------------------------------------------
 async function deleteTask(id) {
 
-    let url = "http://localhost:3000/tasks";
+    let url = "./tasks";
 
     let updata = { taskid: id };
     let cfg = {

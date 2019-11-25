@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My document</title>
+    <title>Taskplanner</title>
     <link rel="stylesheet" href="../css/usercreate.css">
 </head>
 
@@ -43,7 +43,7 @@
     form.addEventListener('submit', async function (evt) {
         evt.preventDefault();
 
-        let url = "http://localhost:3000/users";
+        let url = "./users";
 
         let updata = {
             username: (inpUsername.value == '') ? null : inpUsername.value,

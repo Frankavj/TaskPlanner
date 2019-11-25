@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User</title>
-    <link rel="stylesheet" href="../css/user.css">
+    <title>Taskplanner</title>
+    <link rel="stylesheet" href="./css/user.css">
+    <link rel="stylesheet" href="./css/index/modals.css">
 </head>
 
 <body>
@@ -16,21 +17,20 @@
         <div class="container" id="container"></div>
     </div>
 
-    <!-- Trigger/Open The Modal -->
-    <!--<button id="myBtn">Open Modal</button> -->
-
-    <!-- The Modal -->
     <div id="myModal" class="modal">
 
-        <!-- Modal content -->
-        <div class="modal-content">
-            <span id="close">&times;</span>
-            <img id="avatar_1" src="../img/avatar_1.png">
-            <img id="avatar_2" src="../img/avatar_2.png">
-            <img id="avatar_3" src="../img/avatar_3.png">
-            <img id="avatar_4" src="../img/avatar_4.png">
-            <img id="avatar_5" src="../img/avatar_5.png">
-            <img id="avatar_6" src="../img/avatar_6.png">
+        <div class="modal-content avatars">
+            <div class="avatar-header">
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body avatar-body">
+                <img id="avatar_1" src="../img/avatar_1.png">
+                <img id="avatar_2" src="../img/avatar_2.png">
+                <img id="avatar_3" src="../img/avatar_3.png">
+                <img id="avatar_4" src="../img/avatar_4.png">
+                <img id="avatar_5" src="../img/avatar_5.png">
+                <img id="avatar_6" src="../img/avatar_6.png">
+            </div>
         </div>
 
     </div>
@@ -43,14 +43,14 @@
     let btnBack = document.getElementById("btnBack");
     let btnModal = document.getElementById("avatar");
     let modal = document.getElementById("myModal");
-    let close = document.getElementById("close");
+    let close = document.getElementsByClassName("close")[0];
 
     // Get line img
     let line = document.createElement('img');
     line.setAttribute("src", "../img/line.png");
     line.setAttribute("class", "line");
 
-    let url = "http://localhost:3000/users";
+    let url = "./users";
 
     btnBack.addEventListener('click', function () {
         window.location.href = "./index.html";
@@ -197,11 +197,11 @@
         modal.style.display = "none";
     })
 
-    window.onclick = function (event) {
+    window.addEventListener('click', function () {
         if (event.target == modal) {
             modal.style.display = "none";
         }
-    }
+    });
 
     // choose avatar ----------------------------------------
     let avatar_1 = document.getElementById("avatar_1");
@@ -220,7 +220,7 @@
 
     async function changeAvatar(evt) {
 
-        let url = "http://localhost:3000/users/avatar";
+        let url = "./users/avatar";
         let new_avatar = evt.target.id.split("_")[1];
 
         let updata = {

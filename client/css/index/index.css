@@ -503,19 +503,12 @@ input {
 
 .taskview {
   display: grid;
-  grid-template-rows: 60px 20px auto;
+  grid-template-rows: 20px auto;
   align-items: center;
 }
 
 .bell {
   height: 35px;
-}
-
-.deadline {
-  display: grid;
-  grid-template-columns: 40px auto;
-  align-items: center;
-  cursor: pointer;
 }
 
 .notesDiv {
