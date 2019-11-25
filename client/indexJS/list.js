@@ -115,6 +115,17 @@ allLists.addEventListener('click', function () {
 });
 
 
+// GET all my lists ---------------------------------------------------------------------------------
+let mylists600 = document.getElementsByClassName("mylists600")[0];
+
+mylists600.addEventListener('click', function () {
+    showLists(leftContainer, "");
+    leftHeader.innerHTML = "My Lists";
+    showLists(rightContainer, "shared");
+    rightHeader.innerHTML = "Shared with me";
+});
+
+
 // GET private and public lists of user (homepage) ------------------------------------------------------
 showLists(leftContainer, "private");
 showLists(rightContainer, "public");
@@ -123,13 +134,18 @@ newList.classList.remove("hidden");
 
 // GET list ---------------------------------------------------------------------------------------------
 export async function showLists(container, shared) {
-    if (!shared.localeCompare("allpublic")) {
+    if (!shared.localeCompare("allpublic") || !shared.localeCompare("")) {
         btnShare.classList.add("hidden");
         btnSharedWith.classList.add("hidden");
         btnAddPeople.classList.add("hidden");
         btnListDelete.classList.add("hidden");
-        contentBox.classList.add("showAllLists");
         sharedBy.classList.add('hidden');
+    }
+
+    if (!shared.localeCompare("allpublic")) {
+        contentBox.classList.add("showAllLists");
+    } else {
+        contentBox.classList.remove("showAllLists");
     }
 
     try {
@@ -169,15 +185,17 @@ export async function showLists(container, shared) {
             div.appendChild(name);
 
             if ((container.id == "containerR" || container.id == "containerL") && shared.localeCompare("allpublic")) {
-                div.setAttribute('class', "deleteable");
                 name.classList.add('class', "whitebox");
-                let delList = document.createElement('img');
-                delList.setAttribute('src', "/img/trash.png");
-                delList.setAttribute('class', 'deleteTask');
-                delList.addEventListener('click', function () {
-                    deleteList(value.id);
-                });
-                div.appendChild(delList);
+                if (shared.localeCompare("shared")) {
+                    div.setAttribute('class', "deleteable");
+                    let delList = document.createElement('img');
+                    delList.setAttribute('src', "/img/trash.png");
+                    delList.setAttribute('class', 'deleteTask');
+                    delList.addEventListener('click', function () {
+                        deleteList(value.id);
+                    });
+                    div.appendChild(delList);
+                }
             }
 
             if (!shared.localeCompare("allpublic")) {

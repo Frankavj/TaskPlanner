@@ -111,3 +111,23 @@ button:hover{
   margin-top: 15px;
   font-size: 13px;
 }
+
+
+/* Smaller screens */
+
+/* Width */
+
+@media only screen and (max-width: 1000px) {
+  #loginForm {
+      width: 70%;
+
+  }
+}
+
+
+
+
+
+
+
+
