@@ -37,7 +37,8 @@
     color: var(--grey);
     font-size: 28px;
     font-weight: bold;
-    margin-right: 40px;
+    margin-right: 80px;
+
 }
 
 .close:hover, .close:focus {

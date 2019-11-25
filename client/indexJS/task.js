@@ -194,6 +194,20 @@ function toggleTask() {
     }
 }
 
+var DateTimePickerTags = `
+<input id="DeadlineDateTimePicker" type=\'date\' class="form-control"/>
+`
+
+function unhideDatePickerDeadLine(){
+    document.getElementById("DateTimePickerContainer").innerHTML = DateTimePickerTags;
+    document.getElementById("deadlineDiv").removeEventListener('click', unhideDatePickerDeadLine);
+    document.getElementById("DeadlineDateTimePicker").addEventListener('change', (e) => {
+        let task = JSON.parse(localStorage.getItem('taskinfo'));
+        updateTask(task.id, "deadline", new Date()); //Bytt med value fra input
+        console.log(`Updated deadline to ${e.target.value}`);
+    });
+}
+
 function openTask() {
     let task = JSON.parse(localStorage.getItem('taskinfo'));
     rightContainer.innerHTML = ""; // remove previous content
@@ -211,25 +225,17 @@ function openTask() {
 
     // deadline
     let deadlineDiv = document.createElement('div');
-    deadlineDiv.setAttribute("class", "deadline whitebox");
-    deadlineDiv.addEventListener('click', function () {
-        /// TODO Thomas
-        // allow users to choose deadline, send to updateTask()
-        // params for updateTask: task.id, "deadline", *the new deadline value*
-    });
+    deadlineDiv.id = "deadlineDiv";
+    deadlineDiv.innerHTML = `
+    <div class="deadline whitebox">
+        <img src="/img/appointment-reminders.png" class="bell">
+        <p id="DateTimePickerContainer">${task.deadline ? DateTimePickerTags : 'No due date set'}</p>
+    </div>
+    `;
 
-    let deadlineImg = document.createElement('img');
-    deadlineImg.setAttribute('src', '/img/appointment-reminders.png');
-    deadlineImg.setAttribute('class', 'bell');
-    deadlineDiv.appendChild(deadlineImg);
-
-    let deadlineTxt = document.createElement('p');
-    if (task.deadline) {
-        deadlineTxt.innerHTML = "Due date: " + task.deadline;
-    } else {
-        deadlineTxt.innerHTML = "No due date set";
+    if(!task.deadline){
+        deadlineDiv.addEventListener('click', unhideDatePickerDeadLine) ;
     }
-    deadlineDiv.appendChild(deadlineTxt);
 
     rightContainer.appendChild(deadlineDiv);
 
